@@ -30,7 +30,8 @@ module.exports = (users) => {
                 id: profile.id,
                 token: token,
                 name: profile.displayName,
-                email: profile.emails[0].value // pull the first email
+                email: profile.emails[0].value,
+                image: profile.photos[0].value
               }
             };
 

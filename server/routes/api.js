@@ -13,6 +13,15 @@ const api = () => {
     res.status(201).send(quotesService.addQuote(req.body));
   });
 
+  router.get('/user-details', (req, res) => {
+    if (!req.isAuthenticated()) {
+      res.json({isLoggedIn: req.isAuthenticated()});
+    } else {
+      const {name, email, image} = req.user.google;
+      res.json({name, email, image, isLoggedIn: req.isAuthenticated()});
+    }
+  });
+
   return router;
 };
 

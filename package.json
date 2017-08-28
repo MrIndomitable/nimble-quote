@@ -10,6 +10,7 @@
     "dev": "concurrently -n client,server -p {name} -c \"bgBlue.bold,bgMagenta.bold\" \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "cd react-ui && npm start",
     "dev:server": "nodemon ./.local.server.js",
+    "build:client": "cd react-ui && npm run build",
     "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "cacheDirectories": [

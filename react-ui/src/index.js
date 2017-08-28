@@ -5,11 +5,13 @@ import {Provider} from 'react-redux';
 import {reducer as formReducer} from 'redux-form';
 import thunk from 'redux-thunk';
 import {quotesReducer} from './reducers/quotesReducer';
+import {userReducer} from './reducers/userReducer';
 import App from './components/App/App';
 import './index.css';
 
 const rootReducer = combineReducers({
   quotes: quotesReducer,
+  user: userReducer,
   form: formReducer
 });
 const store = createStore(rootReducer, applyMiddleware(thunk));
