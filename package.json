@@ -9,7 +9,7 @@
     "start": "node server",
     "dev": "concurrently -n client,server -p {name} -c \"bgBlue.bold,bgMagenta.bold\" \"npm run dev:client\" \"npm run dev:server\"",
     "dev:client": "cd react-ui && npm start",
-    "dev:server": "nodemon server",
+    "dev:server": "nodemon ./.local.server.js",
     "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "cacheDirectories": [
@@ -18,7 +18,13 @@
   ],
   "dependencies": {
     "body-parser": "^1.17.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
     "express": "^4.14.1",
+    "express-session": "^1.15.5",
+    "morgan": "^1.8.2",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^1.0.0",
     "uuid": "^3.1.0"
   },
   "repository": {

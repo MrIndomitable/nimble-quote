@@ -1,11 +1,9 @@
-const { Router } = require('express');
-const bodyParser = require('body-parser');
+const {Router} = require('express');
 const QuotesService = require('../services/quotes-service');
 
 const api = () => {
   const quotesService = QuotesService();
   const router = Router();
-  router.use(bodyParser.json());
 
   router.get('/rfp', (req, res) => {
     res.send(quotesService.getAll());
