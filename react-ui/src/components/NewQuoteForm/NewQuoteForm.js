@@ -18,10 +18,10 @@ const InputField = ({id, label, type}) => {
   )
 };
 
-export const NewRFPFormComp = ({handleSubmit, pristine, submitting}) => {
+export const NewQuoteFormComp = ({handleSubmit, pristine, submitting}) => {
   return (
     <div>
-      <h3>New RFQ/RFP</h3>
+      <h3>New Quote</h3>
       <form onSubmit={ handleSubmit }>
         <InputField id="supplier" label="Supplier" type="email"/>
         <InputField id="subject" label="Subject" type="text"/>
@@ -45,4 +45,4 @@ const mapDispatchToProps = {
 
 const FormHOC = reduxForm({form: 'newRFQ/RFP'});
 
-export const NewRFPForm = connect(null, mapDispatchToProps)(FormHOC(NewRFPFormComp));
+export const NewQuoteForm = connect(null, mapDispatchToProps)(FormHOC(NewQuoteFormComp));
