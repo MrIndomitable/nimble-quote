@@ -1,20 +1,17 @@
 import React from 'react';
+import {Route} from 'react-router';
+import {NavLink, Redirect} from 'react-router-dom';
+
 import {Header} from '../Header/Header';
-import {NewRFPForm} from '../NewRFPForm/NewRFPForm';
-import {NewQuotesTable} from '../quotes/NewQuotesTable/NewQuotesTable';
-import './App.css';
+import {QuotesLifeCycle} from '../quotes/LifeCycle/LifeCycle';
+import {PendingQuotesTable} from '../quotes/PendingQuotesTable/PendingQuotesTable';
 
 const App = () => (
   <div className="App">
     <Header/>
-    <div className="row" style={{margin: '20px', textAlign: 'left'}}>
-      <div className="col-sm-4 well">
-        <NewRFPForm/>
-      </div>
-      <div className="col-sm-8 well">
-        <NewQuotesTable/>
-      </div>
-    </div>
+    <Route exact path="/" render={() => <Redirect to="/quotes/pending"/>}/>
+    <Route path="/quotes" component={QuotesLifeCycle}/>
+    <Route path="/quotes/pending" component={PendingQuotesTable}/>
   </div>
 );
 
