@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { push } from 'react-router-redux'
 import {SUBMIT_RFP, SUBMIT_RFP_SUCCESS, SUBMIT_RFP_FAILURE} from './types';
 import {FETCH_QUOTES, FETCH_QUOTES_SUCCESS, FETCH_QUOTES_FAILURE} from './types';
 
@@ -14,6 +15,8 @@ export const submitRFP = values => dispatch => {
   dispatch({
     type: SUBMIT_RFP, values
   });
+
+  dispatch(push('/'));
 
   axios.post('/api/rfp', values)
     .then(res => dispatch(submitRFPSuccess(res.data)))
