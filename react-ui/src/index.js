@@ -5,16 +5,14 @@ import {Provider} from 'react-redux';
 import {reducer as formReducer} from 'redux-form';
 import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
-
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
-
-const history = createHistory();
-const middleware = routerMiddleware(history);
-
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
 import {quotesReducer} from './reducers/quotesReducer';
 import {userReducer} from './reducers/userReducer';
 import App from './components/App/App';
 import './index.css';
+
+const history = createHistory();
+const middleware = routerMiddleware(history);
 
 const rootReducer = combineReducers({
   quotes: quotesReducer,

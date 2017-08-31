@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route} from 'react-router';
-import {NavLink, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 import {Header} from '../Header/Header';
 import {QuotesLifeCycle} from '../quotes/LifeCycle/LifeCycle';
