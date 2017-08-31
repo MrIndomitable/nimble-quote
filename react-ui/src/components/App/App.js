@@ -4,7 +4,7 @@ import {NavLink, Redirect} from 'react-router-dom';
 
 import {Header} from '../Header/Header';
 import {QuotesLifeCycle} from '../quotes/LifeCycle/LifeCycle';
-import {NewQuoteForm} from '../NewQuoteForm/NewQuoteForm';
+import {NewQuoteWizard} from '../NewQuoteForm/NewQuoteWizard';
 import {PendingQuotesTable} from '../quotes/PendingQuotesTable/PendingQuotesTable';
 
 const App = () => (
@@ -13,7 +13,7 @@ const App = () => (
     <Route exact path="/" render={() => <Redirect to="/quotes/pending"/>}/>
     <Route path="/quotes" component={QuotesLifeCycle}/>
     <Route path="/quotes/pending" component={PendingQuotesTable}/>
-    <Route path="/quotes/create" component={NewQuoteForm}/>
+    <Route path="/quotes/create" component={NewQuoteWizard}/>
   </div>
 );
 
