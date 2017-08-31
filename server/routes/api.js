@@ -3,6 +3,32 @@ const QuotesService = require('../services/quotes-service');
 
 const api = () => {
   const quotesService = QuotesService();
+
+  quotesService.addQuote({
+    manufacture: 'Intel',
+    partNumber: '1234',
+    quantity: 15,
+    targetPrice: 190
+  });
+  quotesService.addQuote({
+    manufacture: 'Intel-corp',
+    partNumber: 'cnud7-cnsud',
+    quantity: 37,
+    targetPrice: 292
+  });
+  quotesService.addQuote({
+    manufacture: 'HP',
+    partNumber: '783nd7ds',
+    quantity: 55,
+    targetPrice: 170
+  });
+  quotesService.addQuote({
+    manufacture: 'IBM',
+    partNumber: 'csdcs-s7dc',
+    quantity: 45,
+    targetPrice: 99
+  });
+
   const router = Router();
 
   router.get('/rfp', (req, res) => {
