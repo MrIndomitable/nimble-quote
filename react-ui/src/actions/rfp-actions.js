@@ -18,8 +18,8 @@ export const submitRFP = values => dispatch => {
 
   dispatch(push('/'));
 
-  axios.post('/api/rfp', values)
-    .then(res => dispatch(submitRFPSuccess(res.data)))
+  axios.post('/api/auctions', values)
+    .then(res => dispatch(submitRFPSuccess(res.data.details)))
     .catch(e => dispatch(submitRFPFailure(e)));
 };
 
@@ -38,7 +38,7 @@ export const fetchQuotes = () => dispatch => {
     type: FETCH_QUOTES
   });
 
-  axios.get('/api/rfp')
+  axios.get('/api/auctions')
     .then(res => dispatch(fetchQuotesSuccess(res.data)))
     .catch(e => dispatch(fetchQuotesFailure(e)));
 };

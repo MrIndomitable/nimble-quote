@@ -1,42 +1,29 @@
 const {Router} = require('express');
-const QuotesService = require('../services/quotes-service');
+const {anAuction} = require('../test-data/test-auction');
+const {AuctionDetailsService, AuctionsService} = require('../services/auctions-service');
+const {anAuctionDetails} = require('../test-data/test-auction-details');
 
 const api = () => {
-  const quotesService = QuotesService();
+  const auctionDetailsService = AuctionDetailsService();
+  const auctionService = AuctionsService(auctionDetailsService);
 
-  quotesService.addQuote({
-    manufacture: 'Intel',
-    partNumber: '1234',
-    quantity: 15,
-    targetPrice: 190
-  });
-  quotesService.addQuote({
-    manufacture: 'Intel-corp',
-    partNumber: 'cnud7-cnsud',
-    quantity: 37,
-    targetPrice: 292
-  });
-  quotesService.addQuote({
-    manufacture: 'HP',
-    partNumber: '783nd7ds',
-    quantity: 55,
-    targetPrice: 170
-  });
-  quotesService.addQuote({
-    manufacture: 'IBM',
-    partNumber: 'csdcs-s7dc',
-    quantity: 45,
-    targetPrice: 99
-  });
+  auctionService.addAuction(anAuction([
+    anAuctionDetails(),
+    anAuctionDetails()
+  ]));
+  auctionService.addAuction(anAuction([
+    anAuctionDetails(),
+    anAuctionDetails()
+  ]));
 
   const router = Router();
 
-  router.get('/rfp', (req, res) => {
-    res.send(quotesService.getAll());
+  router.get('/auctions', (req, res) => {
+    res.json(auctionService.getAll());
   });
 
-  router.post('/rfp', (req, res) => {
-    res.status(201).send(quotesService.addQuote(req.body));
+  router.post('/auctions', (req, res) => {
+    res.status(201).json(auctionService.addAuction(req.body));
   });
 
   router.get('/user-details', (req, res) => {

@@ -5,9 +5,11 @@ export const quotesReducer = (quotes = [], action) => {
     case SUBMIT_RFP_SUCCESS:
       return [...quotes, action.newQuote];
     case FETCH_QUOTES_SUCCESS:
-      return Object.keys(action.quotes).map(key => {
-        return action.quotes[key];
+      const arrayOfDetails = Object.keys(action.quotes).map(key => {
+        return action.quotes[key].details;
       });
+      
+      return [].concat.apply([], arrayOfDetails);
     default:
       return quotes;
   }

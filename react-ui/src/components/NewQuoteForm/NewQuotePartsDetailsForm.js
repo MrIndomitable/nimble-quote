@@ -1,19 +1,41 @@
 import React from 'react';
+import {FieldArray, reduxForm} from 'redux-form';
 import {InputField} from '../form/InputField';
-import {NewQuoteHOC} from './NewQuoteWizardConfig';
+
+const QuoteDetails = ({name}) => {
+  return <div className="form-inline">
+    <InputField id={`${name}.manufacture`} placeholder="Manufacture" type="text"/>
+    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text"/>
+    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number"/>
+    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number"/>
+    <InputField id={`${name}.partDate`} placeholder="Part date" type="text"/>
+    <InputField id={`${name}.supplyDate`} placeholder="Supply date" type="text"/>
+  </div>
+};
+
+const renderQuotes = ({fields}) => {
+  return <div>
+    {fields.map((quote, i) => {
+      return <div key={i}><QuoteDetails name={quote}/></div>
+    })}
+    <button className="btn btn-default" type="button" onClick={() => fields.push({})}>
+      <span className="fa fa-plus"/> Add new
+    </button>
+  </div>
+};
 
 export const NewQuotePartsDetailsFormComp = ({handleSubmit}) => {
   return <form onSubmit={ handleSubmit }>
-    <InputField id="manufacture" label="Manufacture" type="text"/>
-    <InputField id="partNumber" label="Part #" type="text"/>
-    <InputField id="quantity" label="Quantity" type="number"/>
-    <InputField id="targetPrice" label="Target price" type="number"/>
-    <InputField id="partDate" label="Part date" type="text"/>
-    <InputField id="supplyDate" label="Supply date" type="text"/>
+    <FieldArray name="details" component={renderQuotes}/>
     <button type="submit" className="btn btn-success btn-lg">
       Choose supplier's <span className="fa fa-caret-right"/>
     </button>
   </form>
 };
 
-export const NewQuotePartsDetailsForm = NewQuoteHOC(NewQuotePartsDetailsFormComp);
+export const NewQuotePartsDetailsForm = reduxForm({
+  form: 'NewQuoteForm',
+  destroyOnUnmount: false,
+  forceUnregisterOnUnmount: true,
+  initialValues: {details: [{}]}
+})(NewQuotePartsDetailsFormComp);
