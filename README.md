@@ -7,6 +7,9 @@ To deploy a frontend-only React app, use the static-site optimized
 
 ⤵️ [Switching from create-react-app-buildpack](#switching-from-create-react-app-buildpack)?
 
+## How to install
+
+
 
 ## Design Points
 
@@ -106,3 +109,4 @@ npm install
 # Start the server
 npm start
 ```
+
