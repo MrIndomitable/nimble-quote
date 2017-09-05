@@ -1,7 +1,7 @@
 const {Router} = require('express');
-const {anAuction} = require('../test-data/test-auction');
+const {anAuction} = require('../../test-data/test-auction');
 const {AuctionDetailsService, AuctionsService} = require('../services/auctions-service');
-const {anAuctionDetails} = require('../test-data/test-auction-details');
+const {anAuctionDetails} = require('../../test-data/test-auction-details');
 
 const api = () => {
   const auctionDetailsService = AuctionDetailsService();

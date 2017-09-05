@@ -11,7 +11,8 @@
     "dev:client": "cd react-ui && npm start",
     "dev:server": "nodemon ./.local.server.js",
     "build:client": "cd react-ui && npm run build",
-    "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+    "start:prod": "cross-env NODE_ENV=production npm run heroku-postbuild && npm start"
   },
   "cacheDirectories": [
     "node_modules",
@@ -22,6 +23,7 @@
     "chance": "^1.0.11",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
+    "cross-env": "^5.0.5",
     "express": "^4.14.1",
     "express-session": "^1.15.5",
     "morgan": "^1.8.2",
