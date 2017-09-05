@@ -1,6 +1,7 @@
 const {Router} = require('express');
+import { Response } from 'express';
 
-module.exports = (passport) => {
+export const AuthRoute =  (passport: any) => {
   const router = Router();
 
   router.get(
@@ -16,7 +17,7 @@ module.exports = (passport) => {
     })
   );
 
-  router.get('/auth/logout', (req, res) => {
+  router.get('/auth/logout', (req: any, res: Response) => {
     req.logout();
     res.redirect('/');
   });

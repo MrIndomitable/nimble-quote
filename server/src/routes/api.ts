@@ -1,9 +1,13 @@
-const {Router} = require('express');
-const {anAuction} = require('../../test-data/test-auction');
-const {AuctionDetailsService, AuctionsService} = require('../services/auctions-service');
-const {anAuctionDetails} = require('../../test-data/test-auction-details');
+import { Response, Request, Router } from 'express';
+import { AuctionDetailsService, AuctionsService } from '../services/auctions-service';
+import { anAuction } from '../test-data/test-auction';
+import { anAuctionDetails } from '../test-data/test-auction-details';
 
-const api = () => {
+
+
+
+
+export const ApiRoute = () => {
   const auctionDetailsService = AuctionDetailsService();
   const auctionService = AuctionsService(auctionDetailsService);
 
@@ -18,15 +22,15 @@ const api = () => {
 
   const router = Router();
 
-  router.get('/auctions', (req, res) => {
+  router.get('/auctions', (req: Request, res: Response) => {
     res.json(auctionService.getAll());
   });
 
-  router.post('/auctions', (req, res) => {
+  router.post('/auctions', (req: Request, res: Response) => {
     res.status(201).json(auctionService.addAuction(req.body));
   });
 
-  router.get('/user-details', (req, res) => {
+  router.get('/user-details', (req: any, res: Response) => {
     if (!req.isAuthenticated()) {
       res.json({isLoggedIn: req.isAuthenticated()});
     } else {
@@ -37,5 +41,3 @@ const api = () => {
 
   return router;
 };
-
-module.exports = api;

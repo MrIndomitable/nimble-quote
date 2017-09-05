@@ -27,13 +27,13 @@ const uuid = require('uuid').v4;
  * }
  */
 
-const AuctionsService = (auctionDetailsService) => {
-  const auctions = {};
+export const AuctionsService = (auctionDetailsService: any) => {
+  const auctions: { [id: string]: any; } = {};
 
-  const addAuction = (auction) => {
+  const addAuction = (auction: any) => {
     const id = uuid();
 
-    const details = auction.details.map(detail => {
+    const details = auction.details.map((detail: any) => {
       return auctionDetailsService.addAuctionDetail(id, detail);
     });
 
@@ -42,7 +42,7 @@ const AuctionsService = (auctionDetailsService) => {
     return auctions[id];
   };
 
-  const getById = (id) => {
+  const getById = (id: string) => {
     return auctions[id];
   };
 
@@ -57,16 +57,16 @@ const AuctionsService = (auctionDetailsService) => {
   }
 };
 
-const AuctionDetailsService = () => {
-  const auctionDetails = {};
+export const AuctionDetailsService = () => {
+  const auctionDetails: { [id: string]: string; } = {};
 
-  const addAuctionDetail = (auctionId, auctionDetail) => {
+  const addAuctionDetail = (auctionId: string, auctionDetail: any) => {
     const id = uuid();
     auctionDetails[id] = Object.assign({}, auctionDetail, {id, auctionId});
     return auctionDetails[id];
   };
 
-  const getById = (id) => {
+  const getById = (id: string) => {
     return auctionDetails[id];
   };
 
@@ -80,5 +80,3 @@ const AuctionDetailsService = () => {
     getAll
   }
 };
-
-module.exports = {AuctionsService, AuctionDetailsService};

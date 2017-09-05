@@ -1,19 +1,20 @@
-const express = require('express');
-const path = require('path');
-const flash = require('connect-flash');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const session = require('express-session');
+import * as express from "express";
+import { Response, Request } from 'express';
+import * as path from 'path';
+import * as morgan from 'morgan';
+import * as cookieParser from 'cookie-parser';
+import * as bodyParser from 'body-parser';
+import * as session from 'express-session';
 
-const config = require('./config/config');
-const configurePassport = require('./config/passport');
-const auth = require('./routes/auth');
-const api = require('./routes/api');
-const {Users} = require('./services/users-service');
+import config from './config/config';
+import configurePassport from './config/passport';
+import { AuthRoute } from './routes/auth';
+import { ApiRoute } from './routes/api';
+import { Users } from './services/users-service';
+
+
 
 const app = express();
-
 
 app.use(morgan('dev'));
 app.use(cookieParser());
@@ -35,16 +36,15 @@ const passport = configurePassport(Users());
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 
 console.log(path.resolve(__dirname, '../../react-ui/build'));
 app.use(express.static(path.resolve(__dirname, '../../react-ui/build')));
 
-app.use(auth(passport));
-app.use('/api', api());
+app.use(AuthRoute(passport));
+app.use('/api', ApiRoute());
 
 // All remaining requests return the React app, so it can handle routing.
-app.get('*', function (request, response) {
+app.get('*', function (request: Request, response: Response) {
   response.sendFile(path.resolve(__dirname, '../../react-ui/build', 'index.html'));
 });
 

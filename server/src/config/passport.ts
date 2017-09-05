@@ -1,23 +1,23 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-const configAuth = require('./config');
+const configAuth = require('./config').default;
 
-module.exports = (users) => {
-  passport.serializeUser((user, done) => {
+export default (users: any) => {
+  passport.serializeUser((user: any, done: any) => {
     done(null, user.google.id);
   });
 
-  passport.deserializeUser((id, done) => {
-    users.findById(id, (err, user) => {
+  passport.deserializeUser((id: string, done: any) => {
+    users.findById(id, (err: any, user: any) => {
       done(err, user);
     });
   });
 
   passport.use(new GoogleStrategy(configAuth.googleAuth,
-    (token, refreshToken, profile, done) => {
+    (token: any, refreshToken: any, profile: any, done: any) => {
       process.nextTick(() => {
-        users.findOne({'google.id': profile.id}, (err, user) =>{
+        users.findOne({'google.id': profile.id}, (err: any, user: any) =>{
           if (err)
             return done(err);
 
@@ -35,7 +35,7 @@ module.exports = (users) => {
               }
             };
 
-            users.save(newUser, err => {
+            users.save(newUser, (err: any) => {
               if (err)
                 throw err;
               return done(null, newUser);

@@ -14,3 +14,5 @@ docker-compose.yml
 .idea
 
 .local.server.js
+
+*/dist
