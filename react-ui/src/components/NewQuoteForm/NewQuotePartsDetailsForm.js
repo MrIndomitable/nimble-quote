@@ -1,15 +1,18 @@
 import React from 'react';
 import {FieldArray, reduxForm} from 'redux-form';
 import {InputField} from '../form/InputField';
+import {DatePickerField} from '../form/DatePicker/DatePicker';
+
 
 const QuoteDetails = ({name}) => {
   return <div className="form-inline">
     <InputField id={`${name}.manufacture`} placeholder="Manufacture" type="text"/>
     <InputField id={`${name}.partNumber`} placeholder="Part #" type="text"/>
     <InputField id={`${name}.quantity`} placeholder="Quantity" type="number"/>
-    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number"/>
-    <InputField id={`${name}.partDate`} placeholder="Part date" type="text"/>
-    <InputField id={`${name}.supplyDate`} placeholder="Supply date" type="text"/>
+    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number"/>    
+    <DatePickerField id={`${name}.partDate`} placeholder="Part date" type="date" />
+    <DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" />
+
   </div>
 };
 
