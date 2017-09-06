@@ -1,7 +1,7 @@
 import React from 'react';
 import {FieldArray, reduxForm} from 'redux-form';
 import {InputField} from '../form/InputField';
-import {DatePickerField} from '../form/DatePicker/DatePicker';
+import {DatePickerField} from '../form/DatePicker/DatePickerField';
 
 
 const QuoteDetails = ({name}) => {
