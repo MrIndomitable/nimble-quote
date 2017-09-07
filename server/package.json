@@ -10,7 +10,7 @@
     "serve": "nodemon ./.local.server.js",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "",
@@ -36,6 +36,23 @@
     "@types/node": "^8.0.26",
     "@types/passport": "^0.3.4",
     "@types/passport-google-oauth": "^1.0.35",
+    "@types/uuid": "^3.4.2",
+    "jest": "^21.0.1",
+    "supertest": "^3.0.0",
+    "ts-jest": "^21.0.0",
     "typescript": "^2.5.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ]
   }
 }

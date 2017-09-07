@@ -1,81 +1,38 @@
-const uuid = require('uuid').v4;
+import { Guid } from '../types/common';
+import { TAuctionDTO, TAuction, TComponent } from '../types/auctions';
+import { v4 as uuid } from 'uuid';
 
-/**
- * type Guid = string;
- *
- * type Supplier = {
- *  id: Guid;
- *  email: string;
- * }
- *
- * type Auction = {
- *  id: Guid;
- *  suppliers: Supplier: [];
- *  subject: string;
- *  message: string;
- *  issueDate: number;
- *  details: AuctionDetails[];
- * }
- *
- * type AuctionDetails = {
- *  id: Guid;
- *  partNumber: string;
- *  manufacture: string;
- *  targetPrice: number;
- *  quantity: number;
- *  supplyDate: number;
- * }
- */
+interface IAuctionsService {
+  addAuction: (auction: TAuctionDTO) => Guid;
+  getById: (id: Guid) => TAuction;
+  getAll: () => TAuction[];
+}
 
-export const AuctionsService = (auctionDetailsService: any) => {
-  const auctions: { [id: string]: any; } = {};
+export const AuctionsService: () => IAuctionsService = () => {
+  const auctions: TAuction[] = [];
 
-  const addAuction = (auction: any) => {
+  const addAuction: (auction: TAuctionDTO) => Guid = (auctionDTO: TAuctionDTO) => {
+    const components: TComponent[] = auctionDTO.bom.components.map(
+      component => ({ ...component, id: uuid() }) as TComponent
+    );
+
     const id = uuid();
+    const auction = ({ ...auctionDTO, bom: { components }, id }) as TAuction;
+    auctions.push(auction);
 
-    const details = auction.details.map((detail: any) => {
-      return auctionDetailsService.addAuctionDetail(id, detail);
-    });
-
-    auctions[id] = Object.assign({}, auction, {id, details});
-
-    return auctions[id];
+    return id;
   };
 
-  const getById = (id: string) => {
-    return auctions[id];
+  const getById: (id: Guid) => TAuction = (id: Guid) => {
+    return auctions.find(auction => auction.id === id);
   };
 
   const getAll = () => {
-    return auctions;
+    return [...auctions];
   };
 
   return {
     addAuction,
-    getById,
-    getAll
-  }
-};
-
-export const AuctionDetailsService = () => {
-  const auctionDetails: { [id: string]: string; } = {};
-
-  const addAuctionDetail = (auctionId: string, auctionDetail: any) => {
-    const id = uuid();
-    auctionDetails[id] = Object.assign({}, auctionDetail, {id, auctionId});
-    return auctionDetails[id];
-  };
-
-  const getById = (id: string) => {
-    return auctionDetails[id];
-  };
-
-  const getAll = () => {
-    return auctionDetails
-  };
-
-  return {
-    addAuctionDetail,
     getById,
     getAll
   }

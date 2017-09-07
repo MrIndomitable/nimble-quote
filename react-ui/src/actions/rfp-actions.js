@@ -18,27 +18,39 @@ export const submitRFP = values => dispatch => {
 
   dispatch(push('/'));
 
-  axios.post('/api/auctions', values)
+  // TODO it should be the values of redux form
+  const bom = {
+    components: values.details
+  };
+  const auction = {
+    suppliers: values.suppliers,
+    subject: values.subject,
+    message: values.message,
+    bom
+  };
+
+  axios.post('/api/auctions', auction)
     .then(res => dispatch(submitRFPSuccess(res.data.details)))
     .catch(e => dispatch(submitRFPFailure(e)));
 };
 
-const fetchQuotesSuccess = (data) => ({
+const fetchAuctionsSuccess = (data) => ({
   type: FETCH_QUOTES_SUCCESS,
   quotes: data
 });
 
-const fetchQuotesFailure = (error) => ({
+const fetchAuctionsFailure = (error) => ({
   type: FETCH_QUOTES_FAILURE,
   error
 });
 
+// TODO should be fetchAuctions
 export const fetchQuotes = () => dispatch => {
   dispatch({
     type: FETCH_QUOTES
   });
 
   axios.get('/api/auctions')
-    .then(res => dispatch(fetchQuotesSuccess(res.data)))
-    .catch(e => dispatch(fetchQuotesFailure(e)));
+    .then(res => dispatch(fetchAuctionsSuccess(res.data)))
+    .catch(e => dispatch(fetchAuctionsFailure(e)));
 };
