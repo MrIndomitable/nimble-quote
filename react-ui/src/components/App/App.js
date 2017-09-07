@@ -3,23 +3,15 @@ import {Route} from 'react-router';
 import {Redirect} from 'react-router-dom';
 
 import {Header} from '../Header/Header';
-import {QuotesLifeCycle} from '../quotes/LifeCycle/LifeCycle';
 import {NewQuoteWizard} from '../NewQuoteForm/NewQuoteWizard';
-import {ComponentsTable} from '../quotes/PendingQuotesTable/PendingQuotesTable';
-import {OffersTable} from '../quotes/OffersTable/OffersTable';
-import {ImminentQuotesTable} from '../quotes/ImminentQuotesTable/ImminentQuotesTable';
 import {ComponentsPage} from '../quotes/ComponentsPage/ComponentsPage';
 
 const App = () => (
   <div className="App">
     <Header/>
     <Route exact path="/" render={() => <Redirect to="/components"/>}/>
-    <Route path="/components" component={ComponentsPage}/>
-    <Route path="/quotes" component={QuotesLifeCycle}/>
-    <Route path="/quotes/pending" component={ComponentsTable}/>
-    <Route path="/quotes/create" component={NewQuoteWizard}/>
-    <Route path="/quotes/offers" component={OffersTable}/>
-    <Route path="/quotes/imminent" component={ImminentQuotesTable}/>
+    <Route path="/components/:filter?" component={ComponentsPage}/>
+    <Route path="/bom/create" component={NewQuoteWizard}/>
   </div>
 );
 

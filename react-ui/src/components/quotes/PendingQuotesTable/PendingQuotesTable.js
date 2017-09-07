@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {componentsSelector} from '../../../selectors/components-selector';
+import {withRouter} from 'react-router';
 
 const ComponentRow = ({id, partNumber, manufacture, quantity, targetPrice, date}) => (
-  <tr key={id}>
+  <tr>
     <td>{manufacture}</td>
     <td>{partNumber}</td>
     <td>{quantity}</td>
@@ -28,13 +29,13 @@ const ComponentsTableComp = ({components}) => (
     </tr>
     </thead>
     <tbody>
-    {components.map(component => <ComponentRow {...component}/>)}
+    {components.map(component => <ComponentRow key={component.id} {...component}/>)}
     </tbody>
   </table>
 );
 
-const mapStateToProps = state => ({
-  components: componentsSelector(state)
+const mapStateToProps = (state, {match}) => ({
+  components: componentsSelector(state, match.params.filter)
 });
 
-export const ComponentsTable = connect(mapStateToProps)(ComponentsTableComp);
+export const ComponentsTable = withRouter(connect(mapStateToProps)(ComponentsTableComp));
