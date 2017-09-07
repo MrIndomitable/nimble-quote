@@ -1,6 +1,6 @@
 const env: any = process.env;
 
-type TConfig = {
+export type TConfig = {
   session: {
     secret: string;
   };

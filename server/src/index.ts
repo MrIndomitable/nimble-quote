@@ -1,6 +1,7 @@
-const app = require('./server');
+import config from './config/config';
+import { configureApp } from './server';
 
 const PORT = (process.env as any).PORT || 5000;
-app.listen(PORT, function () {
+configureApp(config).listen(PORT, function () {
   console.log(`Listening on port ${PORT}`);
 });

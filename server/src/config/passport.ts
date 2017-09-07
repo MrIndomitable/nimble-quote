@@ -1,9 +1,8 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+import { TConfig } from './config';
+import * as passport from 'passport';
+import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 
-const configAuth = require('./config').default;
-
-export default (users: any) => {
+export default (users: any, config: TConfig) => {
   passport.serializeUser((user: any, done: any) => {
     done(null, user.google.id);
   });
@@ -14,7 +13,7 @@ export default (users: any) => {
     });
   });
 
-  passport.use(new GoogleStrategy(configAuth.googleAuth,
+  passport.use(new GoogleStrategy(config.googleAuth,
     (token: any, refreshToken: any, profile: any, done: any) => {
       process.nextTick(() => {
         users.findOne({'google.id': profile.id}, (err: any, user: any) =>{
