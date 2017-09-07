@@ -10,12 +10,14 @@ import {quotesReducer} from './reducers/quotesReducer';
 import {userReducer} from './reducers/userReducer';
 import App from './components/App/App';
 import './index.css';
+import {auctionsReducer} from './reducers/auctions-reducer';
 
 const history = createHistory();
 const middleware = routerMiddleware(history);
 
 const rootReducer = combineReducers({
   quotes: quotesReducer,
+  auctions: auctionsReducer,
   user: userReducer,
   form: formReducer,
   router: routerReducer

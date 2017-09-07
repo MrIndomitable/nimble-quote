@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { push } from 'react-router-redux'
 import {SUBMIT_RFP, SUBMIT_RFP_SUCCESS, SUBMIT_RFP_FAILURE} from './types';
-import {FETCH_QUOTES, FETCH_QUOTES_SUCCESS, FETCH_QUOTES_FAILURE} from './types';
+import {FETCH_COMPONENTS, FETCH_COMPONENTS_SUCCESS, FETCH_COMPONENTS_FAILURE} from './types';
 
 const submitRFPSuccess = (data) => ({
   type: SUBMIT_RFP_SUCCESS, newQuote: data
@@ -35,19 +35,18 @@ export const submitRFP = values => dispatch => {
 };
 
 const fetchAuctionsSuccess = (data) => ({
-  type: FETCH_QUOTES_SUCCESS,
+  type: FETCH_COMPONENTS_SUCCESS,
   quotes: data
 });
 
 const fetchAuctionsFailure = (error) => ({
-  type: FETCH_QUOTES_FAILURE,
+  type: FETCH_COMPONENTS_FAILURE,
   error
 });
 
-// TODO should be fetchAuctions
-export const fetchQuotes = () => dispatch => {
+export const fetchAuctions = () => dispatch => {
   dispatch({
-    type: FETCH_QUOTES
+    type: FETCH_COMPONENTS
   });
 
   axios.get('/api/auctions')

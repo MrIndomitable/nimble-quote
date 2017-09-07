@@ -1,32 +1,32 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchQuotes} from '../../../actions/rfp-actions';
+import {fetchAuctions} from '../../../actions/rfp-actions';
+import {componentsSelector} from '../../../selectors/components-selector';
 
-class NewQuotesTableClass extends Component {
+class ComponentsTableClass extends Component {
   componentWillMount() {
-    this.props.fetchQuotes()
+    this.props.fetchAuctions()
   }
 
   render() {
-    return <NewQuotesTableComp {...this.props}/>
+    return <ComponentsTableComp {...this.props}/>
   }
 }
 
-const NewQuotesTableComp = ({quotes}) => {
-  const quotesRows = quotes.map(({id, partNumber, manufacture, quantity, targetPrice, date}) => {
-    return (
-      <tr key={id}>
-        <td>{manufacture}</td>
-        <td>{partNumber}</td>
-        <td>{quantity}</td>
-        <td>{targetPrice}</td>
-        <td>{date}</td>
-        <td>
-          <button className="btn btn-danger btn-raised btn-sm">cancel</button>
-        </td>
-      </tr>
-    )
-  });
+const ComponentsTableComp = ({components}) => {
+  const ComponentRow = ({id, partNumber, manufacture, quantity, targetPrice, date}) => (
+    <tr key={id}>
+      <td>{manufacture}</td>
+      <td>{partNumber}</td>
+      <td>{quantity}</td>
+      <td>{targetPrice}</td>
+      <td>{date}</td>
+      <td>
+        <button className="btn btn-danger btn-raised btn-xs">cancel</button>
+      </td>
+    </tr>
+  );
+
   return (
     <table className="table table-striped">
       <thead>
@@ -36,21 +36,22 @@ const NewQuotesTableComp = ({quotes}) => {
         <th>Quantity</th>
         <th>Target price</th>
         <th>Date</th>
+        <th/>
       </tr>
       </thead>
       <tbody>
-      {quotesRows}
+      {components.map(component => <ComponentRow {...component}/>)}
       </tbody>
     </table>
   );
 };
 
 const mapStateToProps = state => ({
-  quotes: state.quotes
+  components: componentsSelector(state)
 });
 
 const mapDispatchToProps = {
-  fetchQuotes
+  fetchAuctions
 };
 
-export const PendingQuotesTable = connect(mapStateToProps, mapDispatchToProps)(NewQuotesTableClass);
+export const ComponentsTable = connect(mapStateToProps, mapDispatchToProps)(ComponentsTableClass);
