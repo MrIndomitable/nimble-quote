@@ -8,11 +8,13 @@ import {NewQuoteWizard} from '../NewQuoteForm/NewQuoteWizard';
 import {ComponentsTable} from '../quotes/PendingQuotesTable/PendingQuotesTable';
 import {OffersTable} from '../quotes/OffersTable/OffersTable';
 import {ImminentQuotesTable} from '../quotes/ImminentQuotesTable/ImminentQuotesTable';
+import {ComponentsPage} from '../quotes/ComponentsPage/ComponentsPage';
 
 const App = () => (
   <div className="App">
     <Header/>
-    <Route exact path="/" render={() => <Redirect to="/quotes/pending"/>}/>
+    <Route exact path="/" render={() => <Redirect to="/components"/>}/>
+    <Route path="/components" component={ComponentsPage}/>
     <Route path="/quotes" component={QuotesLifeCycle}/>
     <Route path="/quotes/pending" component={ComponentsTable}/>
     <Route path="/quotes/create" component={NewQuoteWizard}/>
