@@ -7,7 +7,7 @@ const ComponentsFilterComp = ({offersBadge}) => {
   return <ul className="nav nav-pills nav-justified">
     <li><NavLink to="/components/pending">Pending</NavLink></li>
     <li><NavLink to="/components/offers">
-      Offers{offersBadge && <span className="badge"> {offersBadge}</span>}
+      Offers {offersBadge > 0 && <span className="badge"> {offersBadge}</span>}
     </NavLink></li>
     <li><NavLink to="/components/imminent">Imminent</NavLink></li>
     <li><NavLink to="/components/archive">Archive</NavLink></li>
