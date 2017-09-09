@@ -1,20 +1,42 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {componentsSelector} from '../../../selectors/components-selector';
+import {componentsSelector, isPending, hasOffers} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
 
-const ComponentRow = ({id, partNumber, manufacture, quantity, targetPrice, date}) => (
-  <tr>
-    <td>{manufacture}</td>
-    <td>{partNumber}</td>
-    <td>{quantity}</td>
-    <td>{targetPrice}</td>
-    <td>{date}</td>
-    <td>
-      <button className="btn btn-danger btn-raised btn-xs">cancel</button>
-    </td>
-  </tr>
-);
+const ComponentActions = (component) => {
+  if (isPending(component)) {
+    return (
+      <button className="btn btn-danger btn-xs">
+        cancel
+      </button>
+    );
+  }
+
+  if (hasOffers(component)) {
+    return (
+      <button
+        className="btn btn-warning btn-xs"
+      >
+        Offers <span className="badge">{component.offers.length}</span>
+      </button>
+    );
+  }
+};
+
+const ComponentRow = (component) => {
+  const {partNumber, manufacture, quantity, targetPrice, date} = component;
+
+  return (
+    <tr>
+      <td>{manufacture}</td>
+      <td>{partNumber}</td>
+      <td>{quantity}</td>
+      <td>{targetPrice}</td>
+      <td>{date}</td>
+      <td><ComponentActions {...component}/></td>
+    </tr>
+  );
+};
 
 const ComponentsTableComp = ({components}) => (
   <table className="table table-striped">

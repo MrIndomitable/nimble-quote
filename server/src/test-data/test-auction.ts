@@ -6,3 +6,6 @@ export const anAuction = (components: any[] = []) => ({
   message: chance.paragraph(),
   bom: {components}
 });
+
+export const anOffer = () => ({
+});

@@ -1,5 +1,5 @@
-export const isPending = component => !component.offers;
-export const hasOffers = component => !!component.offers;
+export const isPending = component => !component.offers || component.offers.length === 0;
+export const hasOffers = component => component.offers && component.offers.length > 0;
 export const isImminent = component => false;
 export const isArchived = component => false;
 
@@ -22,3 +22,6 @@ export const componentsSelector = ({auctions}, filter) => {
       return allComponents
   }
 };
+
+export const sumComponents = (state, filter) => componentsSelector(state, filter)
+  .reduce((sum, component) => sum + component.offers.length, 0);

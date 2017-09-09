@@ -1,18 +1,18 @@
 import { Response, Request, Router } from 'express';
 import { AuctionsService } from '../services/auctions-service';
-import { anAuction } from '../test-data/test-auction';
-import { anAuctionDetails } from '../test-data/test-auction-details';
+import { anAuction, anOffer } from '../test-data/test-auction';
+import { aComponent } from '../test-data/test-auction-details';
 
 export const ApiRoute = () => {
   const auctionService = AuctionsService();
 
   auctionService.addAuction(anAuction([
-    anAuctionDetails(),
-    anAuctionDetails()
+    aComponent(),
+    aComponent({offers: [anOffer(), anOffer()]})
   ]));
   auctionService.addAuction(anAuction([
-    anAuctionDetails(),
-    anAuctionDetails()
+    aComponent({offers: [anOffer()]}),
+    aComponent()
   ]));
 
   const router = Router();
