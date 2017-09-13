@@ -4,38 +4,13 @@ import {findComponentById} from '../../../selectors/components-selector';
 import {getAuctionById} from '../../../selectors/auctions-selector';
 import {PendingSuppliersTable} from './PendingSuppliersTable';
 import {ComponentOffersTable} from './ComponentOffersTable';
+import {ComponentDetails} from './CoponentDetails';
 
 const SingleComponentComp = (props) => {
   return (
     <div className="container">
       <div className="row bg-warning inline">
-        <div className="text-center">
-          <div className="col-lg-2 ">
-            <p> Manufacture</p>
-            <p className=""><strong>{props.component.manufacture}</strong></p>
-          </div>
-          <div className="col-lg-2">
-            <p className="">Part No.</p>
-            <p className=""><strong>{props.component.partNumber}</strong></p>
-          </div>
-          <div className="col-lg-2">
-            <p className="">Quantity</p>
-            <p className=""><strong>{props.component.quantity}</strong></p>
-          </div>
-          <div className="col-lg-2">
-            <p className="">Target price</p>
-            <p className=""><strong>{props.component.targetPrice}</strong></p>
-          </div>
-
-          <div className="col-lg-2">
-            <p className="">Part date</p>
-            <p className=""><strong>{props.component.partDate}</strong></p>
-          </div>
-          <div className="col-lg-2">
-            <br/>
-            <button className="btn btn-default">Send to archive</button>
-          </div>
-        </div>
+        <ComponentDetails {...props.component}/>
       </div>
       <div className="table-container col-lg-12">
         <ComponentOffersTable offers={props.offers}/>
