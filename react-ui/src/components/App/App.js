@@ -12,8 +12,8 @@ const App = () => (
   <div className="App">
     <Header/>
     <Route exact path="/" render={() => <Redirect to="/components"/>}/>
-    <Route path="/components/:filter?" component={ComponentsPage}/>
-    <Route path="/single-component" component={SingleComponent}/>
+    <Route exact path="/components" component={ComponentsPage}/>
+    <Route path="/components/:id" component={SingleComponent}/>
     <Route path="/bom/create" component={NewQuoteWizard}/>
     <Route path="/purchase-order/create" component={PurchaseOrderWizard}/>
   </div>

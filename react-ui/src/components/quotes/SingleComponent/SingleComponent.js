@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton';
 
 const OfferRow = ({offer}) => {
@@ -114,7 +115,7 @@ const SingleComponentComp = (props) => {
           </div>
           <div className="col-lg-2">
             <p className="">Part No.</p>
-            <p className=""><strong>{props.component.partNo}</strong></p>
+            <p className=""><strong>{props.component.partNumber}</strong></p>
           </div>
           <div className="col-lg-2">
             <p className="">Quantity</p>
@@ -147,15 +148,7 @@ const SingleComponentComp = (props) => {
   )
 };
 
-export const SingleComponent = () => {
-  const component = {
-    manufacture: "xyz",
-    partNo: "123",
-    quantity: "33",
-    targetPrice: "350",
-    partDate: "22.3.2017"
-  };
-
+const mapStateToProps = (state, {match}) => {
   const offers = [
     {
       supplier: "Atdsa@gmail.com",
@@ -207,5 +200,14 @@ export const SingleComponent = () => {
     },
   ];
 
-  return (<SingleComponentComp component={component} suppliers={pendingSuppliers} offers={offers}/>)
+  const {id} = match.params;
+  const component = state.quotes.find(q => q.id === id);
+
+  return {
+    component,
+    suppliers: pendingSuppliers,
+    offers
+  }
 };
+
+export const SingleComponent = connect(mapStateToProps)(SingleComponentComp);
