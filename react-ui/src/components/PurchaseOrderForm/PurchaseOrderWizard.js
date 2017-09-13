@@ -20,7 +20,7 @@ export class PurchaseOrderWizardComp extends Component {
   render() {
     const {page} = this.state;
     return (
-      <div>
+      <div className="">
         <h3>Purchase Order</h3>
         {page === 1 && <PurchaseOrderShippingAddressForm onSubmit={() => this.nextPage()}/>}
         {page === 2 && <PurchaseOrderSupplierAddressForm previousPage={() => this.previousPage()} onSubmit={() => this.nextPage()}/>}

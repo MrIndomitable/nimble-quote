@@ -1,0 +1,54 @@
+                    .inner-table .tg {
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                    }
+                    
+                    .inner-table .tg td {
+                        font-family: Arial, sans-serif;
+                        font-size: 14px;
+                        padding: 10px 5px;
+                        border-style: solid;
+                        border-width: 1px;
+                        overflow: hidden;
+                        word-break: normal;
+                    }
+                    
+                    .inner-table .tg th {
+                        font-family: Arial, sans-serif;
+                        font-size: 14px;
+                        font-weight: normal;
+                        padding: 10px 5px;
+                        border-style: solid;
+                        border-width: 1px;
+                        overflow: hidden;
+                        word-break: normal;
+                    }
+                    
+                    .inner-table .inner-table .tg .tg-imwf {
+                        font-size: 12px;
+                        text-align: right
+                    }
+                    
+                    .inner-table .tg .tg-e3zv {
+                        font-weight: bold
+                    }
+                    
+                    .inner-table .tg .tg-js8y {
+                        font-weight: bold;
+                        background-color: #a6deeb;
+                        text-align: right
+                    }
+                    
+                    .inner-table .tg .tg-k6pi {
+                        font-size: 12px
+                    }
+                    
+                    .inner-table .tg .tg-07dj {
+                        font-weight: bold;
+                        font-size: 14px
+                    }
+                    
+                    .inner-table .tg .tg-34fq {
+                        font-weight: bold;
+                        text-align: right
+                    }

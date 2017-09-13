@@ -13,7 +13,7 @@ export const PurchaseOrderSupplierAddressFormComp = ({previousPage, handleSubmit
     <InputField id="street" label="St." type="text"/>
     <InputField id="number" label="No." type="text"/>
     <InputField id="zip" label="Zip Code" type="text"/>
-    <div className="right">
+    <div className="text-center">
     <button className="btn btn-default btn-lg" onClick={previousPage}>
       <span className="fa fa-caret-left"/> Back
     </button>

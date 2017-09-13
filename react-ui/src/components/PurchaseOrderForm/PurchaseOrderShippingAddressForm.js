@@ -14,11 +14,11 @@ export const PurchaseOrderShippingAddressFormComp = ({previousPage, handleSubmit
     <InputField id="country" label="Country" type="text"/>
     <InputField id="zip" label="Zip Code" type="text"/>
     <InputField id="sameAsBillingAddress" label="Same as billing address" type="checkbox"/>
-    <div className="right">
-    <button className="btn btn-default btn-lg">
+    <div className="text-center">
+    <button className="btn btn-default btn-lg ">
       <span className="fa fa-caret-left"/> Back
     </button>
-    <button type="submit" className="btn btn-success btn-lg">
+    <button type="submit" className="btn btn-success btn-lg p-3">
       Next <span className="fa fa-caret-right"/>
     </button>
     </div>
