@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import {PurchaseOrderShippingAddressForm} from './PurchaseOrderShippingAddressForm';
 import {PurchaseOrderSupplierAddressForm} from './PurchaseOrderSupplierAddressForm';
 import {PurchaseOrderSendForm} from './PurchaseOrderSendForm';
