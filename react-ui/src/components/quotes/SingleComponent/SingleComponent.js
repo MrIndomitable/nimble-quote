@@ -5,7 +5,7 @@ import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton
 const OfferRow = ({offer}) => {
   return (
     <tr>
-      <td>{offer.supplier}</td>
+      <td>{offer.supplierEmail}</td>
       <td>{offer.review}</td>
       <td> {offer.partDate}</td>
       <td> {offer.supplyDate}</td>
@@ -149,6 +149,28 @@ const SingleComponentComp = (props) => {
 };
 
 const mapStateToProps = (state, {match}) => {
+
+  const pendingSuppliers = [
+    {
+      supplier: "XSZsa@gmail.com",
+      review: "5",
+      date: "1.1.2017",
+      status: "1.9.2018",
+    },
+    {
+      supplier: "XSZsa@gmail.com",
+      review: "2",
+      date: "1.1.2017",
+      status: "1.9.2018",
+    },
+    {
+      supplier: "XSZsa@gmail.com",
+      review: "3",
+      date: "1.1.2017",
+      status: "1.9.2018",
+    },
+  ];
+
   const offers = [
     {
       supplier: "Atdsa@gmail.com",
@@ -179,34 +201,14 @@ const mapStateToProps = (state, {match}) => {
     },
   ];
 
-  const pendingSuppliers = [
-    {
-      supplier: "XSZsa@gmail.com",
-      review: "5",
-      date: "1.1.2017",
-      status: "1.9.2018",
-    },
-    {
-      supplier: "XSZsa@gmail.com",
-      review: "2",
-      date: "1.1.2017",
-      status: "1.9.2018",
-    },
-    {
-      supplier: "XSZsa@gmail.com",
-      review: "3",
-      date: "1.1.2017",
-      status: "1.9.2018",
-    },
-  ];
-
   const {id} = match.params;
   const component = state.quotes.find(q => q.id === id);
+
 
   return {
     component,
     suppliers: pendingSuppliers,
-    offers
+    offers: component.offers
   }
 };
 
