@@ -4,7 +4,7 @@ import {findComponentById} from '../../../selectors/components-selector';
 import {getAuctionById} from '../../../selectors/auctions-selector';
 import {PendingSuppliersTable} from './PendingSuppliersTable';
 import {ComponentOffersTable} from './ComponentOffersTable';
-import {ComponentDetails} from './CoponentDetails';
+import {ComponentDetails} from './ComponentDetails';
 
 const SingleComponentComp = (props) => {
   return (
