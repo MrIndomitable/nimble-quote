@@ -1,5 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton';
+
 
 
 const OfferRow = ({offer}) => {
@@ -13,7 +15,7 @@ const OfferRow = ({offer}) => {
             <td> {offer.offerPrice}</td>
             <td> {offer.total}</td>
             <td>
-                <button className="btn btn-success">Start purchase</button>
+             <PurchaseOrderButton />
             </td>
             <td>
                 <button type="button" className="btn btn-link"><span className="glyphicon glyphicon-menu-down"></span></button>
@@ -30,7 +32,7 @@ const OffersTable = ({offers}) => {
         )
     });
     return (
-        <table className="table text-center">
+        <table className="table table-hover text-center">
             <thead>
                 <tr>
                     <th className="text-center">Supplier</th>
