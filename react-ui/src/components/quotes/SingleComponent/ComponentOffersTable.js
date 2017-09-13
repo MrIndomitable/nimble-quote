@@ -1,53 +1,47 @@
 import React from 'react';
 import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton';
 
-const OfferRow = ({offer}) => {
+const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, offerPrice, total}) => {
+  const ExpandOffer = () => <button type="button" className="btn btn-link">
+    <span className="glyphicon glyphicon-menu-down"/>
+  </button>;
+
   return (
     <tr>
-      <td>{offer.supplierEmail}</td>
-      <td>{offer.review}</td>
-      <td> {offer.partDate}</td>
-      <td> {offer.supplyDate}</td>
-      <td> {offer.quantity}</td>
-      <td> {offer.offerPrice}</td>
-      <td> {offer.total}</td>
-      <td>
-        <PurchaseOrderButton />
-      </td>
-      <td>
-        <button type="button" className="btn btn-link"><span className="glyphicon glyphicon-menu-down"></span></button>
-      </td>
+      <td>{supplierEmail}</td>
+      <td>{partDate}</td>
+      <td>{supplyDate}</td>
+      <td>{quantity}</td>
+      <td>{offerPrice}</td>
+      <td>{total}</td>
+      <td><PurchaseOrderButton/></td>
+      <td><ExpandOffer/></td>
     </tr>
   )
 };
 
-export const OffersTable = ({offers}) => {
-  const offerRows = offers.map(offer => {
-    return (
-      <OfferRow key={offer.supplierEmail} offer={offer}/>
-    )
-  });
+export const ComponentOffersTable = ({offers}) => {
+  const offerRows = offers.map(offer => (
+    <OfferRow key={offer.supplierEmail} {...offer}/>
+  ));
+
   return (
     <table className="table table-hover text-center">
       <thead>
       <tr>
         <th className="text-center">Supplier</th>
-        <th className="text-center">Review <a href="#">
-          <span className="glyphicon glyphicon-sort-by-attributes-alt"></span>
-        </a>
-        </th>
         <th className="text-center">Part date</th>
         <th className="text-center">Supply date</th>
         <th className="text-center">Quantity <a href="#">
-          <span className="glyphicon glyphicon-sort"></span>
+          <span className="glyphicon glyphicon-sort-by-attributes-alt"/>
         </a>
         </th>
         <th className="text-center">Offer price <a href="#">
-          <span className="glyphicon glyphicon-sort"></span>
+          <span className="glyphicon glyphicon-sort"/>
         </a>
         </th>
         <th className="text-center">Total</th>
-        <th className="text-center"></th>
+        <th className="text-center"/>
       </tr>
       </thead>
       <tbody>

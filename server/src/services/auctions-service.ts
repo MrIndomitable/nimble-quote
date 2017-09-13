@@ -12,8 +12,8 @@ export const AuctionsService: () => IAuctionsService = () => {
   const auctions: TAuction[] = [];
 
   const addAuction: (auction: TAuctionDTO) => Guid = (auctionDTO: TAuctionDTO) => {
-    const toComponent = ({ partNumber, manufacture, targetPrice, quantity, supplyDate}: TComponentDTO) => {
-      return ({ partNumber, manufacture, targetPrice, quantity, supplyDate, id: uuid(), offers: [] });
+    const toComponent = ({ partNumber, manufacture, targetPrice, quantity, supplyDate, offers }: TComponentDTO) => {
+      return ({ partNumber, manufacture, targetPrice, quantity, supplyDate, id: uuid(), offers: offers || [] });
     };
 
     const components: TComponent[] = auctionDTO.bom.components.map(toComponent);

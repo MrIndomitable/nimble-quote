@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {findComponentById} from '../../../selectors/components-selector';
 import {getAuctionById} from '../../../selectors/auctions-selector';
 import {PendingSuppliersTable} from './PendingSuppliersTable';
-import {OffersTable} from './ComponentOffersTable';
+import {ComponentOffersTable} from './ComponentOffersTable';
 
 const SingleComponentComp = (props) => {
   return (
@@ -38,7 +38,7 @@ const SingleComponentComp = (props) => {
         </div>
       </div>
       <div className="table-container col-lg-12">
-        <OffersTable offers={props.offers}/>
+        <ComponentOffersTable offers={props.offers}/>
       </div>
 
       <div className="table-container col-lg-12">
