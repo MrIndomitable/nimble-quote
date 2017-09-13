@@ -10,6 +10,7 @@ export type TComponentDTO = {
   targetPrice: number;
   quantity: number;
   supplyDate: number;
+  offers: any[]; // FIXME this is not actually coming from from client should be removed
 }
 
 export type TAuctionBomDTO = {
