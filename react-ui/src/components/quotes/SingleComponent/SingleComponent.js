@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton';
+import {findComponentById} from '../../../selectors/components-selector';
+import {getAuctionById} from '../../../selectors/auctions-selector';
 
 const OfferRow = ({offer}) => {
   return (
@@ -61,13 +63,13 @@ const OffersTable = ({offers}) => {
 const SupplierRow = ({supplier}) => {
   return (
     <tr>
-      <td>{supplier.supplier}</td>
+      <td>{supplier.email}</td>
       <td>{supplier.review}</td>
       <td></td>
       <td></td>
       <td></td>
       <td></td>
-      <td>{supplier.date}</td>
+      <td>{supplier.sentDate}</td>
       <td>{supplier.status}</td>
     </tr>
   )
@@ -149,65 +151,14 @@ const SingleComponentComp = (props) => {
 };
 
 const mapStateToProps = (state, {match}) => {
-
-  const pendingSuppliers = [
-    {
-      supplier: "XSZsa@gmail.com",
-      review: "5",
-      date: "1.1.2017",
-      status: "1.9.2018",
-    },
-    {
-      supplier: "XSZsa@gmail.com",
-      review: "2",
-      date: "1.1.2017",
-      status: "1.9.2018",
-    },
-    {
-      supplier: "XSZsa@gmail.com",
-      review: "3",
-      date: "1.1.2017",
-      status: "1.9.2018",
-    },
-  ];
-
-  const offers = [
-    {
-      supplier: "Atdsa@gmail.com",
-      review: "3",
-      partDate: "1.1.2017",
-      supplyDate: "1.9.2018",
-      quantity: "12",
-      offerPrice: "770",
-      total: "7770",
-    },
-    {
-      supplier: "Atdsa@gmail.com",
-      review: "5",
-      partDate: "1.1.2017",
-      supplyDate: "1.9.2018",
-      quantity: "12",
-      offerPrice: "770",
-      total: "7770",
-    },
-    {
-      supplier: "Atdsa@gmail.com",
-      review: "1",
-      partDate: "1.1.2017",
-      supplyDate: "1.9.2018",
-      quantity: "12",
-      offerPrice: "770",
-      total: "7770",
-    },
-  ];
-
   const {id} = match.params;
-  const component = state.quotes.find(q => q.id === id);
 
+  const component = findComponentById(state, id);
+  const {suppliers} = getAuctionById(state)(component.auctionId);
 
   return {
     component,
-    suppliers: pendingSuppliers,
+    suppliers: suppliers,
     offers: component.offers
   }
 };

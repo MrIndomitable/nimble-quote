@@ -1,6 +1,6 @@
 import { Response, Request, Router } from 'express';
 import { AuctionsService } from '../services/auctions-service';
-import { anAuction, anOffer } from '../test-data/test-auction';
+import { anAuction, anOffer, aSupplier } from '../test-data/test-auction';
 import { aComponent } from '../test-data/test-auction-details';
 
 export const ApiRoute = () => {
@@ -8,11 +8,18 @@ export const ApiRoute = () => {
 
   auctionService.addAuction(anAuction([
     aComponent(),
-    aComponent({offers: [anOffer(), anOffer()]})
+    aComponent({ offers: [anOffer(), anOffer()] })
+  ], [
+    aSupplier(),
+    aSupplier(),
+    aSupplier(),
+    aSupplier()
   ]));
   auctionService.addAuction(anAuction([
-    aComponent({offers: [anOffer()]}),
+    aComponent({ offers: [anOffer()] }),
     aComponent()
+  ], [
+    aSupplier()
   ]));
 
   const router = Router();

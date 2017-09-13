@@ -1,10 +1,16 @@
 const chance = require('chance').Chance();
 
-export const anAuction = (components: any[] = []) => ({
-  suppliers: [{ email: chance.email() }],
+export const anAuction = (components: any[] = [], suppliers: any[] = []) => ({
+  suppliers,
   subject: chance.sentence(),
   message: chance.paragraph(),
-  bom: {components}
+  bom: { components }
+});
+
+export const aSupplier = () => ({
+  email: chance.email(),
+  sentDate: chance.date(),
+  status: 'Email sent'
 });
 
 export const anOffer = () => {

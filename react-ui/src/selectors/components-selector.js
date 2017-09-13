@@ -25,3 +25,20 @@ export const componentsSelector = ({auctions}, filter) => {
 
 export const sumComponents = (state, filter) => componentsSelector(state, filter)
   .reduce((sum, component) => sum + component.offers.length, 0);
+
+export const findComponentById = ({auctions}, id) => {
+  const componentsInBom = (auction) => auction.bom.components.reduce((components, component) => ({
+    ...components,
+    [component.id]: {
+      ...component,
+      auctionId: auction.id
+    }
+  }), {});
+
+  const componentsById = auctions.reduce((components, auction) => ({
+    ...components,
+    ...componentsInBom(auction)
+  }), {});
+
+  return componentsById[id];
+};
