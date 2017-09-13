@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {componentsSelector, isPending, hasOffers} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
 import {parse} from 'query-string';
+import {goToComponent} from '../../../actions/rfp-actions';
 
 const ComponentActions = (component) => {
   if (isPending(component)) {
@@ -24,11 +25,11 @@ const ComponentActions = (component) => {
   }
 };
 
-const ComponentRow = (component) => {
+const ComponentRow = ({component, onClick}) => {
   const {partNumber, manufacture, quantity, targetPrice, date} = component;
 
   return (
-    <tr>
+    <tr onClick={onClick}>
       <td>{manufacture}</td>
       <td>{partNumber}</td>
       <td>{quantity}</td>
@@ -39,23 +40,29 @@ const ComponentRow = (component) => {
   );
 };
 
-const ComponentsTableComp = ({components}) => (
-  <table className="table table-striped">
-    <thead>
-    <tr>
-      <th>Manufacture</th>
-      <th>Part #</th>
-      <th>Quantity</th>
-      <th>Target price</th>
-      <th>Date</th>
-      <th/>
-    </tr>
-    </thead>
-    <tbody>
-    {components.map(component => <ComponentRow key={component.id} {...component}/>)}
-    </tbody>
-  </table>
-);
+const ComponentsTableComp = ({components, goToComponent}) => {
+  const componentRows = components.map(component => {
+    return <ComponentRow key={component.id} component={component} onClick={() => goToComponent(component.id)}/>;
+  });
+
+  return (
+    <table className="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Manufacture</th>
+        <th>Part #</th>
+        <th>Quantity</th>
+        <th>Target price</th>
+        <th>Date</th>
+        <th/>
+      </tr>
+      </thead>
+      <tbody>
+      {componentRows}
+      </tbody>
+    </table>
+  );
+};
 
 const mapStateToProps = (state, {location}) => {
   const {q} = parse(location.search);
@@ -64,4 +71,8 @@ const mapStateToProps = (state, {location}) => {
   });
 };
 
-export const ComponentsTable = withRouter(connect(mapStateToProps)(ComponentsTableComp));
+const mapDispatchToProps = {
+  goToComponent
+};
+
+export const ComponentsTable = withRouter(connect(mapStateToProps, mapDispatchToProps)(ComponentsTableComp));

@@ -53,3 +53,7 @@ export const fetchAuctions = () => dispatch => {
     .then(res => dispatch(fetchAuctionsSuccess(res.data)))
     .catch(e => dispatch(fetchAuctionsFailure(e)));
 };
+
+export const goToComponent = id => dispatch => {
+  dispatch(push(`/components/${id}`));
+};
