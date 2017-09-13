@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {componentsSelector, isPending, hasOffers} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
+import {parse} from 'query-string';
 
 const ComponentActions = (component) => {
   if (isPending(component)) {
@@ -56,8 +57,11 @@ const ComponentsTableComp = ({components}) => (
   </table>
 );
 
-const mapStateToProps = (state, {match}) => ({
-  components: componentsSelector(state, match.params.filter)
-});
+const mapStateToProps = (state, {location}) => {
+  const {q} = parse(location.search);
+  return ({
+    components: componentsSelector(state, q)
+  });
+};
 
 export const ComponentsTable = withRouter(connect(mapStateToProps)(ComponentsTableComp));
