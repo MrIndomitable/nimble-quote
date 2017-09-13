@@ -18,7 +18,7 @@ const SupplierRow = ({supplier}) => {
 export const PendingSuppliersTable = ({suppliers}) => {
   const supplierRows = suppliers.map(supplier => {
     return (
-      <SupplierRow supplier={supplier}/>
+      <SupplierRow key={supplier.email} supplier={supplier}/>
     )
   });
 

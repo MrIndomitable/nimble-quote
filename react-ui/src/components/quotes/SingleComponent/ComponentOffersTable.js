@@ -24,7 +24,7 @@ const OfferRow = ({offer}) => {
 export const OffersTable = ({offers}) => {
   const offerRows = offers.map(offer => {
     return (
-      <OfferRow offer={offer}/>
+      <OfferRow key={offer.supplierEmail} offer={offer}/>
     )
   });
   return (
