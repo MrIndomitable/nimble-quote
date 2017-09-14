@@ -6,7 +6,9 @@ export const AppLogo = () => {
   return (
     <div className="app-logo">
       <h2>Nimble Quote</h2>
+      <a href="/">
       <img src={logo} className="App-logo" alt="logo"/>
+      </a>
     </div>
   );
 };
