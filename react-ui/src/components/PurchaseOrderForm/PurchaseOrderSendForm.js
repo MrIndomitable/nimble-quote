@@ -12,14 +12,15 @@ export const PurchaseOrderViewEmailComp = ({previousPage}) => {
             <span className="fa fa-caret-left"/> Back
           </button>
           <button type="submit" className="btn btn-success btn-lg">
-            Next
-            <span className="fa fa-caret-right"/>
+            Purchase <span className="fa fa-caret-right"/>
           </button>
         </div>
       </div>
     </div>
   )
 };
+
+
 
 export const PurchaseOrderSendForm = reduxForm({
   form: 'PurchaseOrderForm',
