@@ -10,15 +10,15 @@ const SingleComponentComp = (props) => {
   return (
     <div className="container">
       <div className="row bg-warning inline">
-        <ComponentDetails {...props.component}/>
+        <ComponentDetails />
       </div>
       <div className="table-container col-lg-12">
-        <ComponentOffersTable offers={props.offers}/>
+        <ComponentOffersTable />
       </div>
 
       <div className="table-container col-lg-12">
         <h2>Pending</h2>
-        <PendingSuppliersTable suppliers={props.suppliers}/>
+        <PendingSuppliersTable/>
       </div>
     </div>
   )
