@@ -6,7 +6,7 @@ import { testConfig } from './common/test-config';
 describe("auctions api", () => {
   const component = {
     manufacture: 'man',
-    partId: 'part-id',
+    partNumber: 'part-id',
     quantity: 3,
     targetPrice: 10,
     supplyDate: 12345

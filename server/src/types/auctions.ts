@@ -10,7 +10,6 @@ export type TComponentDTO = {
   targetPrice: number;
   quantity: number;
   supplyDate: number;
-  offers: any[]; // FIXME this is not actually coming from from client should be removed
 }
 
 export type TAuctionBomDTO = {
@@ -36,6 +35,7 @@ export type TComponent = {
   targetPrice: number;
   quantity: number;
   supplyDate: number;
+  offers: any[];
 }
 
 export type TAuctionBom = {
@@ -48,4 +48,26 @@ export type TAuction = {
   subject: string;
   message: string;
   bom: TAuctionBom;
+}
+
+export type TComponentsResult = {
+  components: TComponentResult[];
+}
+
+export enum ComponentStatus {
+  PENDING = "PENDING",
+  HAS_OFFERS = "HAS_OFFERS",
+  IN_PURCHASE = "IN_PURCHASE",
+  ARCHIVED = "ARCHIVED"
+}
+
+export type TComponentResult = {
+  id: Guid,
+  status: ComponentStatus;
+  manufacture: string;
+  partNumber: string;
+  quantity: number;
+  targetPrice: number;
+  date: number;
+  offersCount: number;
 }

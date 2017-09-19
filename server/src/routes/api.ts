@@ -2,9 +2,10 @@ import { Response, Request, Router } from 'express';
 import { AuctionsService } from '../services/auctions-service';
 import { anAuction, anOffer, aSupplier } from '../test-data/test-auction';
 import { aComponent } from '../test-data/test-auction-details';
+import { AuctionsDao } from '../dao/auctions-dao';
 
 export const ApiRoute = () => {
-  const auctionService = AuctionsService();
+  const auctionService = AuctionsService(AuctionsDao());
 
   auctionService.addAuction(anAuction([
     aComponent(),
@@ -31,6 +32,10 @@ export const ApiRoute = () => {
   router.post('/auctions', (req: Request, res: Response) => {
     const auctionId = auctionService.addAuction(req.body);
     res.status(201).json(auctionId);
+  });
+
+  router.get('/components', (req: Request, res: Response) => {
+    res.status(200).json(auctionService.getComponents());
   });
 
   router.get('/user-details', (req: any, res: Response) => {
