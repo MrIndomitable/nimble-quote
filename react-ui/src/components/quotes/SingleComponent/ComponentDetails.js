@@ -1,5 +1,4 @@
 import React from 'react';
-import {Button} from '../../Button/Button';
 import {connect} from 'react-redux';
 import {findComponentById} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
@@ -11,7 +10,8 @@ const LabelAndValue = ({label, value}) => (
   </div>
 );
 
-export const SingleComponentComp = ({manufacture, partNumber, quantity, targetPrice, partDate}) => {
+export const ComponentDetailsComp = ({component}) => {
+  const {manufacture, partNumber, quantity, targetPrice, partDate} = component;
   return <div className="text-center">
     <LabelAndValue label="Manufacture" value={manufacture}/>
     <LabelAndValue label="Part No." value={partNumber}/>
@@ -20,7 +20,7 @@ export const SingleComponentComp = ({manufacture, partNumber, quantity, targetPr
     <LabelAndValue label="Part date" value={partDate}/>
     <div className="col-lg-2">
       <br/>
-      <Button value="Send to archive" className="btn-basic"/>
+      <button className="btn">Archive</button>
     </div>
   </div>;
 };
@@ -34,4 +34,4 @@ const mapStateToProps = (state, {match}) => {
   return {component}
 };
 
-export const ComponentDetails = withRouter(connect(mapStateToProps)(SingleComponentComp));
+export const ComponentDetails = withRouter(connect(mapStateToProps)(ComponentDetailsComp));
