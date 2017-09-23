@@ -11,7 +11,7 @@
     "dev:client": "cd react-ui && npm start",
     "dev:server": "cd server && npm start",
     "build:client": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
-    "build:server": "cd server/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+    "build:server": "cd server/ && npm run rm-tests && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "heroku-postbuild": "npm run build:server && npm run build:client",
     "start:prod": "npm run heroku-postbuild && npm start",
     "clean": "rm -rf server/node_modules/ server/dist/ react-ui/node_modules/ react-ui/build"

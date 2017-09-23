@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run build && npm run watch",
     "build": "npm run build-ts",
+    "rm-tests": "rm -rf test",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve\"",
     "serve": "nodemon ./.local.server.js",
     "build-ts": "tsc",
