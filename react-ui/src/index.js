@@ -1,31 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import {reducer as formReducer} from 'redux-form';
-import thunk from 'redux-thunk';
-import createHistory from 'history/createBrowserHistory';
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
-import {quotesReducer} from './reducers/quotesReducer';
-import {userReducer} from './reducers/userReducer';
+import {ConnectedRouter} from 'react-router-redux';
 import App from './components/App/App';
 import './index.css';
-import {auctionsReducer} from './reducers/auctions-reducer';
+import {configureStore} from './configureStore';
+import createHistory from 'history/createBrowserHistory';
 
 const history = createHistory();
-const middleware = routerMiddleware(history);
 
-const rootReducer = combineReducers({
-  quotes: quotesReducer,
-  auctions: auctionsReducer,
-  user: userReducer,
-  form: formReducer,
-  router: routerReducer
-});
-const store = createStore(
-  rootReducer,
-  applyMiddleware(thunk, middleware)
-);
+const store = configureStore(history);
 
 ReactDOM.render(
   <Provider store={store}>
