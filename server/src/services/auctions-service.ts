@@ -19,7 +19,7 @@ interface IAuctionsService {
 }
 
 export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any): IAuctionsService => {
-  const component = (id): TComponent => ({
+  const component = (id: Guid): TComponent => ({
     id,
     partNumber: 'part-number',
     manufacture: 'manufacture',
