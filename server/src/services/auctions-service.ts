@@ -18,7 +18,7 @@ interface IAuctionsService {
   getComponents: () => TComponentsResult;
 }
 
-export const AuctionsService = (auctionsDao: IAuctionsDao): IAuctionsService => {
+export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any): IAuctionsService => {
   const component = (id): TComponent => ({
     id,
     partNumber: 'part-number',
@@ -58,6 +58,12 @@ export const AuctionsService = (auctionsDao: IAuctionsDao): IAuctionsService => 
       }
     });
     auctionsDao.addAuction(auction);
+
+    mailingService.sendOfferQuoteEmail({
+      supplier: { email: suppliers[0].email },
+      buyer: { email: 'info@nimble-quote.com' },
+      offerLink: `https://nimble-quote.herokuapp.com/offer?t=${id}`
+    });
 
     return id;
   };

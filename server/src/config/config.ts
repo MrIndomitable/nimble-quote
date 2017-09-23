@@ -8,6 +8,9 @@ export type TConfig = {
     clientID: string;
     clientSecret: string;
     callbackURL: string;
+  },
+  email: {
+    sendGridApiKey: string;
   }
 }
 
@@ -19,6 +22,9 @@ const config: TConfig = {
     clientID: env.GOOGLE_CLIENT_ID,
     clientSecret: env.GOOGLE_CLIENT_SECRET,
     callbackURL: env.GOOGLE_CALLBACK_URL
+  },
+  email: {
+    sendGridApiKey: env.SENDGRID_API_KEY
   }
 };
 

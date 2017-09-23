@@ -3,9 +3,11 @@ import { AuctionsService } from '../services/auctions-service';
 import { anAuction, anOffer, aSupplier } from '../test-data/test-auction';
 import { aComponent } from '../test-data/test-auction-details';
 import { AuctionsDao } from '../dao/auctions-dao';
+import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
+import { TConfig } from '../config/config';
 
-export const ApiRoute = () => {
-  const auctionService = AuctionsService(AuctionsDao());
+export const ApiRoute = (config: TConfig) => {
+  const auctionService = AuctionsService(AuctionsDao(), SendGridMailingService(config.email.sendGridApiKey));
 
   auctionService.addAuction(anAuction([
     aComponent(),
