@@ -19,6 +19,25 @@ interface IAuctionsService {
 }
 
 export const AuctionsService = (auctionsDao: IAuctionsDao): IAuctionsService => {
+  const component = (id): TComponent => ({
+    id,
+    partNumber: 'part-number',
+    manufacture: 'manufacture',
+    targetPrice: 540,
+    quantity: 320,
+    supplyDate: 1234567890,
+    offers: []
+  });
+  auctionsDao.addAuction({
+    id: '1234',
+    suppliers: [{ id: '123', email: 'm@m.com' }],
+    subject: 'hello',
+    message: 'message',
+    bom: {
+      components: [component('1'), component('2'), component('3')]
+    }
+  });
+
   const addAuction = (auctionDTO: TAuctionDTO): Guid => {
     const toComponent = (component: TComponentDTO) => {
       const { partNumber, manufacture, targetPrice, quantity, supplyDate } = component;

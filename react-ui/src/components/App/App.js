@@ -7,6 +7,7 @@ import {NewQuoteWizard} from '../NewQuoteForm/NewQuoteWizard';
 import {PurchaseOrderWizard} from '../PurchaseOrderForm/PurchaseOrderWizard';
 import {ComponentsPage} from '../quotes/ComponentsPage/ComponentsPage';
 import {SingleComponent} from '../quotes/SingleComponent/SingleComponent';
+import {OfferPage} from '../pages/OfferPage/OfferPage';
 
 const App = () => (
   <div className="App">
@@ -16,6 +17,7 @@ const App = () => (
     <Route path="/components/:id" component={SingleComponent}/>
     <Route path="/bom/create" component={NewQuoteWizard}/>
     <Route path="/purchase-order/create" component={PurchaseOrderWizard}/>
+    <Route path="/offer" component={OfferPage}/>
   </div>
 );
 

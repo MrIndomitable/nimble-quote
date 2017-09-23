@@ -38,6 +38,10 @@ export const ApiRoute = () => {
     res.status(200).json(auctionService.getComponents());
   });
 
+  router.get('/offer', (req: Request, res: Response) => {
+    res.json(auctionService.getById(req.query.token));
+  });
+
   router.get('/user-details', (req: any, res: Response) => {
     if (!req.isAuthenticated()) {
       res.json({ isLoggedIn: req.isAuthenticated() });
@@ -45,6 +49,10 @@ export const ApiRoute = () => {
       const { name, email, image } = req.user.google;
       res.json({ name, email, image, isLoggedIn: req.isAuthenticated() });
     }
+  });
+
+  router.get('*', (req: Request, res: Response) => {
+    res.sendStatus(404);
   });
 
   return router;
