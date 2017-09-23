@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {ComponentsTable} from '../PendingQuotesTable/PendingQuotesTable';
+import {ComponentsTable} from '../ComponentsTable/ComponentsTable';
 import {ComponentsFilter} from '../ComponentsFilter/ComponentsFilter';
 import {fetchAuctions} from '../../../actions/auctions-actions';
 
