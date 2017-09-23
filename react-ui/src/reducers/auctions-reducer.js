@@ -1,9 +1,9 @@
-import {FETCH_COMPONENTS_SUCCESS} from '../actions/types';
+import {FETCH_AUCTIONS_SUCCESS} from '../actions/types';
 
 export const auctionsReducer = (auctions = [], action) => {
   switch (action.type) {
-    case FETCH_COMPONENTS_SUCCESS:
-      return action.quotes.auctions;
+    case FETCH_AUCTIONS_SUCCESS:
+      return action.auctions;
     default:
       return auctions;
   }

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {ComponentsTable} from '../PendingQuotesTable/PendingQuotesTable';
-import {fetchAuctions} from '../../../actions/rfp-actions';
 import {ComponentsFilter} from '../ComponentsFilter/ComponentsFilter';
+import {fetchAuctions} from '../../../actions/auctions-actions';
 
 class ComponentsPageComp extends Component {
   componentWillMount() {
