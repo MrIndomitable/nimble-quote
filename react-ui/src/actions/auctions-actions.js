@@ -20,3 +20,13 @@ export const fetchAuctions = () => dispatch => {
     .then(res => dispatch(fetchAuctionsSuccess(res.data)))
     .catch(e => dispatch(fetchAuctionsFailure(e)));
 };
+
+export const fetchAuction = id => dispatch => {
+  dispatch({
+    type: FETCH_AUCTIONS
+  });
+
+  axios.get(`/api/auctions/${id}`)
+    .then(res => dispatch(fetchAuctionsSuccess(res.data)))
+    .catch(e => dispatch(fetchAuctionsFailure(e)));
+};

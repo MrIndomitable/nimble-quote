@@ -27,7 +27,7 @@ export const ApiRoute = (config: TConfig) => {
 
   const router = Router();
 
-  router.get('/auctions', (req: Request, res: Response) => {
+  router.get('/auctions/:id?', (req: Request, res: Response) => {
     res.json({ auctions: auctionService.getAll() });
   });
 

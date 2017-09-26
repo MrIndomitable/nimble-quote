@@ -17,7 +17,7 @@ export const SingleComponentComp = () => {
       </div>
       <div className="table-container col-lg-12">
         <h2>Pending</h2>
-        {/*<PendingSuppliersTable/>*/}
+        <PendingSuppliersTable/>
       </div>
     </div>
   )
