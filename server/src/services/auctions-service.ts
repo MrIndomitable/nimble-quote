@@ -6,7 +6,8 @@ import {
   TComponentsResult,
   ComponentStatus,
   TComponent,
-  TSupplier
+  TSupplier,
+  TComponentResult
 } from '../types/auctions';
 import { v4 as uuid } from 'uuid';
 import { IAuctionsDao } from '../dao/auctions-dao';
@@ -26,7 +27,8 @@ export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any)
     targetPrice: 540,
     quantity: 320,
     supplyDate: 1234567890,
-    offers: []
+    offers: [],
+    auctionId: '1234'
   });
   auctionsDao.addAuction({
     id: '1234',
@@ -39,15 +41,9 @@ export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any)
   });
 
   const addAuction = (auctionDTO: TAuctionDTO): Guid => {
-    const toComponent = (component: TComponentDTO) => {
-      const { partNumber, manufacture, targetPrice, quantity, supplyDate } = component;
-      const { offers } = component as any; // FIXME this is not actually coming from from client should be removed
-      return ({ partNumber, manufacture, targetPrice, quantity, supplyDate, id: uuid(), offers: offers || [] });
-    };
-
     const { suppliers, message, subject } = auctionDTO;
     const id = uuid();
-    const components: TComponent[] = auctionDTO.bom.components.map(toComponent);
+    const components: TComponent[] = auctionDTO.bom.components.map(toComponentOf(id));
     const auction: TAuction = ({
       id,
       suppliers: suppliers.map(supplier => supplier as TSupplier),
@@ -89,8 +85,23 @@ export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any)
   }
 };
 
-const toComponentResult = (component: TComponent) => {
-  const { id, manufacture, partNumber, quantity, supplyDate, targetPrice, offers } = component;
+const toComponentOf = (auctionId: Guid) => (component: TComponentDTO): TComponent => {
+  const { partNumber, manufacture, targetPrice, quantity, supplyDate } = component;
+  const { offers } = component as any; // FIXME this is not actually coming from from client should be removed
+  return ({
+    partNumber,
+    manufacture,
+    targetPrice,
+    quantity,
+    supplyDate,
+    id: uuid(),
+    offers: offers || [],
+    auctionId
+  });
+};
+
+const toComponentResult = (component: TComponent): TComponentResult => {
+  const { id, manufacture, partNumber, quantity, supplyDate, targetPrice, offers, auctionId } = component;
 
   const offersCount = !!offers ? offers.length : 0;
   const getStatus = () => {
@@ -109,6 +120,7 @@ const toComponentResult = (component: TComponent) => {
     quantity,
     targetPrice,
     date: supplyDate,
-    offersCount
+    offersCount,
+    auctionId
   };
 };

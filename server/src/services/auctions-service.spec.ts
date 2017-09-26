@@ -29,9 +29,10 @@ type TComponentForTest = {
   quantity?: number;
   supplyDate?: number;
   offers?: any[];
+  auctionId?: Guid;
 };
 
-const aComponent = ({ id, partNumber, manufacture, targetPrice, quantity, supplyDate, offers }: TComponentForTest = {}): TComponent => {
+const aComponent = ({ id, partNumber, manufacture, targetPrice, quantity, supplyDate, offers, auctionId }: TComponentForTest = {}): TComponent => {
   const defaults = {
     id: chance.guid(),
     partNumber: chance.word(),
@@ -39,7 +40,8 @@ const aComponent = ({ id, partNumber, manufacture, targetPrice, quantity, supply
     targetPrice: chance.integer({ min: 1, max: 1000 }),
     quantity: chance.integer({ min: 1, max: 1000 }),
     supplyDate: chance.date(),
-    offers: [] as any[]
+    offers: [] as any[],
+    auctionId: chance.guid()
   };
 
   return ({
@@ -50,7 +52,8 @@ const aComponent = ({ id, partNumber, manufacture, targetPrice, quantity, supply
     targetPrice,
     quantity,
     supplyDate,
-    offers
+    offers,
+    auctionId
   });
 };
 

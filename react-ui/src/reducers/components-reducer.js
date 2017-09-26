@@ -1,12 +1,9 @@
-import {FETCH_AUCTIONS_SUCCESS} from '../actions/types';
+import {FETCH_AUCTIONS_SUCCESS, FETCH_COMPONENTS_SUCCESS} from '../actions/types';
 
-const componentsInBom = (auction) => auction.bom.components.reduce((components, component) => ({
+const addToComponents = (components, component) => ({
   ...components,
-  [component.id]: {
-    ...component,
-    auctionId: auction.id
-  }
-}), {});
+  [component.id]: component
+});
 
 export const componentsReducer = (components = {}, action) => {
   const copyOfComponents = () => ({...components});
@@ -15,8 +12,10 @@ export const componentsReducer = (components = {}, action) => {
     case FETCH_AUCTIONS_SUCCESS:
       return action.auctions.reduce((allComponents, auction) => ({
         ...allComponents,
-        ...componentsInBom(auction)
+        ...auction.bom.components.reduce(addToComponents, {})
       }), copyOfComponents());
+    case FETCH_COMPONENTS_SUCCESS:
+      return action.components.reduce(addToComponents, copyOfComponents());
     default:
       return components;
   }

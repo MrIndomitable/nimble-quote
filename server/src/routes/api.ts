@@ -36,7 +36,7 @@ export const ApiRoute = (config: TConfig) => {
     res.status(201).json(auctionId);
   });
 
-  router.get('/components', (req: Request, res: Response) => {
+  router.get('/components/:id?', (req: Request, res: Response) => {
     res.status(200).json(auctionService.getComponents());
   });
 

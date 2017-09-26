@@ -36,6 +36,7 @@ export type TComponent = {
   quantity: number;
   supplyDate: number;
   offers: any[];
+  auctionId: Guid;
 }
 
 export type TAuctionBom = {
@@ -70,4 +71,5 @@ export type TComponentResult = {
   targetPrice: number;
   date: number;
   offersCount: number;
+  auctionId: Guid;
 }
