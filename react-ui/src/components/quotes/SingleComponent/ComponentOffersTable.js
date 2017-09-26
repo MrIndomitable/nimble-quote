@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton';
 import {findComponentById} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
-import {fetchComponent} from '../../../actions/components-actions';
 
 const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, offerPrice, total}) => {
   const ExpandOffer = () => <button type="button" className="btn btn-link">
@@ -25,6 +24,10 @@ const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, offerPrice, to
 };
 
 export const ComponentOffersTableComp = ({offers}) => {
+  if (offers.length === 0) {
+    return <h2>No offers yet</h2>;
+  }
+
   const offerRows = offers.map(offer => (
     <OfferRow key={offer.supplierEmail} {...offer}/>
   ));
@@ -55,43 +58,14 @@ export const ComponentOffersTableComp = ({offers}) => {
   )
 };
 
-class ComponentOffersTableWrapper extends React.Component {
-  componentWillMount() {
-    const {offers, id, fetchComponent} = this.props;
-
-    if (!offers) {
-      fetchComponent(id);
-    }
-  }
-
-  render() {
-    const {offers} = this.props;
-
-    if (!offers) {
-      return <i className="fa fa-spinner fa-spin fa-5x fa-fw"/>;
-    }
-
-    if (offers.length === 0) {
-      return <h2>No offers yet</h2>;
-    }
-
-    return <ComponentOffersTableComp offers={offers}/>;
-  }
-}
-
 const mapStateToProps = (state, {match}) => {
   const {id} = match.params;
 
   const component = findComponentById(state, id);
 
   return {
-    id,
     offers: component && component.offers
   }
 };
 
-const mapDispatchToProps = {
-  fetchComponent
-};
-
-export const ComponentOffersTable = withRouter(connect(mapStateToProps, mapDispatchToProps)(ComponentOffersTableWrapper));
+export const ComponentOffersTable = withRouter(connect(mapStateToProps)(ComponentOffersTableComp));

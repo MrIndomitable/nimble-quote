@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {findComponentById} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
-import {fetchComponent} from '../../../actions/components-actions';
 
 const LabelAndValue = ({label, value}) => (
   <div className="col-lg-2 ">
@@ -10,26 +9,6 @@ const LabelAndValue = ({label, value}) => (
     <p className=""><strong>{value}</strong></p>
   </div>
 );
-
-class ComponentDetailsWrapper extends React.Component {
-  componentWillMount() {
-    const {component, id, fetchComponent} = this.props;
-
-    if (!component) {
-      fetchComponent(id);
-    }
-  }
-
-  render() {
-    const {component} = this.props;
-
-    if (!component) {
-      return <i className="fa fa-spinner fa-spin fa-5x fa-fw"/>;
-    }
-
-    return <ComponentDetailsComp component={component}/>;
-  }
-}
 
 const ComponentDetailsComp = ({component}) => {
   const {manufacture, partNumber, quantity, targetPrice, partDate} = component;
@@ -46,17 +25,12 @@ const ComponentDetailsComp = ({component}) => {
   </div>;
 };
 
-
 const mapStateToProps = (state, {match}) => {
   const {id} = match.params;
 
   const component = findComponentById(state, id);
 
-  return {component, id}
+  return {component}
 };
 
-const mapDispatchToProps = {
-  fetchComponent
-};
-
-export const ComponentDetails = withRouter(connect(mapStateToProps, mapDispatchToProps)(ComponentDetailsWrapper));
+export const ComponentDetails = withRouter(connect(mapStateToProps)(ComponentDetailsComp));
