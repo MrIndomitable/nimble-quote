@@ -12,7 +12,8 @@ const auctionsDaoDriver = () => {
   const auctionsDao: IAuctionsDao = {
     addAuction,
     getAuctions,
-    getComponents
+    getComponents,
+    getComponentById: (id: Guid) => null
   };
 
   return {

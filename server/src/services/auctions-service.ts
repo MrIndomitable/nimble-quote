@@ -7,7 +7,9 @@ import {
   ComponentStatus,
   TComponent,
   TSupplier,
-  TComponentResult
+  TComponentResult,
+  TComponentsWithOffersResult,
+  TComponentWithOffersResult
 } from '../types/auctions';
 import { v4 as uuid } from 'uuid';
 import { IAuctionsDao } from '../dao/auctions-dao';
@@ -17,6 +19,7 @@ interface IAuctionsService {
   getById: (id: Guid) => TAuction;
   getAll: () => TAuction[];
   getComponents: () => TComponentsResult;
+  getComponentById: (id: Guid) => TComponentsWithOffersResult;
 }
 
 export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any): IAuctionsService => {
@@ -77,11 +80,24 @@ export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any)
     return { components };
   };
 
+  const getComponentById = (id: Guid): TComponentsWithOffersResult => {
+    const component = auctionsDao.getComponentById(id);
+
+    if (!component) {
+      return { components: [] };
+    }
+
+    return {
+      components: [toComponentWithOffersResult(component)]
+    }
+  };
+
   return {
     addAuction,
     getById,
     getAll,
-    getComponents
+    getComponents,
+    getComponentById
   }
 };
 
@@ -123,4 +139,8 @@ const toComponentResult = (component: TComponent): TComponentResult => {
     offersCount,
     auctionId
   };
+};
+
+const toComponentWithOffersResult = (component: TComponent): TComponentWithOffersResult => {
+  return Object.assign({}, toComponentResult(component), { offers: component.offers });
 };

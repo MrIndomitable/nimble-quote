@@ -37,7 +37,12 @@ export const ApiRoute = (config: TConfig) => {
   });
 
   router.get('/components/:id?', (req: Request, res: Response) => {
-    res.status(200).json(auctionService.getComponents());
+    const { id } = req.params;
+    if (id) {
+      res.json(auctionService.getComponentById(id));
+    } else {
+      res.json(auctionService.getComponents());
+    }
   });
 
   router.get('/offer', (req: Request, res: Response) => {

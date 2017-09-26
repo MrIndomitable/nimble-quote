@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton';
 import {findComponentById} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
+import {fetchComponent} from '../../../actions/components-actions';
 
 const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, offerPrice, total}) => {
   const ExpandOffer = () => <button type="button" className="btn btn-link">
@@ -31,35 +32,66 @@ export const ComponentOffersTableComp = ({offers}) => {
   return (
     <table className="table table-hover text-center">
       <thead>
-        <tr>
-          <th className="text-center">Supplier</th>
-          <th className="text-center">Part date</th>
-          <th className="text-center">Supply date</th>
-          <th className="text-center">Quantity <a href="#">
-            <span className="glyphicon glyphicon-sort-by-attributes-alt"/>
-          </a>
-          </th>
-          <th className="text-center">Offer price <a href="#">
-            <span className="glyphicon glyphicon-sort"/>
-          </a>
-          </th>
-          <th className="text-center">Total</th>
-          <th className="text-center"/>
-        </tr>
+      <tr>
+        <th className="text-center">Supplier</th>
+        <th className="text-center">Part date</th>
+        <th className="text-center">Supply date</th>
+        <th className="text-center">Quantity <a href="#">
+          <span className="glyphicon glyphicon-sort-by-attributes-alt"/>
+        </a>
+        </th>
+        <th className="text-center">Offer price <a href="#">
+          <span className="glyphicon glyphicon-sort"/>
+        </a>
+        </th>
+        <th className="text-center">Total</th>
+        <th className="text-center"/>
+      </tr>
       </thead>
       <tbody>
-        {offerRows}
+      {offerRows}
       </tbody>
     </table>
   )
 };
+
+class ComponentOffersTableWrapper extends React.Component {
+  componentWillMount() {
+    const {offers, id, fetchComponent} = this.props;
+
+    if (!offers) {
+      fetchComponent(id);
+    }
+  }
+
+  render() {
+    const {offers} = this.props;
+
+    if (!offers) {
+      return <i className="fa fa-spinner fa-spin fa-5x fa-fw"/>;
+    }
+
+    if (offers.length === 0) {
+      return <h2>No offers yet</h2>;
+    }
+
+    return <ComponentOffersTableComp offers={offers}/>;
+  }
+}
 
 const mapStateToProps = (state, {match}) => {
   const {id} = match.params;
 
   const component = findComponentById(state, id);
 
-  return { offers: component.offers }
+  return {
+    id,
+    offers: component && component.offers
+  }
 };
 
-export const ComponentOffersTable = withRouter(connect(mapStateToProps)(ComponentOffersTableComp));
+const mapDispatchToProps = {
+  fetchComponent
+};
+
+export const ComponentOffersTable = withRouter(connect(mapStateToProps, mapDispatchToProps)(ComponentOffersTableWrapper));

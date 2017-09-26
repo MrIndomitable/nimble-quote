@@ -28,6 +28,10 @@ export type TSupplier = {
   email: string;
 }
 
+export type TOffer = {
+
+}
+
 export type TComponent = {
   id: Guid;
   partNumber: string;
@@ -35,7 +39,7 @@ export type TComponent = {
   targetPrice: number;
   quantity: number;
   supplyDate: number;
-  offers: any[];
+  offers: any[]; // TOffer
   auctionId: Guid;
 }
 
@@ -55,11 +59,19 @@ export type TComponentsResult = {
   components: TComponentResult[];
 }
 
+export type TComponentsWithOffersResult = {
+  components: TComponentWithOffersResult[];
+}
+
 export enum ComponentStatus {
   PENDING = "PENDING",
   HAS_OFFERS = "HAS_OFFERS",
   IN_PURCHASE = "IN_PURCHASE",
   ARCHIVED = "ARCHIVED"
+}
+
+export type TComponentWithOffersResult = TComponentResult & {
+  offers: TOfferResult[];
 }
 
 export type TComponentResult = {
@@ -72,4 +84,8 @@ export type TComponentResult = {
   date: number;
   offersCount: number;
   auctionId: Guid;
+}
+
+export type TOfferResult = {
+
 }
