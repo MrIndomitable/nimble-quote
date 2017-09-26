@@ -1,17 +1,19 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
 import {InputField} from '../form/InputField';
+import * as v from '../form/Validation/Validation';
+
 
 export const PurchaseOrderShippingAddressFormComp = ({handleSubmit}) => {
   return <form onSubmit={ handleSubmit } className="container">
     <h4>Shipping address</h4>
-    <InputField id="company" label="Company" type="text"/>
-    <InputField id="street" label="Street address" type="text"/>
-    <InputField id="number" label="No." type="text"/>
-    <InputField id="state" label="State / Province / Region" type="text"/>
-    <InputField id="country" label="Country" type="text"/>
-    <InputField id="zip" label="Zip Code" type="text"/>
-    <InputField id="sameAsBillingAddress" label="Same as billing address" type="checkbox"/>
+    <InputField id="shipping.company" label="Company" type="text" validate={[v.maxLength15]}/>
+    <InputField id="shipping.shippingStreet" label="Street address" type="text" validate={[v.required]}/>
+    <InputField id="shipping.number" label="No." type="text" validate={[v.required, v.number]}/>
+    <InputField id="shipping.state" label="State / Province / Region" type="text" validate={[v.required]}/>
+    <InputField id="shipping.country" label="Country" type="text" validate={[v.required]}/>
+    <InputField id="shipping.zip" label="Zip Code" type="text" validate={[v.required]}/>
+    <InputField id="shipping.sameAsBillingAddress" label="Same as billing address" type="checkbox"/>
     <div className="text-center">
       <button className="btn btn-default btn-lg ">
         <span className="fa fa-caret-left"/> Back
