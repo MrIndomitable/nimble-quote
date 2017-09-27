@@ -21,7 +21,7 @@ export const PurchaseOrderTemplateComp = ({company, component, total}) => {
   ));
     return (
         <div className="container">
-            <div classNAme="row">
+            <div className="row">
 
                 <div className="col-lg-8 col-lg-offset-2">
                     <table className="tg">

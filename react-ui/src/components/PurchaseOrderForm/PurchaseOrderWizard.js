@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {submitPurchaseOrder} from '../../actions/po-actions';
 import {PurchaseOrderShippingAddressForm} from './PurchaseOrderShippingAddressForm';
 import {PurchaseOrderSupplierAddressForm} from './PurchaseOrderSupplierAddressForm';
 import {PurchaseOrderSendForm} from './PurchaseOrderSendForm';
+
 
 export class PurchaseOrderWizardComp extends Component {
   state = {
@@ -29,10 +32,9 @@ export class PurchaseOrderWizardComp extends Component {
   }
 }
 
-export const PurchaseOrderWizard = (PurchaseOrderWizardComp);
-// const mapDispatchToProps = {
-//   onSubmit: 
-// };
+const mapDispatchToProps = {
+  onSubmit: submitPurchaseOrder
+};
 
-// export const PurchaseOrderWizard = connect(null, mapDispatchToProps)(PurchaseOrderWizardComp);
+export const PurchaseOrderWizard = connect(null, mapDispatchToProps)(PurchaseOrderWizardComp);
 
