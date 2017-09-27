@@ -9,14 +9,14 @@ import {findComponentById} from '../../../selectors/components-selector';
 export const SingleComponentComp = () => {
   return (
     <div className="container">
-      <div className="row bg-warning inline">
+      <div className="row bg-warning inline single-component-details">
         <ComponentDetails />
       </div>
-      <div className="table-container col-lg-12">
+      <div className="table-container col-lg-12 single-component-offers-table">
         <ComponentOffersTable />
       </div>
-      <div className="table-container col-lg-12">
-        <h2>Pending</h2>
+      <div className="table-container col-lg-12 single-component-pending-table">
+        <h3>Pending</h3>
         <PendingSuppliersTable/>
       </div>
     </div>

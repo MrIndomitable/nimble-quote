@@ -18,7 +18,7 @@ const ComponentActions = (component) => {
     return (
       <button
         className="btn btn-warning btn-xs"
-      >
+        >
         Offers <span className="badge">{component.offers.length}</span>
       </button>
     );
@@ -29,7 +29,7 @@ const ComponentRow = ({component, onClick}) => {
   const {partNumber, manufacture, quantity, targetPrice, date} = component;
 
   return (
-    <tr onClick={onClick}>
+    <tr className="component-row" onClick={onClick}>
       <td>{manufacture}</td>
       <td>{partNumber}</td>
       <td>{quantity}</td>
@@ -42,25 +42,27 @@ const ComponentRow = ({component, onClick}) => {
 
 const ComponentsTableComp = ({components, goToComponent}) => {
   const componentRows = components.map(component => {
-    return <ComponentRow key={component.id} component={component} onClick={() => goToComponent(component.id)}/>;
+    return <ComponentRow key={component.id} component={component} onClick={() => goToComponent(component.id) }/>;
   });
 
   return (
-    <table className="table table-striped table-hover">
-      <thead>
-      <tr>
-        <th>Manufacture</th>
-        <th>Part #</th>
-        <th>Quantity</th>
-        <th>Target price</th>
-        <th>Date</th>
-        <th/>
-      </tr>
-      </thead>
-      <tbody>
-      {componentRows}
-      </tbody>
-    </table>
+    <div className="table-container">
+      <table className="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Manufacture</th>
+            <th>Part #</th>
+            <th>Quantity</th>
+            <th>Target price</th>
+            <th>Date</th>
+            <th/>
+          </tr>
+        </thead>
+        <tbody>
+          {componentRows}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
