@@ -21,9 +21,9 @@ export const PurchaseOrderShippingAddressFormComp = ({handleSubmit}) => {
       <InputField id="shipping.country" label="Country" type="text" validate={[v.required]}/>
       <InputField id="shipping.zip" label="Zip Code" type="text" validate={[v.required]}/>
       <InputField id="shipping.sameAsBillingAddress" label="Same as billing address" type="checkbox"/>
-      <div className="form-group">
+      <div className="form-group btns-wrapper">
 
-        <button type="submit" className="btn btn-success btn-lg">
+        <button type="submit" className="btn  btn-default btn-lg next-button">
           Next <span className="fa fa-caret-right"/>
         </button>
       </div>

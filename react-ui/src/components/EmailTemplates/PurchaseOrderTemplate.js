@@ -20,11 +20,10 @@ export const PurchaseOrderTemplateComp = ({company, component, total}) => {
     <ComponentRow key={component.item} {...component}/>
   ));
     return (
-        <div className="container">
+        <div className="email-template-wrapper">
             <div className="row">
 
-                <div className="col-lg-8 col-lg-offset-2">
-                    <table className="tg">
+                    <table className="tg text-centered email-template">
                         <tr>
                             <th className="tg-yw4l" rowSpan="3">{company.companyImg}</th>
                             <th className="tg-yw4l" colSpan="2">{company.companyName}</th>
@@ -101,7 +100,6 @@ export const PurchaseOrderTemplateComp = ({company, component, total}) => {
 
                         </tr>
                     </table>
-                </div>
             </div>
         </div>
     )
