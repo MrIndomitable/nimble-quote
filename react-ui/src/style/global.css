@@ -117,7 +117,7 @@ table{ font-family: 'Open Sans', sans-serif; }
     padding: 15px;
     font-size: 1.2em;
 }
-.po-form-container ul li a:hover {
+.po-form-container ul li a:focus {
     color:#fff;
     background-color: #253238;
 }
@@ -137,4 +137,10 @@ table{ font-family: 'Open Sans', sans-serif; }
 }
 .po-form-container form .form-group:nth-last-child(1) {
     text-align: right;
+}
+
+/*form error*/
+form span.error {
+    color: #700;
+    font-weight: bold;
 }
