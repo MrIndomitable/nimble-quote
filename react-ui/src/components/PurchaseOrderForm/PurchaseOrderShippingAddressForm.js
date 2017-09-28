@@ -23,7 +23,7 @@ export const PurchaseOrderShippingAddressFormComp = ({handleSubmit}) => {
       <InputField id="shipping.sameAsBillingAddress" label="Same as billing address" type="checkbox"/>
       <div className="form-group">
 
-        <button type="submit" className="btn btn-success btn-lg pull-right">
+        <button type="submit" className="btn btn-success btn-lg">
           Next <span className="fa fa-caret-right"/>
         </button>
       </div>
