@@ -9,21 +9,24 @@ import { TConfig } from '../config/config';
 export const ApiRoute = (config: TConfig) => {
   const auctionService = AuctionsService(AuctionsDao(), SendGridMailingService(config.email.sendGridApiKey));
 
+  const supplier = aSupplier();
   auctionService.addAuction(anAuction([
     aComponent(),
-    aComponent({ offers: [anOffer(), anOffer()] })
+    aComponent()
   ], [
     aSupplier(),
-    aSupplier(),
+    supplier,
     aSupplier(),
     aSupplier()
   ]));
   auctionService.addAuction(anAuction([
-    aComponent({ offers: [anOffer()] }),
+    aComponent(),
     aComponent()
   ], [
     aSupplier()
   ]));
+
+  auctionService.addOffer(supplier.id, [anOffer(auctionService.getComponents().components[0].id)]);
 
   const router = Router();
 

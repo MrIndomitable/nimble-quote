@@ -1,3 +1,5 @@
+import { Guid } from '../types/common';
+import { TOffer, TSupplier } from '../types/auctions';
 const chance = require('chance').Chance();
 
 export const anAuction = (components: any[] = [], suppliers: any[] = []) => ({
@@ -7,21 +9,20 @@ export const anAuction = (components: any[] = [], suppliers: any[] = []) => ({
   bom: { components }
 });
 
-export const aSupplier = () => ({
-  email: chance.email(),
-  sentDate: chance.date(),
-  status: 'Email sent'
+export const aSupplier = (): TSupplier => ({
+  id: chance.guid(),
+  email: chance.email()
 });
 
-export const anOffer = () => {
+export const anOffer = (componentId: Guid): TOffer => {
   const quantity = chance.integer({ min: 1, max: 1000 });
   const offerPrice = chance.integer({ min: 1, max: 1000 });
   return ({
-    supplierEmail: chance.email(),
+    componentId,
+    supplierId: chance.guid(),
     partDate: chance.date(),
     supplyDate: chance.date(),
     quantity: quantity,
-    offerPrice: offerPrice,
-    total: quantity * offerPrice,
+    price: offerPrice,
   });
 };

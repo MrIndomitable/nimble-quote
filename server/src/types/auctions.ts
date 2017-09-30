@@ -28,10 +28,6 @@ export type TSupplier = {
   email: string;
 }
 
-export type TOffer = {
-
-}
-
 export type TComponent = {
   id: Guid;
   partNumber: string;
@@ -39,8 +35,17 @@ export type TComponent = {
   targetPrice: number;
   quantity: number;
   supplyDate: number;
-  offers: any[]; // TOffer
+  offers: TOffer[];
   auctionId: Guid;
+}
+
+export type TOffer = {
+  componentId: Guid;
+  supplierId: Guid;
+  partDate: number;
+  supplyDate: number;
+  quantity: number;
+  price: number;
 }
 
 export type TAuctionBom = {

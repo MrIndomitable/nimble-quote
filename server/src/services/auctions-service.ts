@@ -9,13 +9,14 @@ import {
   TSupplier,
   TComponentResult,
   TComponentsWithOffersResult,
-  TComponentWithOffersResult
+  TComponentWithOffersResult, TOffer
 } from '../types/auctions';
 import { v4 as uuid } from 'uuid';
 import { IAuctionsDao } from '../dao/auctions-dao';
 
 interface IAuctionsService {
   addAuction: (auction: TAuctionDTO) => Guid;
+  addOffer: (supplierId: Guid, offers: TOffer[]) => void;
   getById: (id: Guid) => TAuction;
   getAll: () => TAuction[];
   getComponents: () => TComponentsResult;
@@ -23,26 +24,6 @@ interface IAuctionsService {
 }
 
 export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any): IAuctionsService => {
-  const component = (id: Guid): TComponent => ({
-    id,
-    partNumber: 'part-number',
-    manufacture: 'manufacture',
-    targetPrice: 540,
-    quantity: 320,
-    supplyDate: 1234567890,
-    offers: [],
-    auctionId: '1234'
-  });
-  auctionsDao.addAuction({
-    id: '1234',
-    suppliers: [{ id: '123', email: 'm@m.com' }],
-    subject: 'hello',
-    message: 'message',
-    bom: {
-      components: [component('1'), component('2'), component('3')]
-    }
-  });
-
   const addAuction = (auctionDTO: TAuctionDTO): Guid => {
     const { suppliers, message, subject } = auctionDTO;
     const id = uuid();
@@ -92,8 +73,13 @@ export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any)
     }
   };
 
+  const addOffer = (supplierId: Guid, offers: TOffer[]): void => {
+    auctionsDao.addOffer(supplierId, offers);
+  };
+
   return {
     addAuction,
+    addOffer,
     getById,
     getAll,
     getComponents,

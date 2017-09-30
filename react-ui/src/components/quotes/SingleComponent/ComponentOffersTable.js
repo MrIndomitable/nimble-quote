@@ -4,7 +4,7 @@ import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton
 import {findComponentById} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
 
-const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, offerPrice, total}) => {
+const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, price, total}) => {
   const ExpandOffer = () => <button type="button" className="btn btn-link">
     <span className="glyphicon glyphicon-menu-down"/>
   </button>;
@@ -15,7 +15,7 @@ const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, offerPrice, to
       <td>{partDate}</td>
       <td>{supplyDate}</td>
       <td>{quantity}</td>
-      <td>{offerPrice}</td>
+      <td>{price}</td>
       <td>{total}</td>
       <td><PurchaseOrderButton/></td>
       <td><ExpandOffer/></td>
@@ -63,8 +63,13 @@ const mapStateToProps = (state, {match}) => {
 
   const component = findComponentById(state, id);
 
+  const offers = component && component.offers || [];
+  const offersWithTotal = offers.map(offer => {
+    return {...offer, total: offer.price * offer.quantity}
+  });
+
   return {
-    offers: component && component.offers
+    offers: offersWithTotal
   }
 };
 
