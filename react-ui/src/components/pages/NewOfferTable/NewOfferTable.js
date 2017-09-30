@@ -45,14 +45,24 @@ const NewOfferForm = reduxForm({
   form: 'NewOffer'
 })(NewOfferTableComp);
 
-export const NewOfferTable = ({auction}) => {
+export const NewOfferTable = ({auction, submitOffer}) => {
   const toInitialValues = (auction) => ({
     components: auction.bom.components
   });
 
-  const submitOffer = offerDetails => {
-    console.log('submit offer', offerDetails);
+  const bla = values => {
+    const components = values.components
+      .filter(component => !!component.offerPrice || !!component.offerQuantity)
+      .map(component => {
+        const {id, offerPrice, offerQuantity} = component;
+        return {
+          componentId: id,
+          price: offerPrice,
+          quantity: offerQuantity
+        };
+      });
+    return {components};
   };
 
-  return <NewOfferForm initialValues={toInitialValues(auction)} onSubmit={submitOffer}/>;
+  return <NewOfferForm initialValues={toInitialValues(auction)} onSubmit={values => submitOffer(bla(values))}/>;
 };

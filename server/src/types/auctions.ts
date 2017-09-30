@@ -23,6 +23,10 @@ export type TAuctionDTO = {
   bom: TAuctionBomDTO;
 }
 
+export type TOfferDTO = {
+  components: TOffer[];
+}
+
 export type TSupplier = {
   id: Guid;
   email: string;

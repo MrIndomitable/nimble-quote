@@ -5,6 +5,7 @@ import { aComponent } from '../test-data/test-auction-details';
 import { AuctionsDao } from '../dao/auctions-dao';
 import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
 import { TConfig } from '../config/config';
+import { TOfferDTO } from '../types/auctions';
 
 export const ApiRoute = (config: TConfig) => {
   const auctionService = AuctionsService(AuctionsDao(), SendGridMailingService(config.email.sendGridApiKey));
@@ -26,7 +27,8 @@ export const ApiRoute = (config: TConfig) => {
     aSupplier()
   ]));
 
-  auctionService.addOffer(supplier.id, [anOffer(auctionService.getComponents().components[0].id)]);
+  const offer = anOffer(auctionService.getComponents().components[0].id);
+  auctionService.addOffer(supplier.id, {components: [offer]});
 
   const router = Router();
 
@@ -50,6 +52,13 @@ export const ApiRoute = (config: TConfig) => {
 
   router.get('/offer', (req: Request, res: Response) => {
     res.json(auctionService.getById(req.query.token));
+  });
+
+  router.post('/offer', (req: Request, res: Response) => {
+    const { token, offerDetails } = req.body;
+    // TODO extract supplier id from token
+    auctionService.addOffer(token, offerDetails);
+    res.sendStatus(201);
   });
 
   router.get('/user-details', (req: any, res: Response) => {

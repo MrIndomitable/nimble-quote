@@ -19,12 +19,20 @@ export class OfferPage extends React.Component {
   }
 
   render() {
+    const submitOffer = offerDetails => {
+      console.log('submit offer', offerDetails);
+      const token = parse(this.props.location.search).t;
+      axios.post('/api/offer', {offerDetails, token})
+        .then(res => console.log('offer receive'))
+        .catch(e => console.log(e));
+    };
+
     const {auction} = this.state;
 
     if (auction) {
       return <div>
         <h2>Please insert your offer</h2>
-        <NewOfferTable auction={auction}/>
+        <NewOfferTable auction={auction} submitOffer={submitOffer}/>
       </div>
     }
 
