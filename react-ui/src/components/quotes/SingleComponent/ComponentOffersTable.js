@@ -29,7 +29,7 @@ export const ComponentOffersTableComp = ({offers}) => {
   }
 
   const offerRows = offers.map(offer => (
-    <OfferRow key={offer.supplierEmail} {...offer}/>
+    <OfferRow key={offer.id} {...offer}/>
   ));
 
   return (
