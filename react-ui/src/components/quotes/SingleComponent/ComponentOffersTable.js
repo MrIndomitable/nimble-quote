@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton';
 import {findComponentById} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
+import {submitOrder} from '../../../actions/purchase-order-actions';
 
-const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, price, total}) => {
+const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, price, total, startPurchase}) => {
   const ExpandOffer = () => <button type="button" className="btn btn-link">
     <span className="glyphicon glyphicon-menu-down"/>
   </button>;
@@ -17,19 +18,23 @@ const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, price, total})
       <td>{quantity}</td>
       <td>{price}</td>
       <td>{total}</td>
-      <td><PurchaseOrderButton/></td>
+      <td><PurchaseOrderButton startPurchase={startPurchase}/></td>
       <td><ExpandOffer/></td>
     </tr>
   )
 };
 
-export const ComponentOffersTableComp = ({offers}) => {
+export const ComponentOffersTableComp = ({offers, component, submitOrder}) => {
   if (offers.length === 0) {
     return <h2>No offers yet</h2>;
   }
 
   const offerRows = offers.map(offer => (
-    <OfferRow key={offer.id} {...offer}/>
+    <OfferRow
+      key={offer.id}
+      startPurchase={() => submitOrder(component.auctionId, component.id, offer.id)}
+      {...offer}
+    />
   ));
 
   return (
@@ -69,8 +74,13 @@ const mapStateToProps = (state, {match}) => {
   });
 
   return {
+    component,
     offers: offersWithTotal
   }
 };
 
-export const ComponentOffersTable = withRouter(connect(mapStateToProps)(ComponentOffersTableComp));
+const mapDispatchToProps = {
+  submitOrder
+};
+
+export const ComponentOffersTable = withRouter(connect(mapStateToProps, mapDispatchToProps)(ComponentOffersTableComp));

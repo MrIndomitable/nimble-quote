@@ -28,6 +28,11 @@ export type TOfferDTO = {
   components: TOffer[];
 }
 
+export type TPurchaseOrderDTO = {
+  auctionId: Guid;
+  details: TPurchaseOrderDetail[];
+}
+
 export type TSupplier = {
   id: Guid;
   email: string;

@@ -8,7 +8,7 @@ import {
   TComponent,
   TSupplier,
   TOfferDTO,
-  TPurchaseOrder
+  TPurchaseOrderDTO
 } from '../types/auctions';
 import {
   TComponentsResult,
@@ -23,7 +23,7 @@ import {
 interface IAuctionsService {
   addAuction: (auction: TAuctionDTO) => Guid;
   addOffer: (supplierId: Guid, offers: TOfferDTO) => void;
-  addPurchaseOrder: (order: TPurchaseOrder) => void;
+  addPurchaseOrder: (order: TPurchaseOrderDTO) => void;
   getById: (id: Guid) => TAuctionResult;
   getAll: () => TAuctionsResult;
   getComponents: () => TComponentsResult;
@@ -87,8 +87,8 @@ export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any)
     auctionsDao.addOffer(supplierId, offers.components);
   };
 
-  const addPurchaseOrder = (order: TPurchaseOrder): void => {
-    auctionsDao.addPurchaseOrder(order);
+  const addPurchaseOrder = (order: TPurchaseOrderDTO): void => {
+    auctionsDao.addPurchaseOrder(Object.assign({}, order, { id: uuid() }));
   };
 
   return {

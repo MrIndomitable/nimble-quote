@@ -70,6 +70,19 @@ export const ApiRoute = (config: TConfig) => {
     res.sendStatus(201);
   });
 
+  router.post('/order', (req: Request, res: Response) => {
+    const { auctionId, componentId, offerId } = req.body;
+    auctionService.addPurchaseOrder({
+      auctionId,
+      details: [{
+        componentId,
+        offerId,
+        quantity: 10
+      }]
+    });
+    res.sendStatus(201);
+  });
+
   router.get('/user-details', (req: any, res: Response) => {
     if (!req.isAuthenticated()) {
       res.json({ isLoggedIn: req.isAuthenticated() });
