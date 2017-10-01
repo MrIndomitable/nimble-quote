@@ -26,7 +26,7 @@ export const ApiRoute = (config: TConfig) => {
     aSupplier()
   ]));
 
-  const [auction] = auctionService.getAll();
+  const [auction] = auctionService.getAll().auctions;
   const [component1, component2] = auction.bom.components;
 
   const offer1 = anOffer(component1.id);
@@ -42,7 +42,7 @@ export const ApiRoute = (config: TConfig) => {
   const router = Router();
 
   router.get('/auctions/:id?', (req: Request, res: Response) => {
-    res.json({ auctions: auctionService.getAll() });
+    res.json(auctionService.getAll());
   });
 
   router.post('/auctions', (req: Request, res: Response) => {

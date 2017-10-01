@@ -1,7 +1,8 @@
 import { AuctionsService } from './auctions-service';
-import { ComponentStatus, TComponent } from '../types/auctions';
+import { TComponent } from '../types/auctions';
 import { IAuctionsDao } from '../dao/auctions-dao';
 import { Guid } from '../types/common';
+import { ComponentStatus } from '../types/response';
 const chance = require('chance').Chance();
 
 const auctionsDaoDriver = () => {
@@ -10,11 +11,13 @@ const auctionsDaoDriver = () => {
   const addPurchaseOrder = jest.fn();
   const getAuctions = jest.fn();
   const getComponents = jest.fn();
+  const getAuctionById = jest.fn();
 
   const auctionsDao: IAuctionsDao = {
     addAuction,
     addOffer,
     addPurchaseOrder,
+    getAuctionById,
     getAuctions,
     getComponents,
     getComponentById: (id: Guid) => null
@@ -58,7 +61,8 @@ const aComponent = ({ id, partNumber, manufacture, targetPrice, quantity, supply
     quantity,
     supplyDate,
     offers,
-    auctionId
+    auctionId,
+    purchaseOrder: null
   });
 };
 

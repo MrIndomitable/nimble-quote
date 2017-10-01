@@ -42,6 +42,7 @@ export type TComponent = {
   supplyDate: number;
   offers: TOffer[];
   auctionId: Guid;
+  purchaseOrder: TPurchaseOrder; // TODO check if this is actually a list
 }
 
 export type TOffer = {
@@ -78,36 +79,3 @@ export type TAuction = {
   bom: TAuctionBom;
   purchaseOrders: TPurchaseOrder[];
 }
-
-export type TComponentsResult = {
-  components: TComponentResult[];
-}
-
-export type TComponentsWithOffersResult = {
-  components: TComponentWithOffersResult[];
-}
-
-export enum ComponentStatus {
-  PENDING = "PENDING",
-  HAS_OFFERS = "HAS_OFFERS",
-  IN_PURCHASE = "IN_PURCHASE",
-  ARCHIVED = "ARCHIVED"
-}
-
-export type TComponentWithOffersResult = TComponentResult & {
-  offers: TOfferResult[];
-}
-
-export type TComponentResult = {
-  id: Guid,
-  status: ComponentStatus;
-  manufacture: string;
-  partNumber: string;
-  quantity: number;
-  targetPrice: number;
-  date: number;
-  offersCount: number;
-  auctionId: Guid;
-}
-
-export type TOfferResult = {}

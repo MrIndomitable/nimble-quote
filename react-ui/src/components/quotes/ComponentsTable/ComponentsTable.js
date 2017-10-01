@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {componentsSelector, isPending, hasOffers} from '../../../selectors/components-selector';
+import {componentsSelector, isPending, hasOffers, isImminent} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
 import {parse} from 'query-string';
 import {goToComponent} from '../../../actions/rfp-actions';
@@ -8,7 +8,7 @@ import {goToComponent} from '../../../actions/rfp-actions';
 const ComponentActions = (component) => {
   if (isPending(component)) {
     return (
-      <button className="btn btn-danger btn-xs">
+      <button className="btn btn-default btn-xs">
         cancel
       </button>
     );
@@ -18,11 +18,23 @@ const ComponentActions = (component) => {
     return (
       <button
         className="btn btn-warning btn-xs"
-        >
-        Offers <span className="badge">{component.offers.length}</span>
+      >
+        Offers <span className="badge">{component.offersCount}</span>
       </button>
     );
   }
+
+  if (isImminent(component)) {
+    return (
+      <button
+        className="btn btn-primary btn-xs"
+      >
+        View purchase order <span className="fa fa-eye"/>
+      </button>
+    );
+  }
+
+  return null;
 };
 
 const ComponentRow = ({component, onClick}) => {
@@ -49,17 +61,17 @@ const ComponentsTableComp = ({components, goToComponent}) => {
     <div className="table-container">
       <table className="table table-striped table-hover">
         <thead>
-          <tr>
-            <th>Manufacture</th>
-            <th>Part #</th>
-            <th>Quantity</th>
-            <th>Target price</th>
-            <th>Date</th>
-            <th/>
-          </tr>
+        <tr>
+          <th>Manufacture</th>
+          <th>Part #</th>
+          <th>Quantity</th>
+          <th>Target price</th>
+          <th>Date</th>
+          <th/>
+        </tr>
         </thead>
         <tbody>
-          {componentRows}
+        {componentRows}
         </tbody>
       </table>
     </div>
