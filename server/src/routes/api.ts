@@ -1,11 +1,10 @@
 import { Response, Request, Router } from 'express';
 import { AuctionsService } from '../services/auctions-service';
-import { anAuction, anOffer, aSupplier } from '../test-data/test-auction';
+import { anAuction, anOffer, aSupplier, aPurchaseOrder, aPurchaseOrderDetails } from '../test-data/test-auction';
 import { aComponent } from '../test-data/test-auction-details';
 import { AuctionsDao } from '../dao/auctions-dao';
 import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
 import { TConfig } from '../config/config';
-import { TOfferDTO } from '../types/auctions';
 
 export const ApiRoute = (config: TConfig) => {
   const auctionService = AuctionsService(AuctionsDao(), SendGridMailingService(config.email.sendGridApiKey));
@@ -27,8 +26,18 @@ export const ApiRoute = (config: TConfig) => {
     aSupplier()
   ]));
 
-  const offer = anOffer(auctionService.getComponents().components[0].id);
-  auctionService.addOffer(supplier.id, {components: [offer]});
+  const [auction] = auctionService.getAll();
+  const [component1, component2] = auction.bom.components;
+
+  const offer1 = anOffer(component1.id);
+  const offer2 = anOffer(component2.id);
+  auctionService.addOffer(supplier.id, { components: [offer1, offer2] });
+
+  const order = aPurchaseOrder(auction.id, [
+    aPurchaseOrderDetails(component1.id, offer1.id)
+  ]);
+
+  auctionService.addPurchaseOrder(order);
 
   const router = Router();
 

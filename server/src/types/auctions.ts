@@ -21,6 +21,7 @@ export type TAuctionDTO = {
   subject: string;
   message: string;
   bom: TAuctionBomDTO;
+  purchaseOrders: TPurchaseOrder[];
 }
 
 export type TOfferDTO = {
@@ -44,12 +45,25 @@ export type TComponent = {
 }
 
 export type TOffer = {
+  id: Guid;
   componentId: Guid;
   supplierId: Guid;
   partDate: number;
   supplyDate: number;
   quantity: number;
   price: number;
+}
+
+export type TPurchaseOrder = {
+  id: Guid;
+  auctionId: Guid;
+  details: TPurchaseOrderDetail[];
+}
+
+export type TPurchaseOrderDetail = {
+  componentId: Guid;
+  offerId: Guid;
+  quantity: number;
 }
 
 export type TAuctionBom = {
@@ -62,6 +76,7 @@ export type TAuction = {
   subject: string;
   message: string;
   bom: TAuctionBom;
+  purchaseOrders: TPurchaseOrder[];
 }
 
 export type TComponentsResult = {
@@ -95,6 +110,4 @@ export type TComponentResult = {
   auctionId: Guid;
 }
 
-export type TOfferResult = {
-
-}
+export type TOfferResult = {}

@@ -7,12 +7,14 @@ const chance = require('chance').Chance();
 const auctionsDaoDriver = () => {
   const addAuction = jest.fn();
   const addOffer = jest.fn();
+  const addPurchaseOrder = jest.fn();
   const getAuctions = jest.fn();
   const getComponents = jest.fn();
 
   const auctionsDao: IAuctionsDao = {
     addAuction,
     addOffer,
+    addPurchaseOrder,
     getAuctions,
     getComponents,
     getComponentById: (id: Guid) => null

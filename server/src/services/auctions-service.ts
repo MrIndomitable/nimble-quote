@@ -9,7 +9,9 @@ import {
   TSupplier,
   TComponentResult,
   TComponentsWithOffersResult,
-  TComponentWithOffersResult, TOffer, TOfferDTO
+  TComponentWithOffersResult,
+  TOfferDTO,
+  TPurchaseOrder
 } from '../types/auctions';
 import { v4 as uuid } from 'uuid';
 import { IAuctionsDao } from '../dao/auctions-dao';
@@ -17,6 +19,7 @@ import { IAuctionsDao } from '../dao/auctions-dao';
 interface IAuctionsService {
   addAuction: (auction: TAuctionDTO) => Guid;
   addOffer: (supplierId: Guid, offers: TOfferDTO) => void;
+  addPurchaseOrder: (order: TPurchaseOrder) => void;
   getById: (id: Guid) => TAuction;
   getAll: () => TAuction[];
   getComponents: () => TComponentsResult;
@@ -35,7 +38,8 @@ export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any)
       subject,
       bom: {
         components
-      }
+      },
+      purchaseOrders: []
     });
     auctionsDao.addAuction(auction);
 
@@ -77,9 +81,14 @@ export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any)
     auctionsDao.addOffer(supplierId, offers.components);
   };
 
+  const addPurchaseOrder = (order: TPurchaseOrder): void => {
+    auctionsDao.addPurchaseOrder(order);
+  };
+
   return {
     addAuction,
     addOffer,
+    addPurchaseOrder,
     getById,
     getAll,
     getComponents,
