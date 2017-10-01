@@ -157,6 +157,12 @@ table.email-template{
 .email-template-wrapper {
     margin-bottom: 30px;
 }
+.po-form-container .form-group input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-right:5px;
+}
 /*form error*/
 form span.error {
     color: #700;
