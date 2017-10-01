@@ -168,3 +168,19 @@ form span.error {
     color: #700;
     font-weight: bold;
 }
+
+/*New Quote form*/
+.new-quote-form {
+    width: 1200px;
+    margin: 0 auto;
+}
+.new-quote-form hr {
+    width: 100%;
+}
+button.add-new-line {
+    float: right;
+    margin-bottom: 10px;
+}
+.new-quote-form button.choose-supplier{
+    float: right;
+}
