@@ -1,6 +1,3 @@
-import React from 'react'
-import { Field, reduxForm } from 'redux-form'
-
 export const required = value => value ? undefined : 'Required'
 
 const maxLength = max => value =>

@@ -63,7 +63,7 @@ const mapStateToProps = (state, {match}) => {
 
   const component = findComponentById(state, id);
 
-  const offers = component && component.offers || [];
+  const offers = component && component.offers;
   const offersWithTotal = offers.map(offer => {
     return {...offer, total: offer.price * offer.quantity}
   });

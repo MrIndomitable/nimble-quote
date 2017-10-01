@@ -1,7 +1,6 @@
 import React from 'react';
 import './POTable.css';
 import './POTableItemDetails.css';
-import {PurchaseOrderDetails} from '../PurchaseOrderForm/PurchaseOrderSendForm';
 
 const ComponentRow = ({item, quantity, partNumber, manufacture, requireDate, unitPrice, price}) => {
     return <tr>

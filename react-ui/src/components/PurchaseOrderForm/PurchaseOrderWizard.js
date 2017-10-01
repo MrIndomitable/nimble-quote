@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {submitPurchaseOrder} from '../../actions/po-actions';
 import {PurchaseOrderShippingAddressForm} from './PurchaseOrderShippingAddressForm';
 import {PurchaseOrderSupplierAddressForm} from './PurchaseOrderSupplierAddressForm';
 import {PurchaseOrderSendForm} from './PurchaseOrderSendForm';
-
 
 export class PurchaseOrderWizardComp extends Component {
   state = {
@@ -33,7 +31,9 @@ export class PurchaseOrderWizardComp extends Component {
 }
 
 const mapDispatchToProps = {
-  onSubmit: submitPurchaseOrder
+  onSubmit: values => {
+    console.log(values);
+  }
 };
 
 export const PurchaseOrderWizard = connect(null, mapDispatchToProps)(PurchaseOrderWizardComp);
