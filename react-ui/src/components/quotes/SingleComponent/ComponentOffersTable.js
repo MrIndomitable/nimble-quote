@@ -5,7 +5,7 @@ import {findComponentById} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
 import {submitOrder} from '../../../actions/purchase-order-actions';
 
-const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, price, total, startPurchase}) => {
+const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, price, total, auctionId, componentId, offerId}) => {
   const ExpandOffer = () => <button type="button" className="btn btn-link">
     <span className="glyphicon glyphicon-menu-down"/>
   </button>;
@@ -18,13 +18,13 @@ const OfferRow = ({supplierEmail, partDate, supplyDate, quantity, price, total, 
       <td>{quantity}</td>
       <td>{price}</td>
       <td>{total}</td>
-      <td><PurchaseOrderButton startPurchase={startPurchase}/></td>
+      <td><PurchaseOrderButton auctionId={auctionId} componentId={componentId} offerId={offerId}/></td>
       <td><ExpandOffer/></td>
     </tr>
   )
 };
 
-export const ComponentOffersTableComp = ({offers, component, submitOrder}) => {
+const ComponentOffersTableComp = ({offers, component}) => {
   if (offers.length === 0) {
     return <h2>No offers yet</h2>;
   }
@@ -32,34 +32,38 @@ export const ComponentOffersTableComp = ({offers, component, submitOrder}) => {
   const offerRows = offers.map(offer => (
     <OfferRow
       key={offer.id}
-      startPurchase={() => submitOrder(component.auctionId, component.id, offer.id)}
       {...offer}
+      auctionId={component.auctionId}
+      componentId={component.id}
+      offerId={offer.id}
     />
   ));
 
   return (
-    <table className="table table-hover text-center">
-      <thead>
-      <tr>
-        <th className="text-center">Supplier</th>
-        <th className="text-center">Part date</th>
-        <th className="text-center">Supply date</th>
-        <th className="text-center">Quantity <a href="#">
-          <span className="glyphicon glyphicon-sort-by-attributes-alt"/>
-        </a>
-        </th>
-        <th className="text-center">Offer price <a href="#">
-          <span className="glyphicon glyphicon-sort"/>
-        </a>
-        </th>
-        <th className="text-center">Total</th>
-        <th className="text-center"/>
-      </tr>
-      </thead>
-      <tbody>
-      {offerRows}
-      </tbody>
-    </table>
+    <div className="table-container single-component-offers-table">
+      <table className="table table-hover text-center">
+        <thead>
+        <tr>
+          <th className="text-center">Supplier</th>
+          <th className="text-center">Part date</th>
+          <th className="text-center">Supply date</th>
+          <th className="text-center">Quantity <a href="#">
+            <span className="glyphicon glyphicon-sort-by-attributes-alt"/>
+          </a>
+          </th>
+          <th className="text-center">Offer price <a href="#">
+            <span className="glyphicon glyphicon-sort"/>
+          </a>
+          </th>
+          <th className="text-center">Total</th>
+          <th className="text-center"/>
+        </tr>
+        </thead>
+        <tbody>
+        {offerRows}
+        </tbody>
+      </table>
+    </div>
   )
 };
 
@@ -79,8 +83,4 @@ const mapStateToProps = (state, {match}) => {
   }
 };
 
-const mapDispatchToProps = {
-  submitOrder
-};
-
-export const ComponentOffersTable = withRouter(connect(mapStateToProps, mapDispatchToProps)(ComponentOffersTableComp));
+export const ComponentOffersTable = withRouter(connect(mapStateToProps)(ComponentOffersTableComp));

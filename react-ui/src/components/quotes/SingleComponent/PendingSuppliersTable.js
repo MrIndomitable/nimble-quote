@@ -21,18 +21,21 @@ const PendingSuppliersTableComp = ({suppliers}) => {
   const supplierRows = suppliers.map(supplier => <SupplierRow key={supplier.email} {...supplier}/>);
 
   return (
-    <table className="table text-center">
-      <thead>
+    <div className="table-container single-component-pending-table">
+      <h3>Pending</h3>
+      <table className="table text-center">
+        <thead>
         <tr>
           <th className="text-center">Supplier</th>
           <th className="text-center">Date</th>
           <th className="text-center">Status</th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         {supplierRows}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   )
 };
 
@@ -53,7 +56,7 @@ class PendingSuppliersTableWrapper extends React.Component {
 
 const mapStateToProps = (state, {match}) => {
   const {id} = match.params;
-  
+
   const component = findComponentById(state, id);
   const auction = getAuctionById(state)(component.auctionId);
 
