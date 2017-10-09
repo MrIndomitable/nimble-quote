@@ -20,8 +20,10 @@ export class NewQuoteWizardComp extends Component {
   render() {
     const {page} = this.state;
     return (
-      <div>
-        <h3>New Quote</h3>
+      <div className="new-quote-wrapper">
+        <h3>
+        <a href="/"><i className="fa fa-arrow-circle-left" aria-hidden="true"></i>New Quote</a>
+        </h3>
         {page === 1 && <NewQuotePartsDetailsForm onSubmit={() => this.nextPage()}/>}
         {page === 2 && <NewQuoteSupplierDetailsForm previousPage={() => this.previousPage()} onSubmit={this.props.onSubmit}/>}
       </div>

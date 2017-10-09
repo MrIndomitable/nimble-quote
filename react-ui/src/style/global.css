@@ -170,6 +170,24 @@ form span.error {
 }
 
 /*New Quote form*/
+.new-quote-wrapper h3 {
+    margin-left: 20px;
+    margin-bottom: 50px;
+}
+.new-quote-wrapper h3 a {
+    color: #2c353c;
+    font-weight:bold;
+    text-decoration:none;  
+}
+.new-quote-wrapper h3 a:hover {
+    color: #2c353c;
+    text-decoration:none;
+}
+.new-quote-wrapper h3 a i {
+    color: #a8a9ad;
+    padding-right:8px;
+}
+
 .new-quote-form {
     width: 1200px;
     margin: 0 auto;
@@ -196,3 +214,4 @@ form.new-quote-form-supplier .btns-wrapper{
 form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     margin-left: 15px;
 }
+
