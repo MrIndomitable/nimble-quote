@@ -5,6 +5,7 @@ import {ComponentOffersTable} from './ComponentOffersTable';
 import {ComponentDetails} from './ComponentDetails';
 import {fetchComponent} from '../../../actions/components-actions';
 import {findComponentById} from '../../../selectors/components-selector';
+import {PurchaseOrderWizard} from "../../PurchaseOrderForm/PurchaseOrderWizard";
 
 class SingleComponentWrapper extends React.Component {
   componentWillMount() {
@@ -16,7 +17,7 @@ class SingleComponentWrapper extends React.Component {
   }
 
   render() {
-    const {fetchRequired} = this.props;
+    const {fetchRequired, isPurchaseInProgress} = this.props;
 
     if (fetchRequired) {
       return <i className="fa fa-spinner fa-spin fa-5x fa-fw"/>;
@@ -26,19 +27,25 @@ class SingleComponentWrapper extends React.Component {
       <div className="row bg-warning inline single-component-details">
         <ComponentDetails />
       </div>
-      <ComponentOffersTable/>
-      <PendingSuppliersTable/>
+      { isPurchaseInProgress ? <PurchaseOrderWizard/> : <PendingView/> }
     </div>
   }
 }
 
+const PendingView = ({onStartPurchase}) => (
+  <div>
+    <ComponentOffersTable onStartPurchase={onStartPurchase}/>
+    <PendingSuppliersTable/>
+  </div>
+);
 
 const mapStateToProps = (state, {match}) => {
   const {id} = match.params;
   const component = findComponentById(state, id);
   const fetchRequired = !component || !component.offers;
+  const isPurchaseInProgress = Object.keys(state.cart).length > 0;
 
-  return {fetchRequired, id}
+  return {fetchRequired, id, isPurchaseInProgress}
 };
 
 const mapDispatchToProps = {

@@ -4,12 +4,7 @@ import {PurchaseOrderTemplate} from '../EmailTemplates/PurchaseOrderTemplate';
 
 export const PurchaseOrderViewEmailComp = ({previousPage}) => {
   return (
-    <div className="po-form-container">
-    <ul className="nav nav-pills nav-justified">
-      <li><a aria-current="false" href="#">1. Shipping address</a></li>
-      <li><a aria-current="false" href="#">2. Supplier's address</a></li>
-      <li><a aria-current="false" href="#">3. Send purchase order</a></li>
-    </ul>
+    <div>
       <PurchaseOrderTemplate />
       <div className="clearfix btns-wrapper">
         <div className="text-center">
@@ -24,8 +19,6 @@ export const PurchaseOrderViewEmailComp = ({previousPage}) => {
     </div>
   )
 };
-
-
 
 export const PurchaseOrderSendForm = reduxForm({
   form: 'PurchaseOrderForm',
