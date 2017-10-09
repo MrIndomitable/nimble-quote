@@ -184,3 +184,15 @@ button.add-new-line {
 .new-quote-form button.choose-supplier{
     float: right;
 }
+form.new-quote-form-supplier {
+    width: 650px;
+    margin: 0 auto;
+}
+form.new-quote-form-supplier .btns-wrapper{
+    text-align: right;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
+    margin-left: 15px;
+}
