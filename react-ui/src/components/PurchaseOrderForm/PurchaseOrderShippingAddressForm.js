@@ -3,17 +3,18 @@ import {reduxForm} from 'redux-form';
 import {InputField} from '../form/InputField';
 import * as v from '../form/Validation/Validation';
 
-
 export const PurchaseOrderShippingAddressFormComp = ({handleSubmit}) => {
   return <form onSubmit={ handleSubmit }>
     <h4>Shipping address</h4>
-    <InputField id="shipping.company" label="Company" type="text" validate={[v.maxLength15]}/>
-    <InputField id="shipping.shippingStreet" label="Street address" type="text" validate={[v.required]}/>
-    <InputField id="shipping.number" label="No." type="text" validate={[v.required, v.number]}/>
-    <InputField id="shipping.state" label="State / Province / Region" type="text" validate={[v.required]}/>
-    <InputField id="shipping.country" label="Country" type="text" validate={[v.required]}/>
-    <InputField id="shipping.zip" label="Zip Code" type="text" validate={[v.required]}/>
-    <InputField id="shipping.sameAsBillingAddress" label="Same as billing address" type="checkbox"/>
+    <InputField id="company.name" label="Company" type="text" validate={[v.maxLength15]}/>
+    <InputField id="company.contactName" label="Contact name" type="text" validate={[v.maxLength15]}/>
+    <InputField id="company.phone" label="Phone" type="text" validate={[v.required]}/>
+    <InputField id="company.address" label="Address" type="text" validate={[v.required]}/>
+    <InputField id="company.city" label="City" type="text" validate={[v.required]}/>
+    <InputField id="company.state" label="State / Province / Region" type="text"/>
+    <InputField id="company.country" label="Country" type="text" validate={[v.required]}/>
+    <InputField id="company.zip" label="Zip Code" type="text" validate={[v.required]}/>
+    <InputField id="company.sameAsBillingAddress" label="Same as billing address" type="checkbox"/>
     <div className="form-group btns-wrapper">
       <button type="submit" className="btn  btn-default btn-lg next-button">
         Next <span className="fa fa-caret-right"/>

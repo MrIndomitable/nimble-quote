@@ -1,11 +1,11 @@
 import React from 'react';
 import {reduxForm} from 'redux-form';
-import {PurchaseOrderTemplate} from '../EmailTemplates/PurchaseOrderTemplate';
+import {Invoice} from '../Invoice/Invoice.container';
 
 export const PurchaseOrderViewEmailComp = ({previousPage}) => {
   return (
     <div>
-      <PurchaseOrderTemplate />
+      <Invoice/>
       <div className="clearfix btns-wrapper">
         <div className="text-center">
           <button className="btn btn-default btn-lg back-button" onClick={previousPage}>

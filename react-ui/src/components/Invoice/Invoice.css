@@ -1,0 +1,66 @@
+.preview {
+    overflow: hidden;
+    padding: 1em;
+}
+
+header {
+    overflow: auto;
+    margin-bottom: 4em;
+}
+
+header .company {
+    float: left;
+}
+
+header .extra {
+    float: right;
+    text-align: right;
+}
+
+section, .info {
+    margin-bottom: 4em;
+}
+
+.components {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.components th, .components td {
+    margin: 0;
+    padding: 0.3em;
+}
+
+.components th {
+    font-weight: normal;
+}
+
+/*.components th, */
+.components th, .components td {
+    text-align: right;
+    border-bottom: 0.1em solid black;
+}
+
+.components tfoot td {
+    border-bottom: none;
+    font-weight: bold;
+}
+
+.components th:first-child, .components td:first-child {
+    text-align: left;
+}
+
+.invoice {
+    font-weight: bold;
+}
+
+/* hide unnecessary bits on print and make sure preview is fullsized */
+@media print {
+    .fields, .handle {
+        display: none;
+    }
+
+    .preview {
+        margin: 0;
+    }
+}
