@@ -232,3 +232,67 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     text-align: center;
     font-weight: bold;
 }
+
+/*arrow progress bar*/
+.arrow-progress-bar {
+    padding: 0;
+    list-style-type: none;
+    font-family: arial;
+    font-size: 12px;
+    clear: both;
+    line-height: 1em;
+    margin: 0 -1px;
+    text-align: center;
+    margin-top: 15px;
+}
+.arrow-progress-bar .badge{display: inline; background-color: red;}
+.arrow-progress-bar li {
+    float: left;
+    padding: 10px 30px 10px 40px;
+    background: #d2ecea;
+    color: #fff;
+    position: relative;
+    /*border-top: 1px solid #666;
+    border-bottom: 1px solid #666;*/
+    width: 15%;
+    margin: 0 4px;
+}
+
+.arrow-progress-bar li:before {
+    content: '';
+    border-left: 16px solid #fff;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+}
+.arrow-progress-bar li:after {
+    content: '';
+    border-left: 16px solid #d2ecea;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: 20;
+}
+
+.arrow-progress-bar li.active {
+    background: #2c353a;
+}
+.arrow-progress-bar li.active a{
+    color:#fff;
+}
+
+.arrow-progress-bar li.active:after {
+    border-left-color: #2c353a;
+}
+.arrow-progress-bar a:hover, .arrow-progress-bar a:focus{text-decoration: none;}
+.arrow-progress-bar a {
+    color: #2c353a;
+    font-size: 1.2em;
+    font-weight: 600;
+    
+}
