@@ -12,7 +12,7 @@ import {OfferPage} from '../pages/OfferPage/OfferPage';
 const App = () => (
   <div className="App">
     <Header/>
-    <Route exact path="/" render={() => <Redirect to="/components"/>}/>
+    <Route exact path="/" render={() => <Redirect to="/components?q=pending"/>}/>
     <Route exact path="/components" component={ComponentsPage}/>
     <Route path="/components/:id" component={SingleComponent}/>
     <Route path="/bom/create" component={NewQuoteWizard}/>
