@@ -1,4 +1,4 @@
-import {ADD_TO_CART, REMOVE_FROM_CART} from "../actions/types";
+import {ADD_TO_CART, REMOVE_FROM_CART, SUBMIT_ORDER_SUCCESS} from "../actions/types";
 
 export const cartReducer = (cart = {}, action) => {
   switch (action.type) {
@@ -13,6 +13,7 @@ export const cartReducer = (cart = {}, action) => {
         }
       };
     case REMOVE_FROM_CART:
+    case SUBMIT_ORDER_SUCCESS:
       return {}; // FIXME should remove only componentId in payload
     default:
       return cart;

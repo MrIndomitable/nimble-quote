@@ -4,6 +4,7 @@ import {PurchaseOrderShippingAddressForm} from './PurchaseOrderShippingAddressFo
 import {PurchaseOrderSupplierAddressForm} from './PurchaseOrderSupplierAddressForm';
 import {PurchaseOrderSendForm} from './PurchaseOrderSendForm';
 import {CartDetails} from "./CartDetails";
+import {submitOrder} from "../../actions/purchase-order-actions";
 
 export class PurchaseOrderWizardComp extends Component {
   state = {
@@ -11,11 +12,11 @@ export class PurchaseOrderWizardComp extends Component {
   };
 
   nextPage() {
-    this.setState({ page: this.state.page + 1 })
+    this.setState({page: this.state.page + 1})
   }
 
   previousPage() {
-    this.setState({ page: this.state.page - 1 })
+    this.setState({page: this.state.page - 1})
   }
 
   render() {
@@ -36,11 +37,25 @@ export class PurchaseOrderWizardComp extends Component {
   }
 }
 
-const mapDispatchToProps = {
-  onSubmit: values => {
-    console.log(values);
+const mapStateToProps = state => {
+  const componentId = Object.keys(state.cart)[0];
+  const {auctionId, offerId} = state.cart[componentId];
+
+  return {
+    auctionId,
+    componentId,
+    offerId
   }
 };
 
-export const PurchaseOrderWizard = connect(null, mapDispatchToProps)(PurchaseOrderWizardComp);
+const mapDispatchToProps = {
+  submitOrder
+};
+
+const mergeProps = ({auctionId, componentId, offerId}, {submitOrder}, ownProps) => ({
+  onSubmit: submitOrder(auctionId, componentId, offerId),
+  ...ownProps
+});
+
+export const PurchaseOrderWizard = connect(mapStateToProps, mapDispatchToProps, mergeProps)(PurchaseOrderWizardComp);
 

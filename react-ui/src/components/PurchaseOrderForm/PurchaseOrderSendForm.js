@@ -2,7 +2,7 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import {Invoice} from '../Invoice/Invoice.container';
 
-export const PurchaseOrderViewEmailComp = ({previousPage}) => {
+export const PurchaseOrderViewEmailComp = ({previousPage, handleSubmit}) => {
   return (
     <div>
       <Invoice/>
@@ -11,7 +11,10 @@ export const PurchaseOrderViewEmailComp = ({previousPage}) => {
           <button className="btn btn-default btn-lg back-button" onClick={previousPage}>
             <span className="fa fa-caret-left"/> Back
           </button>
-          <button type="submit" className="btn btn-default btn-lg next-button">
+          <button
+            onClick={handleSubmit}
+            className="btn btn-default btn-lg next-button"
+          >
             Purchase <span className="fa fa-caret-right"/>
           </button>
         </div>

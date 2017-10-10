@@ -64,7 +64,7 @@ export const ApiRoute = (config: TConfig) => {
   });
 
   router.post('/offer', (req: Request, res: Response) => {
-    const { token, offerDetails } = req.body;
+    const { token, offerDetails } = req.body; // TODO save supplier info and company info if they exists
     // TODO extract supplier id from token
     auctionService.addOffer(token, offerDetails);
     res.sendStatus(201);
