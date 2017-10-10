@@ -191,6 +191,7 @@ form span.error {
 .new-quote-form {
     width: 1200px;
     margin: 0 auto;
+    text-align: center;
 }
 .new-quote-form hr {
     width: 100%;
@@ -215,3 +216,19 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     margin-left: 15px;
 }
 
+.new-quote-fields-container input.form-control {
+    width: 100% !important;
+}
+
+.new-quote-fields-container .form-group {
+    width: 140px;
+    margin-left: 6px;
+}
+.new-quote-fields-container .total-price {
+    border: 1px solid #fefefe;
+    border-radius: 4px;
+}
+.new-quote-fields-container .total-price{    
+    text-align: center;
+    font-weight: bold;
+}

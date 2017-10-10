@@ -12,7 +12,7 @@ const QuoteDetails = ({name}) => {
     <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number"/>    
     <DatePickerField id={`${name}.partDate`} placeholder="Part date" type="date" />
     <DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" />
-    <div>$12.00</div>
+    <div className="form-group total-price">$12.00</div>
 <hr/>
   </div>
 };
