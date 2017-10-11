@@ -1,45 +1,32 @@
 import { Response, Request, Router } from 'express';
 import { AuctionsService } from '../services/auctions-service';
-import { anAuction, anOffer, aSupplier, aPurchaseOrder, aPurchaseOrderDetails } from '../test-data/test-auction';
-import { aComponent } from '../test-data/test-auction-details';
 import { AuctionsDao } from '../dao/auctions-dao';
 import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
 import { TConfig } from '../config/config';
+import { SuppliersDao } from "../dao/suppliers-dao";
+import { SuppliersService } from "../services/suppliers-service";
+import { generateTestData } from "../test-data/test-data";
 
 export const ApiRoute = (config: TConfig) => {
-  const auctionService = AuctionsService(AuctionsDao(), SendGridMailingService(config.email.sendGridApiKey));
+  const suppliersDao = SuppliersDao();
+  const suppliersService = SuppliersService(suppliersDao);
+  const auctionService = AuctionsService(
+    AuctionsDao(suppliersDao),
+    suppliersDao,
+    SendGridMailingService(config.email.sendGridApiKey)
+  );
 
-  const supplier = aSupplier();
-  auctionService.addAuction(anAuction([
-    aComponent(),
-    aComponent()
-  ], [
-    aSupplier(),
-    supplier,
-    aSupplier(),
-    aSupplier()
-  ]));
-  auctionService.addAuction(anAuction([
-    aComponent(),
-    aComponent()
-  ], [
-    aSupplier()
-  ]));
-
-  const [auction] = auctionService.getAll().auctions;
-  const [component1, component2] = auction.bom.components;
-
-  const offer1 = anOffer(component1.id);
-  const offer2 = anOffer(component2.id);
-  auctionService.addOffer(supplier.id, { components: [offer1, offer2] });
-
-  const order = aPurchaseOrder(auction.id, [
-    aPurchaseOrderDetails(component1.id, offer1.id)
-  ]);
-
-  auctionService.addPurchaseOrder(order);
+  generateTestData(suppliersService, auctionService);
 
   const router = Router();
+
+  router.get('/suppliers', (req: Request, res: Response) => {
+    res.json(suppliersService.getAll(req.user));
+  });
+
+  router.post('/suppliers', (req: Request, res: Response) => {
+    res.json(suppliersService.addSupplier(req.user, req.body));
+  });
 
   router.get('/auctions/:id?', (req: Request, res: Response) => {
     res.json(auctionService.getAll());

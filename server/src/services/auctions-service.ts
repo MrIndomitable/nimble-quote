@@ -19,6 +19,7 @@ import {
   TAuctionsResult,
   TAuctionResult
 } from '../types/response';
+import { ISuppliersDao } from "../dao/suppliers-dao";
 
 interface IAuctionsService {
   addAuction: (auction: TAuctionDTO) => Guid;
@@ -30,14 +31,21 @@ interface IAuctionsService {
   getComponentById: (id: Guid) => TComponentsWithOffersResult;
 }
 
-export const AuctionsService = (auctionsDao: IAuctionsDao, mailingService?: any): IAuctionsService => {
+export const AuctionsService = (auctionsDao: IAuctionsDao,
+                                suppliersDao: ISuppliersDao,
+                                mailingService?: any): IAuctionsService => {
   const addAuction = (auctionDTO: TAuctionDTO): Guid => {
-    const { suppliers, message, subject } = auctionDTO;
+    const { suppliers: supplierIds, message, subject } = auctionDTO;
     const id = uuid();
     const components: TComponent[] = auctionDTO.bom.components.map(toComponentOf(id));
+    const suppliers = supplierIds.map(id => ({
+      id,
+      email: suppliersDao.getSupplierById('user-id', id).email
+    }));
+
     const auction: TAuction = ({
       id,
-      suppliers: suppliers.map(supplier => supplier as TSupplier),
+      suppliers,
       message,
       subject,
       bom: {

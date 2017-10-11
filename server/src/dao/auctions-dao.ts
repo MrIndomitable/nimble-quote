@@ -1,16 +1,12 @@
 import { TAuction, TComponent, TOffer, TSupplier, TPurchaseOrder } from '../types/auctions';
 import { Guid } from '../types/common';
 import { OrdersDao } from './orders-dao';
+import { ISuppliersDao } from "./suppliers-dao";
 
 type TDBAuction = {
   id: Guid;
   message: string;
   subject: string;
-};
-
-type TDBSupplier = {
-  id: Guid;
-  email: string;
 };
 
 type TDBComponent = {
@@ -41,11 +37,10 @@ export interface IAuctionsDao {
   addPurchaseOrder: (order: TPurchaseOrder) => void;
 }
 
-export const AuctionsDao = (): IAuctionsDao => {
+export const AuctionsDao = (suppliersDao: ISuppliersDao): IAuctionsDao => {
   const _auctions: { [auctionId: string]: TDBAuction } = {};
   const _components: { [componentId: string]: TDBComponent } = {};
   const _componentsByAuction: { [auctionId: string]: Guid[] } = {};
-  const _suppliers: { [supplierId: string]: TDBSupplier } = {};
   const _suppliersByAuction: { [auctionId: string]: Guid[] } = {};
   const _offers: { [componentId: string]: { [supplierId: string]: TDBOffer } } = {};
 
@@ -63,11 +58,8 @@ export const AuctionsDao = (): IAuctionsDao => {
     });
 
     auction.suppliers.forEach(supplier => {
-      _suppliers[supplier.id] = supplier;
       _suppliersByAuction[auction.id].push(supplier.id);
     });
-
-    auction.suppliers.forEach(supplier => _suppliers[supplier.id] = supplier)
   };
 
   const addOffer = (supplierId: Guid, offers: TOffer[]): void => {
@@ -96,7 +88,8 @@ export const AuctionsDao = (): IAuctionsDao => {
     const { id, message, subject } = auction;
 
     const components: TComponent[] = _componentsByAuction[id].map(getComponentById);
-    const suppliers: TSupplier[] = _suppliersByAuction[id].map(getSupplierById);
+    const suppliers: TSupplier[] = _suppliersByAuction[id]
+      .map(supplierId => suppliersDao.getSupplierById('user-id', supplierId));
 
     const purchaseOrders = ordersDao.getOrdersByAuctionId(id);
 
@@ -135,8 +128,6 @@ export const AuctionsDao = (): IAuctionsDao => {
       return { id, componentId, supplierId, partDate, supplyDate: null, quantity, price };
     })
   };
-
-  const getSupplierById = (id: Guid): TSupplier => _suppliers[id];
 
   return {
     addAuction,

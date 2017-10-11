@@ -17,7 +17,7 @@ export type TAuctionBomDTO = {
 }
 
 export type TAuctionDTO = {
-  suppliers: TSupplierDTO[];
+  suppliers: Guid[];
   subject: string;
   message: string;
   bom: TAuctionBomDTO;
