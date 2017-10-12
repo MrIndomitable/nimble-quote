@@ -2,20 +2,20 @@ import { Guid } from '../types/common';
 import { TOffer, TAuction, TPurchaseOrder, TPurchaseOrderDetail, TSupplierDTO } from '../types/auctions';
 const chance = require('chance').Chance();
 
-export const anAuction = (components: any[] = [], suppliers: Guid[] = []): TAuction => ({
+export const anAuction = (components: any[] = [], suppliers: Guid[] = []) => ({
   id: chance.guid(),
   suppliers,
   subject: chance.sentence(),
   message: chance.paragraph(),
   bom: { components },
-  purchaseOrders: []
+  purchaseOrders: [] as any[]
 });
 
 export const aSupplier = (): TSupplierDTO => ({
   email: chance.email()
 });
 
-export const anOffer = (componentId: Guid, supplierId): TOffer => {
+export const anOffer = (componentId: Guid, supplierId: Guid): TOffer => {
   const quantity = chance.integer({ min: 1, max: 1000 });
   const offerPrice = chance.integer({ min: 1, max: 1000 });
   return ({

@@ -33,7 +33,7 @@ interface IAuctionsService {
 
 export const AuctionsService = (auctionsDao: IAuctionsDao,
                                 suppliersDao: ISuppliersDao,
-                                mailingService?: any): IAuctionsService => {
+                                mailingService: any): IAuctionsService => {
   const addAuction = (auctionDTO: TAuctionDTO): Guid => {
     const { suppliers: supplierIds, message, subject } = auctionDTO;
     const id = uuid();

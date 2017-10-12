@@ -70,7 +70,7 @@ describe('auctions-service', () => {
   describe('get components', () => {
     it('should return component with pending status', () => {
       const daoDriver = auctionsDaoDriver();
-      const auctionsService = AuctionsService(daoDriver.api());
+      const auctionsService = AuctionsService(daoDriver.api(), null, null);
 
       daoDriver.expectComponents([aComponent()]);
 
@@ -84,7 +84,7 @@ describe('auctions-service', () => {
 
     it('should return component with has offers status', () => {
       const mock = auctionsDaoDriver();
-      const auctionsService = AuctionsService(mock.api());
+      const auctionsService = AuctionsService(mock.api(), null, null);
 
       mock.expectComponents([aComponent({ offers: [{}] })]);
 

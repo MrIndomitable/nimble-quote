@@ -1,9 +1,7 @@
 import { anAuction, anOffer, aSupplier, aPurchaseOrder, aPurchaseOrderDetails } from './test-auction';
 import { aComponent } from './test-auction-details';
-import { Guid } from "../types/common";
-import { TSupplier, TSupplierDTO } from "../types/auctions";
 
-export function generateTestData(suppliersService: { getAll: ((userId: Guid) => { suppliers: TSupplier[] }); addSupplier: ((userId: Guid, { email }: TSupplierDTO) => any) }, auctionService: IAuctionsService) {
+export function generateTestData(suppliersService: any, auctionService: any) {
   suppliersService.addSupplier('user-id', aSupplier());
   suppliersService.addSupplier('user-id', aSupplier());
   suppliersService.addSupplier('user-id', aSupplier());
