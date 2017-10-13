@@ -55,10 +55,12 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     });
     auctionsDao.addAuction(auction);
 
-    mailingService.sendOfferQuoteEmail({
-      supplier: { email: suppliers[0].email },
-      buyer: { email: 'info@nimble-quote.com' },
-      offerLink: `https://nimble-quote.herokuapp.com/offer?t=${id}`
+    suppliers.forEach((supplier: TSupplier) => {
+      mailingService.sendOfferQuoteEmail({
+        supplier,
+        buyer: { email: 'info@nimble-quote.com' },
+        offerLink: `https://nimble-quote.herokuapp.com/offer?t=${id}`
+      })
     });
 
     return id;
