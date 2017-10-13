@@ -21,8 +21,9 @@ export const submitRFP = values => dispatch => {
   const bom = {
     components: values.details
   };
+
   const auction = {
-    suppliers: [{email: values.supplier}],
+    suppliers: values.suppliers.map(supplier => supplier.value),
     subject: values.subject,
     message: values.message,
     bom

@@ -3,11 +3,17 @@ import {connect} from 'react-redux';
 import {submitRFP} from '../../actions/rfp-actions';
 import {NewQuotePartsDetailsForm} from './NewQuotePartsDetailsForm';
 import {NewQuoteSupplierDetailsForm} from './NewQuoteSupplierDetailsForm';
+import {Link} from 'react-router-dom';
+import {fetchSuppliers} from "../../actions/suppliers-actions";
 
 export class NewQuoteWizardComp extends Component {
   state = {
     page: 1
   };
+
+  componentWillMount() {
+    this.props.fetchSuppliers();
+  }
 
   nextPage() {
     this.setState({ page: this.state.page + 1 })
@@ -32,7 +38,8 @@ export class NewQuoteWizardComp extends Component {
 }
 
 const mapDispatchToProps = {
-  onSubmit: submitRFP
+  onSubmit: submitRFP,
+  fetchSuppliers
 };
 
 export const NewQuoteWizard = connect(null, mapDispatchToProps)(NewQuoteWizardComp);

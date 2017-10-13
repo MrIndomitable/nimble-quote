@@ -9,7 +9,9 @@ export const SuppliersService = (suppliersDao: ISuppliersDao) => {
       suppliers: suppliersDao.getAll(userId)
     }),
     addSupplier: (userId: Guid, { email }: TSupplierDTO) => {
-      suppliersDao.addSupplier(userId, { id: uuid(), email });
+      const id = uuid();
+      suppliersDao.addSupplier(userId, { id, email });
+      return id;
     }
   }
 };
