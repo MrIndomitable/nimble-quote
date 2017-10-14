@@ -22,6 +22,7 @@ import {
   TAuctionResult
 } from '../types/response';
 import { ISuppliersDao } from "../dao/suppliers-dao";
+import { IOffersDao } from "../dao/offers-dao";
 
 interface IAuctionsService {
   addAuction: (auction: TAuctionDTO) => Guid;
@@ -34,7 +35,8 @@ interface IAuctionsService {
 }
 
 export const AuctionsService = (auctionsDao: IAuctionsDao,
-                                suppliersDao: ISuppliersDao,
+                                suppliersDao: ISuppliersDao, // FIXME should probably be suppliersService
+                                offersDao: IOffersDao,
                                 mailingService: any): IAuctionsService => {
   function getOrCreateSuppliers(suppliers: TSupplierDTO[]) {
     return suppliers.map(({ id, email }) => {

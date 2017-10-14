@@ -2,6 +2,7 @@ import { TAuction, TComponent, TOffer, TSupplier, TPurchaseOrder } from '../type
 import { Guid } from '../types/common';
 import { OrdersDao } from './orders-dao';
 import { ISuppliersDao } from "./suppliers-dao";
+import { IOffersDao } from "./offers-dao";
 
 type TDBAuction = {
   id: Guid;
@@ -19,14 +20,6 @@ type TDBComponent = {
   auctionId: Guid;
 };
 
-type TDBOffer = {
-  id: Guid;
-  componentId: Guid;
-  price: number;
-  quantity: number;
-  partDate: number;
-}
-
 export interface IAuctionsDao {
   addAuction: (auction: TAuction) => void;
   addOffer: (supplierId: Guid, offers: TOffer[]) => void;
@@ -37,12 +30,11 @@ export interface IAuctionsDao {
   addPurchaseOrder: (order: TPurchaseOrder) => void;
 }
 
-export const AuctionsDao = (suppliersDao: ISuppliersDao): IAuctionsDao => {
+export const AuctionsDao = (suppliersDao: ISuppliersDao, offersDao: IOffersDao): IAuctionsDao => {
   const _auctions: { [auctionId: string]: TDBAuction } = {};
   const _components: { [componentId: string]: TDBComponent } = {};
   const _componentsByAuction: { [auctionId: string]: Guid[] } = {};
   const _suppliersByAuction: { [auctionId: string]: Guid[] } = {};
-  const _offers: { [componentId: string]: { [supplierId: string]: TDBOffer } } = {};
 
   const ordersDao = OrdersDao();
 
@@ -53,7 +45,6 @@ export const AuctionsDao = (suppliersDao: ISuppliersDao): IAuctionsDao => {
 
     auction.bom.components.forEach(comp => {
       _components[comp.id] = comp;
-      _offers[comp.id] = {};
       _componentsByAuction[auction.id].push(comp.id);
     });
 
@@ -63,16 +54,7 @@ export const AuctionsDao = (suppliersDao: ISuppliersDao): IAuctionsDao => {
   };
 
   const addOffer = (supplierId: Guid, offers: TOffer[]): void => {
-    offers.forEach((offer: TOffer) => {
-      const { componentId } = offer;
-      const componentOffers = _offers[componentId] || {};
-
-      if (componentOffers[supplierId]) {
-        console.log(`supplier ${supplierId} already oofered on component ${componentId}`);
-      } else {
-        componentOffers[supplierId] = offer;
-      }
-    });
+    offersDao.addOffer(supplierId, offers);
   };
 
   const addPurchaseOrder = (order: TPurchaseOrder): void => {
@@ -116,17 +98,9 @@ export const AuctionsDao = (suppliersDao: ISuppliersDao): IAuctionsDao => {
       quantity,
       supplyDate,
       auctionId,
-      offers: getOffersByComponentId(id),
+      offers: offersDao.getOffersByComponentId(id),
       purchaseOrder
     };
-  };
-
-  const getOffersByComponentId = (componentId: Guid): TOffer[] => {
-    const componentOffers = _offers[componentId];
-    return Object.keys(componentOffers).map((supplierId: Guid) => {
-      const { id, price, quantity, partDate } = componentOffers[supplierId];
-      return { id, componentId, supplierId, partDate, supplyDate: null, quantity, price };
-    })
   };
 
   return {

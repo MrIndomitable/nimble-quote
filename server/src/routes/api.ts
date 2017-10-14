@@ -6,13 +6,16 @@ import { TConfig } from '../config/config';
 import { SuppliersDao } from "../dao/suppliers-dao";
 import { SuppliersService } from "../services/suppliers-service";
 import { generateTestData } from "../test-data/test-data";
+import { OffersDao } from "../dao/offers-dao";
 
 export const ApiRoute = (config: TConfig) => {
   const suppliersDao = SuppliersDao();
+  const offersDao = OffersDao();
   const suppliersService = SuppliersService(suppliersDao);
   const auctionService = AuctionsService(
-    AuctionsDao(suppliersDao),
+    AuctionsDao(suppliersDao, offersDao),
     suppliersDao,
+    offersDao,
     SendGridMailingService(config.email.sendGridApiKey)
   );
 
