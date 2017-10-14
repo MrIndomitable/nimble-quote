@@ -1,8 +1,8 @@
 import { Guid } from '../types/common';
-import { TOffer, TAuction, TPurchaseOrder, TPurchaseOrderDetail, TSupplierDTO } from '../types/auctions';
+import { TOffer, TPurchaseOrder, TPurchaseOrderDetail, TSupplierDTO } from '../types/auctions';
 const chance = require('chance').Chance();
 
-export const anAuction = (components: any[] = [], suppliers: Guid[] = []) => ({
+export const anAuction = (components: any[] = [], suppliers: TSupplierDTO[] = []) => ({
   id: chance.guid(),
   suppliers,
   subject: chance.sentence(),

@@ -13,16 +13,16 @@ export function generateTestData(suppliersService: any, auctionService: any) {
     aComponent(),
     aComponent()
   ], [
-    supplier1.id,
-    supplier2.id,
-    supplier3.id,
-    supplier4.id
+    supplier1,
+    supplier2,
+    supplier3,
+    supplier4
   ]));
   auctionService.addAuction(anAuction([
     aComponent(),
     aComponent()
   ], [
-    supplier2.id
+    supplier2
   ]));
 
   const [auction] = auctionService.getAll().auctions;

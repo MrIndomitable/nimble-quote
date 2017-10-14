@@ -1,10 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Field, change} from 'redux-form';
+import {Field} from 'redux-form';
 import {Creatable} from 'react-select';
-import {addNewSupplier} from "../../actions/suppliers-actions";
-import {formValueSelector} from 'redux-form'
-
 import 'react-select/dist/react-select.css';
 
 const SelectInput = (props) => (
@@ -17,33 +14,38 @@ const SelectInput = (props) => (
   />
 );
 
+const addIdOrEmailProperties = options => {
+  const newSupplier = (label, value) => ({
+    label,
+    value,
+    email: label
+  });
+
+  const existingSupplier = (label, value) => ({
+    label,
+    value,
+    id: value
+  });
+
+  return options.map(option => {
+    const {label, value} = option;
+
+    if (label === value) {
+      return newSupplier(label, value);
+    } else {
+      return existingSupplier(label, value);
+    }
+  })
+};
+
 class SuppliersInputComp extends React.Component {
   state = {
     newEmails: [] // TODO try to remove this, might come from store ???
   };
 
-  createNewSupplier({value, label}) {
-    const {newEmails} = this.state;
-    const {addNewSupplier} = this.props;
-
-    this.setState({newEmails: [...newEmails, {value, label}]});
-    addNewSupplier(value).then(supplier => {
-      const isNewEmail = this.state.newEmails.find(option => option.value === supplier.email);
-
-      if (isNewEmail) {
-        // filter the created email from state
-        const newList = newEmails.filter(option => option.value !== supplier.email);
-        this.setState({newEmails: newList});
-
-        // update inout value to match supplier id
-        this.props.updateNewEmail(supplier);
-      }
-    });
-  };
-
   render() {
     const {newEmails} = this.state;
-    const {suppliers, label, id} = this.props;
+    const {suppliers, label, id, placeholder} = this.props;
     const options = suppliers.map(({id, email}) => ({
       value: id, label: email
     }));
@@ -57,9 +59,13 @@ class SuppliersInputComp extends React.Component {
       <div>
         {label && <label htmlFor={id}>{label}</label>}
         <Field
+          className="form-group"
+          normalize={addIdOrEmailProperties}
           name={id}
           options={extendedOptions}
-          onNewOptionClick={option => this.createNewSupplier(option)}
+          autofocus
+          placeholder={placeholder || ''}
+          promptTextCreator={email => `Create new supplier ${email}`}
           multi
           component={SelectInput}
         />
@@ -68,32 +74,12 @@ class SuppliersInputComp extends React.Component {
   }
 }
 
-const selector = formValueSelector('NewQuoteForm');
-
-const mapStateToProps = (state, {id}) => {
+const mapStateToProps = (state) => {
   const suppliers = Object.values(state.suppliers);
 
   return ({
     suppliers,
-    currentSuppliers: selector(state, id) || [],
-    fieldId: id
   });
 };
 
-const mapDispatchToProps = {
-  addNewSupplier,
-  updateNewEmail: (currentSuppliers, fieldId) => dispatch => ({id, email}) => dispatch(
-    change('NewQuoteForm', fieldId, [...currentSuppliers, {label: email, value: id}])
-  )
-};
-
-const mergeProps = ({suppliers, currentSuppliers}, {addNewSupplier, updateNewEmail}, ownProps) => {
-  return {
-    ...ownProps,
-    suppliers,
-    addNewSupplier,
-    updateNewEmail: updateNewEmail(currentSuppliers, ownProps.id)
-  }
-};
-
-export const SuppliersInput = connect(mapStateToProps, mapDispatchToProps, mergeProps)(SuppliersInputComp);
+export const SuppliersInput = connect(mapStateToProps)(SuppliersInputComp);

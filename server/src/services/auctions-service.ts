@@ -8,7 +8,8 @@ import {
   TComponent,
   TSupplier,
   TOfferDTO,
-  TPurchaseOrderDTO
+  TPurchaseOrderDTO,
+  TSupplierDTO
 } from '../types/auctions';
 import {
   TComponentsResult,
@@ -34,16 +35,29 @@ interface IAuctionsService {
 export const AuctionsService = (auctionsDao: IAuctionsDao,
                                 suppliersDao: ISuppliersDao,
                                 mailingService: any): IAuctionsService => {
+  function getOrCreateSuppliers(suppliers: TSupplierDTO[]) {
+    return suppliers.map(({ id, email }) => {
+      if (!id) {
+        return {
+          id: suppliersDao.addSupplier('user-id', { id: uuid(), email }),
+          email
+        }
+      }
+
+      return ({
+        id,
+        email: suppliersDao.getSupplierById('user-id', id).email
+      });
+    });
+  }
+
   const addAuction = (auctionDTO: TAuctionDTO): Guid => {
-    const { suppliers: supplierIds, message, subject } = auctionDTO;
+    const { message, subject } = auctionDTO;
     const id = uuid();
     const components: TComponent[] = auctionDTO.bom.components.map(toComponentOf(id));
-    const suppliers = supplierIds.map(id => ({
-      id,
-      email: suppliersDao.getSupplierById('user-id', id).email
-    }));
+    const suppliers = getOrCreateSuppliers(auctionDTO.suppliers);
 
-    const auction: TAuction = ({
+    auctionsDao.addAuction(({
       id,
       suppliers,
       message,
@@ -52,8 +66,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
         components
       },
       purchaseOrders: []
-    });
-    auctionsDao.addAuction(auction);
+    }));
 
     suppliers.forEach((supplier: TSupplier) => {
       mailingService.sendOfferQuoteEmail({

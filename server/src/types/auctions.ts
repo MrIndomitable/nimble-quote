@@ -1,7 +1,8 @@
 import { Guid } from './common';
 
 export type TSupplierDTO = {
-  email: string;
+  id?: Guid;
+  email?: string;
 }
 
 export type TComponentDTO = {
@@ -17,7 +18,7 @@ export type TAuctionBomDTO = {
 }
 
 export type TAuctionDTO = {
-  suppliers: Guid[];
+  suppliers: TSupplierDTO[];
   subject: string;
   message: string;
   bom: TAuctionBomDTO;

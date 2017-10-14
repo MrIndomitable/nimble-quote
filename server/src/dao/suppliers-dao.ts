@@ -7,7 +7,7 @@ type TDBSupplier = {
 }
 
 export interface ISuppliersDao {
-  addSupplier: (userId: Guid, supplier: TSupplier) => void;
+  addSupplier: (userId: Guid, supplier: TSupplier) => Guid;
   getSupplierById: (userId: Guid, id: Guid) => TSupplier;
   getAll: (userId: Guid) => TSupplier[];
 }
@@ -20,6 +20,8 @@ export const SuppliersDao = (): ISuppliersDao => {
 
     // TODO check if email exists
     _suppliers[id] = { id, email };
+
+    return id;
   };
 
   const getSupplierById = (userId: Guid, id: Guid) => _suppliers[id];

@@ -23,7 +23,7 @@ export const submitRFP = values => dispatch => {
   };
 
   const auction = {
-    suppliers: values.suppliers.map(supplier => supplier.value),
+    suppliers: values.suppliers,
     subject: values.subject,
     message: values.message,
     bom
