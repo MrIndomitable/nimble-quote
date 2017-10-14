@@ -5,7 +5,7 @@ import { SendGridMailingService } from '../mailing-service/send-grid-mailing-ser
 import { TConfig } from '../config/config';
 import { SuppliersDao } from "../dao/suppliers-dao";
 import { SuppliersService } from "../services/suppliers-service";
-import { generateTestData } from "../test-data/test-data";
+// import { generateTestData } from "../test-data/test-data";
 import { OffersDao } from "../dao/offers-dao";
 
 export const ApiRoute = (config: TConfig) => {
@@ -19,7 +19,7 @@ export const ApiRoute = (config: TConfig) => {
     SendGridMailingService(config.email.sendGridApiKey)
   );
 
-  generateTestData(suppliersService, auctionService);
+  // generateTestData(suppliersService, auctionService);
 
   const router = Router();
 

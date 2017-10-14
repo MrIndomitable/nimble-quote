@@ -28,12 +28,16 @@ export function generateTestData(suppliersService: any, auctionService: any) {
   const [auction] = auctionService.getAll().auctions;
   const [component1, component2] = auction.bom.components;
 
-  const offer1 = anOffer(component2.id, supplier1.id);
-  auctionService.addOffer(supplier1.id, { components: [offer1] });
+  auctionService.addOffer(supplier1.id, { components: [
+    anOffer(component2.id)
+  ] });
+  const [component] = auctionService.getComponentById(component2.id).components;
+  const [offer1] = component.offers;
 
-  const offer2 = anOffer(component1.id, supplier2.id);
-  const offer3 = anOffer(component2.id, supplier2.id);
-  auctionService.addOffer(supplier2.id, { components: [offer2, offer3] });
+  auctionService.addOffer(supplier2.id, { components: [
+    anOffer(component1.id),
+    anOffer(component2.id)
+  ] });
 
   const order = aPurchaseOrder(auction.id, [
     aPurchaseOrderDetails(component1.id, offer1.id)

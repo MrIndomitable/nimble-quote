@@ -22,6 +22,7 @@ import {
   TAuctionResult
 } from '../types/response';
 import { ISuppliersDao } from "../dao/suppliers-dao";
+import { IMailService } from "../mailing-service/send-grid-mailing-service";
 import { IOffersDao } from "../dao/offers-dao";
 
 interface IAuctionsService {
@@ -37,7 +38,7 @@ interface IAuctionsService {
 export const AuctionsService = (auctionsDao: IAuctionsDao,
                                 suppliersDao: ISuppliersDao, // FIXME should probably be suppliersService
                                 offersDao: IOffersDao,
-                                mailingService: any): IAuctionsService => {
+                                mailingService: IMailService): IAuctionsService => {
   function getOrCreateSuppliers(suppliers: TSupplierDTO[]) {
     return suppliers.map(({ id, email }) => {
       if (!id) {
@@ -124,10 +125,36 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     };
 
     auctionsDao.addOffer(supplierId, offers.components.map(toOffer));
+    // TODO send mail to user
+  };
+
+  const getSuppliersForOrder = (order: TPurchaseOrderDTO): TSupplier[] => {
+    const offerIds = order.details.map(detail => detail.offerId);
+    const supplierIds = offersDao.getSuppliersByOffers(offerIds);
+    return supplierIds.map(supplierId => suppliersDao.getSupplierById('user-id', supplierId));
   };
 
   const addPurchaseOrder = (order: TPurchaseOrderDTO): void => {
-    auctionsDao.addPurchaseOrder(Object.assign({}, order, { id: uuid() }));
+    const id = uuid();
+    auctionsDao.addPurchaseOrder(Object.assign({}, order, { id }));
+
+    getSuppliersForOrder(order).forEach(supplier => {
+      const poEmail = {
+        supplier: {
+          displayName: supplier.email, // TODO should be name or email
+          email: supplier.email
+        },
+        company: {
+          email: 'info@nimble-quote.com' // FIXME should be the email of current logged user
+        },
+        order: {
+          id
+        }
+      };
+
+      mailingService.sendPurchaseOrder(poEmail);
+    });
+
   };
 
   return {

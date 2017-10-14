@@ -1,4 +1,10 @@
+import { Guid } from "../types/common";
 const sgMail = require('@sendgrid/mail');
+
+export interface IMailService {
+  sendOfferQuoteEmail: (offer: OfferQuoteEmail) => void;
+  sendPurchaseOrder: (purchase: PurchaseOrderEmail) => void;
+}
 
 type UserProfile = {
   email: string;
@@ -10,7 +16,13 @@ type OfferQuoteEmail = {
   offerLink: string;
 }
 
-export const SendGridMailingService = (apiKey: string) => {
+type PurchaseOrderEmail = {
+  supplier: { displayName: string, email: string };
+  company: { email: string };
+  order: { id: Guid };
+}
+
+export const SendGridMailingService = (apiKey: string): IMailService => {
   sgMail.setApiKey(apiKey);
 
   const sendOfferQuoteEmail = (offerQuoteEmail: OfferQuoteEmail) => {
@@ -36,7 +48,34 @@ style="
     sgMail.send(msg);
   };
 
+  const sendPurchaseOrder = ({supplier, company, order}: PurchaseOrderEmail) => {
+    const html = `<h2>Hi ${supplier.displayName}</h2>
+<p>You have a new order waiting for you from ${company.email}</p>
+<a style="
+    background-color: #1E90FF;
+    color: white;
+	padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 25px;
+"
+href="https://nimble-quote.herokuapp.com/view?order=${order.id}">View Order</a>`;
+
+    const msg = {
+      to: supplier.email,
+      from: company.email,
+      subject: 'New order is waiting for you at nimble-quote.com',
+      text: `You have a new order from ${company.email} at nimble-quote.com`,
+      html,
+    };
+
+    console.log(msg);
+    sgMail.send(msg);
+  };
+
   return {
-    sendOfferQuoteEmail
+    sendOfferQuoteEmail,
+    sendPurchaseOrder
   };
 };
