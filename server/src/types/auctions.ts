@@ -25,8 +25,16 @@ export type TAuctionDTO = {
   purchaseOrders: TPurchaseOrder[];
 }
 
-export type TOfferDTO = {
-  components: TOffer[];
+export type TOffersDTO = {
+  components: TOfferDTO[];
+}
+
+export type TOfferDTO =  {
+  componentId: Guid;
+  quantity: number;
+  price: number;
+  partDate: number;
+  supplyDate: number;
 }
 
 export type TPurchaseOrderDTO = {

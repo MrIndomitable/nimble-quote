@@ -7,9 +7,10 @@ import {
   TComponentDTO,
   TComponent,
   TSupplier,
+  TOffersDTO,
   TOfferDTO,
   TPurchaseOrderDTO,
-  TSupplierDTO
+  TSupplierDTO, TOffer
 } from '../types/auctions';
 import {
   TComponentsResult,
@@ -24,7 +25,7 @@ import { ISuppliersDao } from "../dao/suppliers-dao";
 
 interface IAuctionsService {
   addAuction: (auction: TAuctionDTO) => Guid;
-  addOffer: (supplierId: Guid, offers: TOfferDTO) => void;
+  addOffer: (supplierId: Guid, offers: TOffersDTO) => void;
   addPurchaseOrder: (order: TPurchaseOrderDTO) => void;
   getById: (id: Guid) => TAuctionResult;
   getAll: () => TAuctionsResult;
@@ -72,7 +73,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
       mailingService.sendOfferQuoteEmail({
         supplier,
         buyer: { email: 'info@nimble-quote.com' },
-        offerLink: `https://nimble-quote.herokuapp.com/offer?t=${id}`
+        offerLink: `https://nimble-quote.herokuapp.com/offer?t=${id}_${supplier.id}`
       })
     });
 
@@ -106,8 +107,21 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     }
   };
 
-  const addOffer = (supplierId: Guid, offers: TOfferDTO): void => {
-    auctionsDao.addOffer(supplierId, offers.components);
+  const addOffer = (supplierId: Guid, offers: TOffersDTO): void => {
+    const toOffer = (offerDTO: TOfferDTO): TOffer => {
+      const {componentId, quantity, price, partDate, supplyDate} = offerDTO;
+      return {
+        id: uuid(),
+        supplierId,
+        componentId,
+        quantity,
+        price,
+        partDate,
+        supplyDate
+      }
+    };
+
+    auctionsDao.addOffer(supplierId, offers.components.map(toOffer));
   };
 
   const addPurchaseOrder = (order: TPurchaseOrderDTO): void => {
