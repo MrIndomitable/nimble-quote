@@ -31,6 +31,15 @@ const renderQuotes = ({fields}) => {
 
 export const NewQuotePartsDetailsFormComp = ({handleSubmit}) => {
   return <form className="new-quote-form" onSubmit={ handleSubmit }>
+  <div className="new-quote-form-headers">
+    <div className="">Manufacture</div>
+    <div className="">Part #</div>
+    <div className="">Quantity</div>
+    <div className="">Target price</div>
+    <div className="">Part date</div>
+    <div className="">Supply date</div>
+    <div className="">Total price</div>
+  </div>
     <FieldArray name="details" component={renderQuotes}/>
     <button type="submit" className="btn btn-success btn-lg choose-supplier">
       Choose supplier's <span className="fa fa-caret-right"/>
