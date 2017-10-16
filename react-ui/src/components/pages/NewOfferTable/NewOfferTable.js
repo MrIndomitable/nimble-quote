@@ -45,7 +45,7 @@ export const NewOfferTableComp = ({handleSubmit}) => {
       </thead>
       <FieldArray name="components" component={renderComponents}/>
     </table>
-    <button className="btn btn-success btn-lg" type="submit">Submit your offer</button>
+    <button className="btn btn-success btn-lg submit-offer" type="submit">Submit your offer</button>
   </form>
 };
 
