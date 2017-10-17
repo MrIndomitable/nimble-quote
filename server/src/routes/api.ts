@@ -79,8 +79,8 @@ export const ApiRoute = (config: TConfig) => {
     if (!req.isAuthenticated()) {
       res.json({ isLoggedIn: req.isAuthenticated() });
     } else {
-      const { name, email, image } = req.user.google;
-      res.json({ name, email, image, isLoggedIn: req.isAuthenticated() });
+      const { displayName, email, profileImage } = req.user;
+      res.json({ name: displayName, email, image: profileImage, isLoggedIn: req.isAuthenticated() });
     }
   });
 

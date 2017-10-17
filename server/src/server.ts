@@ -8,7 +8,7 @@ import * as session from 'express-session';
 import configurePassport from './config/passport';
 import { AuthRoute } from './routes/auth';
 import { ApiRoute } from './routes/api';
-import { Users } from './services/users-service';
+import { UsersService } from './services/users-service';
 import { TConfig } from './config/config';
 
 export const configureApp = (config: TConfig) => {
@@ -30,7 +30,7 @@ export const configureApp = (config: TConfig) => {
     }
   }));
 
-  const passport = configurePassport(Users(), config);
+  const passport = configurePassport(UsersService(), config);
 
   app.use(passport.initialize());
   app.use(passport.session());

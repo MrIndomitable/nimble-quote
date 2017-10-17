@@ -1,46 +1,41 @@
 import { TConfig } from './config';
 import * as passport from 'passport';
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
+import { IUsersService, TUser } from "../services/users-service";
+import { Guid } from "../types/common";
 
-export default (users: any, config: TConfig) => {
-  passport.serializeUser((user: any, done: any) => {
-    done(null, user.google.id);
+export default (users: IUsersService, config: TConfig) => {
+  passport.serializeUser((user: TUser, done: any) => {
+    done(null, user.id);
   });
 
-  passport.deserializeUser((id: string, done: any) => {
-    users.findById(id, (err: any, user: any) => {
-      done(err, user);
-    });
+  passport.deserializeUser((id: Guid, done: any) => {
+    users.findById(id)
+      .then((user: TUser) => done(null, user))
+      .catch(done);
   });
 
   passport.use(new GoogleStrategy(config.googleAuth,
     (token: any, refreshToken: any, profile: any, done: any) => {
       process.nextTick(() => {
-        users.findOne({'google.id': profile.id}, (err: any, user: any) =>{
-          if (err)
-            return done(err);
-
-          if (user) {
-            // if a user is found, log them in
-            return done(null, user);
-          } else {
-            const newUser = {
-              google: {
-                id: profile.id,
-                token: token,
-                name: profile.displayName,
+        users.findByGoogleId(profile.id)
+          .then((user: TUser) => {
+            if (user) {
+              done(null, user);
+            } else {
+              const newUser = {
+                displayName: profile.displayName,
                 email: profile.emails[0].value,
-                image: profile.photos[0].value
-              }
-            };
+                profileImage: profile.photos[0].value,
+                googleId: profile.id,
+                token: token
+              };
 
-            users.save(newUser, (err: any) => {
-              if (err)
-                throw err;
-              return done(null, newUser);
-            });
-          }
-        });
+              users.saveGoogleUser(newUser)
+                .then((user: TUser) => done(null, user))
+                .catch(done);
+            }
+          });
       });
     }
   ));
