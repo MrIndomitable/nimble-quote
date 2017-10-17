@@ -70,16 +70,17 @@ export const ApiRoute = (config: TConfig) => {
     res.sendStatus(201);
   });
 
-  router.post('/order', (req: Request, res: Response) => {
+  router.post('/order', requireLogin, (req: Request, res: Response) => {
     const { auctionId, componentId, offerId } = req.body;
-    auctionService.addPurchaseOrder({
+    const order = {
       auctionId,
       details: [{
         componentId,
         offerId,
         quantity: 10
       }]
-    });
+    };
+    auctionService.addPurchaseOrder(req.user.id, order);
     res.sendStatus(201);
   });
 

@@ -8,6 +8,7 @@ type TDBAuction = {
   id: Guid;
   message: string;
   subject: string;
+  userId: Guid;
 };
 
 type TDBComponent = {
@@ -42,7 +43,7 @@ export const AuctionsDao = (suppliersDao: ISuppliersDao, offersDao: IOffersDao):
   const addAuction = (userId: Guid, auction: TAuction) => {
     _auctionsByUser[userId] = _auctionsByUser[userId] || [];
     _auctionsByUser[userId].push(auction.id);
-    _auctions[auction.id] = auction;
+    _auctions[auction.id] = Object.assign({}, auction, { userId });
     _componentsByAuction[auction.id] = [];
     _suppliersByAuction[auction.id] = [];
 
@@ -74,7 +75,7 @@ export const AuctionsDao = (suppliersDao: ISuppliersDao, offersDao: IOffersDao):
 
     const components: TComponent[] = _componentsByAuction[id].map(getComponentById);
     const suppliers: TSupplier[] = _suppliersByAuction[id]
-      .map(supplierId => suppliersDao.getSupplierById('user-id', supplierId));
+      .map(supplierId => suppliersDao.getSupplierById(auction.userId, supplierId));
 
     const purchaseOrders = ordersDao.getOrdersByAuctionId(id);
 

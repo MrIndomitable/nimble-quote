@@ -13,6 +13,7 @@ export interface ISuppliersDao {
 }
 
 export const SuppliersDao = (): ISuppliersDao => {
+  const _suppliersByUser: { [userId: string]: Guid[] } = {};
   const _suppliers: { [supplierId: string]: TDBSupplier } = {};
 
   const addSupplier = (userId: Guid, supplier: TSupplier) => {
@@ -21,15 +22,16 @@ export const SuppliersDao = (): ISuppliersDao => {
     // TODO check if email exists
     _suppliers[id] = { id, email };
 
+    _suppliersByUser[userId] = _suppliersByUser[userId] || [];
+    _suppliersByUser[userId].push(id);
+
     return id;
   };
 
   const getSupplierById = (userId: Guid, id: Guid) => _suppliers[id];
 
   const getAll = (userId: Guid) => {
-    return Object
-      .keys(_suppliers)
-      .map((id: Guid) => _suppliers[id]);
+    return (_suppliersByUser[userId] || []).map(id => _suppliers[id]);
   };
 
   return {

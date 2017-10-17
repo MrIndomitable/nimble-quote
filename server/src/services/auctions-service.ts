@@ -28,7 +28,7 @@ import { IOffersDao } from "../dao/offers-dao";
 interface IAuctionsService {
   addAuction: (userId: Guid, auction: TAuctionDTO) => Guid;
   addOffer: (supplierId: Guid, offers: TOffersDTO) => void;
-  addPurchaseOrder: (order: TPurchaseOrderDTO) => void;
+  addPurchaseOrder: (userId: Guid, order: TPurchaseOrderDTO) => void;
   getById: (id: Guid) => TAuctionResult;
   getAll: (userId: Guid) => TAuctionsResult;
   getComponents: () => TComponentsResult;
@@ -39,18 +39,18 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
                                 suppliersDao: ISuppliersDao, // FIXME should probably be suppliersService
                                 offersDao: IOffersDao,
                                 mailingService: IMailService): IAuctionsService => {
-  function getOrCreateSuppliers(suppliers: TSupplierDTO[]) {
+  function getOrCreateSuppliers(userId: Guid, suppliers: TSupplierDTO[]) {
     return suppliers.map(({ id, email }) => {
       if (!id) {
         return {
-          id: suppliersDao.addSupplier('user-id', { id: uuid(), email }),
+          id: suppliersDao.addSupplier(userId, { id: uuid(), email }),
           email
         }
       }
 
       return ({
         id,
-        email: suppliersDao.getSupplierById('user-id', id).email
+        email: suppliersDao.getSupplierById(userId, id).email
       });
     });
   }
@@ -59,7 +59,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     const { message, subject } = auctionDTO;
     const id = uuid();
     const components: TComponent[] = auctionDTO.bom.components.map(toComponentOf(id));
-    const suppliers = getOrCreateSuppliers(auctionDTO.suppliers);
+    const suppliers = getOrCreateSuppliers(userId, auctionDTO.suppliers);
 
     const auction: TAuction = {
       id,
@@ -129,17 +129,17 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     // TODO send mail to user
   };
 
-  const getSuppliersForOrder = (order: TPurchaseOrderDTO): TSupplier[] => {
+  const getSuppliersForOrder = (userId: Guid, order: TPurchaseOrderDTO): TSupplier[] => {
     const offerIds = order.details.map(detail => detail.offerId);
     const supplierIds = offersDao.getSuppliersByOffers(offerIds);
-    return supplierIds.map(supplierId => suppliersDao.getSupplierById('user-id', supplierId));
+    return supplierIds.map(supplierId => suppliersDao.getSupplierById(userId, supplierId));
   };
 
-  const addPurchaseOrder = (order: TPurchaseOrderDTO): void => {
+  const addPurchaseOrder = (userId: Guid, order: TPurchaseOrderDTO): void => {
     const id = uuid();
     auctionsDao.addPurchaseOrder(Object.assign({}, order, { id }));
 
-    getSuppliersForOrder(order).forEach(supplier => {
+    getSuppliersForOrder(userId, order).forEach(supplier => {
       const poEmail = {
         supplier: {
           displayName: supplier.email, // TODO should be name or email
