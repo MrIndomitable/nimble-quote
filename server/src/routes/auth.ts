@@ -12,8 +12,8 @@ export const AuthRoute =  (passport: any) => {
   router.get(
     '/auth/google/callback',
     passport.authenticate('google', {
-      successRedirect : '/profile',
-      failureRedirect : '/'
+      successRedirect : '/',
+      failureRedirect : '/login'
     })
   );
 

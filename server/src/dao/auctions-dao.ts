@@ -21,16 +21,17 @@ type TDBComponent = {
 };
 
 export interface IAuctionsDao {
-  addAuction: (auction: TAuction) => void;
+  addAuction: (userId: Guid, auction: TAuction) => void;
   addOffer: (supplierId: Guid, offers: TOffer[]) => void;
   getAuctionById: (auctionId: Guid) => TAuction;
-  getAuctions: () => TAuction[];
+  getAuctions: (userId: Guid) => TAuction[];
   getComponents: () => TComponent[];
   getComponentById: (id: Guid) => TComponent;
   addPurchaseOrder: (order: TPurchaseOrder) => void;
 }
 
 export const AuctionsDao = (suppliersDao: ISuppliersDao, offersDao: IOffersDao): IAuctionsDao => {
+  const _auctionsByUser: { [userId: string]: Guid[] } = {};
   const _auctions: { [auctionId: string]: TDBAuction } = {};
   const _components: { [componentId: string]: TDBComponent } = {};
   const _componentsByAuction: { [auctionId: string]: Guid[] } = {};
@@ -38,7 +39,9 @@ export const AuctionsDao = (suppliersDao: ISuppliersDao, offersDao: IOffersDao):
 
   const ordersDao = OrdersDao();
 
-  const addAuction = (auction: TAuction) => {
+  const addAuction = (userId: Guid, auction: TAuction) => {
+    _auctionsByUser[userId] = _auctionsByUser[userId] || [];
+    _auctionsByUser[userId].push(auction.id);
     _auctions[auction.id] = auction;
     _componentsByAuction[auction.id] = [];
     _suppliersByAuction[auction.id] = [];
@@ -78,8 +81,8 @@ export const AuctionsDao = (suppliersDao: ISuppliersDao, offersDao: IOffersDao):
     return { id, message, subject, bom: { components }, suppliers, purchaseOrders }
   };
 
-  const getAuctions = (): TAuction[] => {
-    return Object.keys(_auctions).map(id => toAuction(_auctions[id]));
+  const getAuctions = (userId: Guid): TAuction[] => {
+    return (_auctionsByUser[userId] || []).map(id => toAuction(_auctions[id]));
   };
 
   const getComponents = () => {

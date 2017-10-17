@@ -40,11 +40,11 @@ export const ApiRoute = (config: TConfig) => {
   });
 
   router.get('/auctions/:id?', requireLogin, (req: Request, res: Response) => {
-    res.json(auctionService.getAll());
+    res.json(auctionService.getAll(req.user.id));
   });
 
   router.post('/auctions', requireLogin, (req: Request, res: Response) => {
-    const auctionId = auctionService.addAuction(req.body);
+    const auctionId = auctionService.addAuction(req.user.id, req.body);
     res.status(201).json(auctionId);
   });
 

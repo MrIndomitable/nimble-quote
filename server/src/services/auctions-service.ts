@@ -26,11 +26,11 @@ import { IMailService } from "../mailing-service/send-grid-mailing-service";
 import { IOffersDao } from "../dao/offers-dao";
 
 interface IAuctionsService {
-  addAuction: (auction: TAuctionDTO) => Guid;
+  addAuction: (userId: Guid, auction: TAuctionDTO) => Guid;
   addOffer: (supplierId: Guid, offers: TOffersDTO) => void;
   addPurchaseOrder: (order: TPurchaseOrderDTO) => void;
   getById: (id: Guid) => TAuctionResult;
-  getAll: () => TAuctionsResult;
+  getAll: (userId: Guid) => TAuctionsResult;
   getComponents: () => TComponentsResult;
   getComponentById: (id: Guid) => TComponentsWithOffersResult;
 }
@@ -55,13 +55,13 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     });
   }
 
-  const addAuction = (auctionDTO: TAuctionDTO): Guid => {
+  const addAuction = (userId: Guid, auctionDTO: TAuctionDTO): Guid => {
     const { message, subject } = auctionDTO;
     const id = uuid();
     const components: TComponent[] = auctionDTO.bom.components.map(toComponentOf(id));
     const suppliers = getOrCreateSuppliers(auctionDTO.suppliers);
 
-    auctionsDao.addAuction(({
+    const auction: TAuction = {
       id,
       suppliers,
       message,
@@ -70,7 +70,8 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
         components
       },
       purchaseOrders: []
-    }));
+    };
+    auctionsDao.addAuction(userId, auction);
 
     suppliers.forEach((supplier: TSupplier) => {
       mailingService.sendOfferQuoteEmail({
@@ -89,8 +90,8 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     return toAuctionResult(auction);
   };
 
-  const getAll = (): TAuctionsResult => {
-    return { auctions: auctionsDao.getAuctions().map(toAuctionResult) };
+  const getAll = (userId: Guid): TAuctionsResult => {
+    return { auctions: auctionsDao.getAuctions(userId).map(toAuctionResult) };
   };
 
   const getComponents = (): TComponentsResult => {
