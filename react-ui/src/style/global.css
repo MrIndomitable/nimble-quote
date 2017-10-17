@@ -315,3 +315,17 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     margin-right: 40px;
     margin-bottom: 20px;
 }
+
+/*New quote form progress bar */
+  .progress{width:100%;margin:20px auto;text-align:center; height: 100%; color:#fff; background-color: #fff; box-shadow: none;}
+  .progress .circle,.progress .bar{position:relative;display:inline-block;background:#cfcfcf;width:60px;height:60px;border-radius:40px;}
+  .progress .circle:not(:last-child){margin-right:80px;}
+  .progress .bar{position:absolute;width:85px;height:6px;top:25px;left:60px;border-left:none;border-right:none;border-radius:0}
+  .progress .circle .label{display:inline-block;width:32px;height:32px;line-height:50px;border-radius:32px;font-size:1.5em;}
+  .progress .circle .title{display:block; font-weight: bold; color:#000;font-size:1em;line-height:65px;width:200px;margin-left:-70px;text-align:center}
+  .progress .done .bar,.progress .circle.done{background:#000}
+  .progress .circle.done .label{color:#FFF;background:#000;}
+  /*.progress .circle.done .title{color:#444}*/
+  /*.progress .circle.active .label{color:#FFF;background:#0c95be}
+  .progress .circle.active .title{color:#0c95be}*/
+  

@@ -30,6 +30,22 @@ export class NewQuoteWizardComp extends Component {
         <h3>
         <a href="/"><i className="fa fa-arrow-circle-left" aria-hidden="true"></i>New Quote</a>
         </h3>
+        <div className="progress">
+          <div className="circle done">
+            <span className="label">1</span>
+            <span className="title">List Components</span>
+            <span className="bar"></span>
+          </div>
+          <div className="circle active">
+            <span className="label">2</span>
+            <span className="title">Choose Supplier's</span>
+            <span className="bar"></span>
+          </div>
+          <div className="circle">
+            <span className="label">3</span>
+            <span className="title">Send Quote</span>
+          </div>
+        </div>
         {page === 1 && <NewQuotePartsDetailsForm onSubmit={() => this.nextPage()}/>}
         {page === 2 && <NewQuoteSupplierDetailsForm previousPage={() => this.previousPage()} onSubmit={this.props.onSubmit}/>}
       </div>
