@@ -1,4 +1,4 @@
-import { Response, Request, Router } from 'express';
+import { Response, Request, NextFunction, Router } from 'express';
 import { AuctionsService } from '../services/auctions-service';
 import { AuctionsDao } from '../dao/auctions-dao';
 import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
@@ -23,24 +23,32 @@ export const ApiRoute = (config: TConfig) => {
 
   const router = Router();
 
-  router.get('/suppliers', (req: Request, res: Response) => {
+  const requireLogin = (req: Request, res: Response, next: NextFunction) => {
+    if (req.isAuthenticated()) {
+      next();
+    } else {
+      res.sendStatus(403);
+    }
+  };
+
+  router.get('/suppliers', requireLogin, (req: Request, res: Response) => {
     res.json(suppliersService.getAll(req.user));
   });
 
-  router.post('/suppliers', (req: Request, res: Response) => {
+  router.post('/suppliers', requireLogin, (req: Request, res: Response) => {
     res.json(suppliersService.addSupplier(req.user, req.body));
   });
 
-  router.get('/auctions/:id?', (req: Request, res: Response) => {
+  router.get('/auctions/:id?', requireLogin, (req: Request, res: Response) => {
     res.json(auctionService.getAll());
   });
 
-  router.post('/auctions', (req: Request, res: Response) => {
+  router.post('/auctions', requireLogin, (req: Request, res: Response) => {
     const auctionId = auctionService.addAuction(req.body);
     res.status(201).json(auctionId);
   });
 
-  router.get('/components/:id?', (req: Request, res: Response) => {
+  router.get('/components/:id?', requireLogin, (req: Request, res: Response) => {
     const { id } = req.params;
     if (id) {
       res.json(auctionService.getComponentById(id));
