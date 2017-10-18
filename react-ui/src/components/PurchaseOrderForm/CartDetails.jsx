@@ -8,24 +8,36 @@ const CartDetailsComp = ({componentId, offer, removeFromCart}) => {
   return (
     <div>
       <hr/>
-      <div className="cart-details-headers">
-        <div className="">Supplier</div>
-        <div className="">Part date</div>
-        <div className="">Supply date</div>
-        <div className="">Quantity</div>
-        <div className="">Offer Price</div>
-        <div className="">Total</div>
-      </div>
-      <div className="cart-details-content" style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
-        <div>{offer.supplier}</div>
-        <div>{Moment(offer.partDate).format('DD/MM/YYYY')}</div>
-        <div>{Moment(offer.supplyDate).format('DD/MM/YYYY')}</div>
-        <div>{offer.quantity}</div>
-        <div>$ {offer.price}</div>
-        <div>$ 79920</div>
+      <div className="cart-details-content">
+        <div className="col-lg-2 ">
+          <p>Supplier</p>
+          <p className=""><strong>{offer.supplier}</strong></p>
+        </div>
+        <div className="col-lg-2 ">
+          <p>Part date</p>
+          <p className=""><strong>{Moment(offer.partDate).format('DD/MM/YYYY')}</strong></p>
+        </div>
+        <div className="col-lg-2 ">
+          <p>Supply date</p>
+          <p className=""><strong>{Moment(offer.supplyDate).format('DD/MM/YYYY')}</strong></p>
+        </div>
+        <div className="col-lg-2 ">
+          <p>Quantity</p>
+          <p className=""><strong>{offer.quantity}</strong></p>
+        </div>
+        <div className="col-lg-2 ">
+          <p>Offer Price</p>
+          <p className=""><strong>$ {offer.price}</strong></p>
+        </div>
+        <div className="col-lg-2 ">
+          <p>Total</p>
+          <p className=""><strong>$ 79920</strong></p>
+        </div>
+        <div className="col-lg-2 ">
         <button className="btn btn-danger" onClick={() => removeFromCart(componentId)}>
           <span className="fa fa-trash-o"/>
         </button>
+        </div>
       </div>
     </div>
   )
