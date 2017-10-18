@@ -319,8 +319,8 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
 /*New quote form progress bar */
   .progress{width:100%;margin:20px auto;text-align:center; height: 100%; color:#fff; background-color: #fff; box-shadow: none;}
   .progress .circle,.progress .bar{position:relative;display:inline-block;background:#cfcfcf;width:60px;height:60px;border-radius:40px;}
-  .progress .circle:not(:last-child){margin-right:80px;}
-  .progress .bar{position:absolute;width:85px;height:6px;top:25px;left:60px;border-left:none;border-right:none;border-radius:0}
+  .progress .circle:not(:last-child){margin-right:150px;}
+  .progress .bar{position:absolute;width:150px;height:4px;top:25px;left:60px;border-left:none;border-right:none;border-radius:0}
   .progress .circle .label{display:inline-block;width:32px;height:32px;line-height:50px;border-radius:32px;font-size:1.5em;}
   .progress .circle .title{display:block; font-weight: bold; color:#000;font-size:1em;line-height:65px;width:200px;margin-left:-70px;text-align:center}
   .progress .done .bar,.progress .circle.done{background:#000}
@@ -328,4 +328,30 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
   /*.progress .circle.done .title{color:#444}*/
   /*.progress .circle.active .label{color:#FFF;background:#0c95be}
   .progress .circle.active .title{color:#0c95be}*/
-  
+ 
+ .cart-details-headers {
+    color: #283339;
+    font-weight: bold;
+    font-size:1.2em;
+    text-align:center;
+}
+ .cart-details-headers>div{
+    display: inline-block;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 15px;
+ }
+ .cart-details-content {
+    background-color: #addaf1;
+    margin-bottom: 30px;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.cart-details-content>div {
+    max-width: 135px;
+    min-width: 115px;
+    margin-left: 30px;
+    margin-right: 30px;
+    text-align: center;
+}

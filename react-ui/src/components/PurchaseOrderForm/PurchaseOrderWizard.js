@@ -22,8 +22,9 @@ export class PurchaseOrderWizardComp extends Component {
   render() {
     const {page} = this.state;
     return (
+      <div>
+      <CartDetails/>
       <div className="po-form-container">
-        <CartDetails/>
         <ul className="nav nav-pills nav-justified">
           <li><a aria-current="false" href="#">1. Shipping address</a></li>
           <li><a aria-current="false" href="#">2. Supplier's address</a></li>
@@ -32,6 +33,7 @@ export class PurchaseOrderWizardComp extends Component {
         {page === 1 && <PurchaseOrderShippingAddressForm onSubmit={() => this.nextPage()}/>}
         {page === 2 && <PurchaseOrderSupplierAddressForm previousPage={() => this.previousPage()} onSubmit={() => this.nextPage()}/>}
         {page === 3 && <PurchaseOrderSendForm previousPage={() => this.previousPage()} onSubmit={this.props.onSubmit}/>}
+      </div>
       </div>
     );
   }
