@@ -5,6 +5,7 @@ import {PurchaseOrderSupplierAddressForm} from './PurchaseOrderSupplierAddressFo
 import {PurchaseOrderSendForm} from './PurchaseOrderSendForm';
 import {CartDetails} from "./CartDetails";
 import {submitOrder} from "../../actions/purchase-order-actions";
+import classNames from 'classnames';
 
 export class PurchaseOrderWizardComp extends Component {
   state = {
@@ -26,9 +27,9 @@ export class PurchaseOrderWizardComp extends Component {
       <CartDetails/>
       <div className="po-form-container">
         <ul className="nav nav-pills nav-justified">
-          <li><a aria-current="false" href="#">1. Shipping address</a></li>
-          <li><a aria-current="false" href="#">2. Supplier's address</a></li>
-          <li><a aria-current="false" href="#">3. Send purchase order</a></li>
+          <li className={classNames({ active: page === 1 })}><a aria-current="false" href="#">1. Shipping address</a></li>
+          <li className={classNames({ active: page === 2 })} ><a aria-current="false" href="#">2. Supplier's address</a></li>
+          <li className={classNames({ active: page === 3 })} ><a aria-current="false" href="#">3. Send purchase order</a></li>
         </ul>
         {page === 1 && <PurchaseOrderShippingAddressForm onSubmit={() => this.nextPage()}/>}
         {page === 2 && <PurchaseOrderSupplierAddressForm previousPage={() => this.previousPage()} onSubmit={() => this.nextPage()}/>}

@@ -111,6 +111,8 @@ table{ font-family: 'Open Sans', sans-serif; }
     border-bottom: 1px solid #8fccff;
     border-radius:0;
 }
+.po-form-container ul li:hover {background-color: #d4e9fe !important;}
+
 .po-form-container ul li a {
     color:#253238;
     font-weight: bold;
@@ -118,10 +120,13 @@ table{ font-family: 'Open Sans', sans-serif; }
     padding: 15px;
     font-size: 1.2em;
 }
-.po-form-container ul li a:focus {
+
+.po-form-container ul li.active a {
     color:#fff;
     background-color: #253238;
 }
+.po-form-container ul li.active a:hover,.po-form-container ul li.active a:focus { background-color: #253238 !important;}
+
 .po-form-container form {
     width: 80%;
     margin: 0 auto;
