@@ -233,6 +233,17 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     font-weight: bold;
 }
 
+.new-quote-wrapper .po-thanks-page {
+    color: #cdcdcd;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 50px;
+}
+.new-quote-wrapper .po-thanks-page>a {
+    margin-top: 55px;
+}
+
 /*arrow progress bar*/
 .arrow-progress-bar {
     padding: 0;

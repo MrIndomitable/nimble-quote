@@ -15,7 +15,7 @@ export const submitRFP = values => dispatch => {
     type: SUBMIT_RFP, values
   });
 
-  dispatch(push('/'));
+  // dispatch(push('/'));
 
   // TODO it should be the values of redux form
   const bom = {
