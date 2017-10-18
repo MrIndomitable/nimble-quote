@@ -290,14 +290,14 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     z-index: 20;
 }
 
-.arrow-progress-bar li.active {
+.arrow-progress-bar a.active li{
     background: #2c353a;
 }
-.arrow-progress-bar li.active a{
+.arrow-progress-bar a.active li{
     color:#fff;
 }
 
-.arrow-progress-bar li.active:after {
+.arrow-progress-bar a.active li:after {
     border-left-color: #2c353a;
 }
 .arrow-progress-bar a:hover, .arrow-progress-bar a:focus{text-decoration: none;}

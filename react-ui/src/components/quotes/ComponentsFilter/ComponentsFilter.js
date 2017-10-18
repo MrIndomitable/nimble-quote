@@ -2,28 +2,35 @@ import * as React from 'react';
 import {NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {sumComponents} from '../../../selectors/components-selector';
+import {withRouter} from 'react-router-dom';
+import {parse} from 'query-string';
+import classNames from 'classnames';
 
-const FilterLink = ({label, filter, children}) => (
-  <NavLink to={`/components?q=${filter}`}>
+const FilterLink = ({label, filter, children, activeFilter}) => (
+  <NavLink to={`/components?q=${filter}`} className={classNames({active: activeFilter === filter})}>
     <li>{label || children}</li>
   </NavLink>
 );
 
-const ComponentsFilterComp = ({offersBadge}) => (
+const ComponentsFilterComp = ({offersBadge, filter}) => (
   <div className="arrow-progress-bar-container">
     <ul className="arrow-progress-bar">
-      <FilterLink label="Pending" filter="pending"/>
-      <FilterLink filter="offers">
+      <FilterLink label="Pending" filter="pending" activeFilter={filter} />
+      <FilterLink filter="offers" activeFilter={filter}>
         Offers {offersBadge > 0 && <span className="badge"> {offersBadge}</span>}
       </FilterLink>
-      <FilterLink label="Imminent" filter="imminent"/>
-      <FilterLink label="Archive" filter="archive"/>
+      <FilterLink label="Imminent" filter="imminent" activeFilter={filter} />
+      <FilterLink label="Archive" filter="archive" activeFilter={filter} />
     </ul>
   </div>
 );
 
-const mapStateToProps = state => ({
-  offersBadge: sumComponents(state, 'offers')
-});
+const mapStateToProps = (state, {location}) => {
+  const {q} = parse(location.search);
+  return({
+    offersBadge: sumComponents(state, 'offers'),
+    filter: q
+  })
+};
 
-export const ComponentsFilter = connect(mapStateToProps)(ComponentsFilterComp);
+export const ComponentsFilter = withRouter(connect(mapStateToProps)(ComponentsFilterComp));
