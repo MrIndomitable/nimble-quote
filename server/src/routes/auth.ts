@@ -22,10 +22,19 @@ export const AuthRoute = (passport: any) => {
     res.redirect('/');
   });
 
-  router.post('/auth/signup', passport.authenticate('local-signup', {
-    successRedirect: '/',
-    failureRedirect: '/signup'
-  }));
+  router.post('/auth/signup',
+    passport.authenticate('local-signup', {
+      successRedirect: '/',
+      failureRedirect: '/signup'
+    })
+  );
+
+  router.post('/login',
+    passport.authenticate('local-login', {
+      successRedirect: '/',
+      failureRedirect: '/login'
+    })
+  );
 
   return router;
 };

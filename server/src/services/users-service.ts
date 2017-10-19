@@ -6,6 +6,7 @@ export interface IUsersService {
   findById(id: Guid): Promise<TUser>;
   findByGoogleId(googleId: string): Promise<TUser>;
   findByEmail(email: string): Promise<TUser>;
+  findByEmailAndPassword(email: string, password: string): Promise<TUser>;
   saveGoogleUser(googleUser: TGoogleUser): Promise<TUser>;
   saveLocalUser(email: string, password: string): Promise<TUser>;
 }
@@ -47,6 +48,14 @@ export const UsersService = (): IUsersService => {
     return Promise.resolve(_users[userId]);
   };
 
+  const findByEmailAndPassword = (email: string, password: string): Promise<TUser> => {
+    const userId = _localUsers[email];
+    const user = _users[userId];
+    const isValidPassword = bcrypt.compareSync(password, user.local.password);
+
+    return Promise.resolve(isValidPassword ? user : null);
+  };
+
   const saveGoogleUser = (googleUser: TGoogleUser): Promise<TUser> => {
     const id = uuid();
     const { googleId, email, profileImage, displayName } = googleUser;
@@ -76,6 +85,7 @@ export const UsersService = (): IUsersService => {
     findById,
     findByGoogleId,
     findByEmail,
+    findByEmailAndPassword,
     saveGoogleUser,
     saveLocalUser
   }

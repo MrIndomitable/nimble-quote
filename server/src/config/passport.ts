@@ -35,6 +35,18 @@ export default (users: IUsersService, config: TConfig) => {
     })
   }));
 
+  passport.use('local-login', new LocalStrategy({
+    usernameField : 'email',
+    passwordField : 'password',
+    passReqToCallback : true
+  }, (req, email, password, done) => {
+    process.nextTick(() => {
+      users.findByEmailAndPassword(email, password)
+        .then(user => done(null, user))
+        .catch(done);
+    })
+  }));
+
   passport.use(new GoogleStrategy(config.googleAuth,
     (token: any, refreshToken: any, profile: any, done: any) => {
       process.nextTick(() => {
