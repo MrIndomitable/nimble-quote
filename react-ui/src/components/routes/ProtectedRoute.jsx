@@ -19,4 +19,4 @@ const ProtectedRouteComp = ({ isAuthenticated, component: Component, ...rest }) 
 const mapStateToProps = ({user})=>{
     return {isAuthenticated: user.isLoggedIn}
 }
-export const ProtectedRoute = connect(mapStateToProps)(ProtectedRouteComp);
+export const ProtectedRoute = connect(mapStateToProps, null, null, {pure: false})(ProtectedRouteComp);
