@@ -10,3 +10,44 @@
 .auth-button {
     margin-left: auto;
 }
+
+.navigation-bar {
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+.navigation-bar>.menu-item {
+    display: inline-block;
+}
+
+.navigation-bar>.menu-item>a {
+    font-family: Open Sans;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 1px;
+    line-height: 40px;
+    position: relative;
+    display: inline-block;
+    padding: 0 14px;
+    margin: 0;
+}
+ul#menu-loginregister li a {
+    font-weight: 400;
+}
+
+ul#menu-loginregister .register-btn {
+    border: 1px solid #fff;
+}
+ul#menu-loginregister .login-btn a:hover {
+    color: #00b0f0;
+}
+
+ul#menu-loginregister .register-btn:hover {
+    border: 1px solid #00b0f0;
+    background-color: #00b0f0;
+    color: #fff;
+}

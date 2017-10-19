@@ -10,6 +10,14 @@ class HeaderComp extends Component {
       <AppLogo/>
       <NewQuoteButton/>
       <AuthButton/>
+      <div className="right-menu-wrap">
+        <div className="menu-loginregister-container">
+          <ul id="menu-loginregister" className="navigation-bar navigation-bar-right">
+            <li className="menu-item login-btn"><a title="LOGIN" href="/login">LOGIN</a></li>
+            <li className="menu-item register-btn"><a title="REGISTER" href="#">REGISTER</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
   }
 }
