@@ -1,5 +1,6 @@
 import { TConfig } from './config';
 import * as passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 import { IUsersService, TUser } from "../services/users-service";
 import { Guid } from "../types/common";
@@ -14,6 +15,25 @@ export default (users: IUsersService, config: TConfig) => {
       .then((user: TUser) => done(null, user))
       .catch(done);
   });
+
+  passport.use('local-signup', new LocalStrategy({
+    usernameField : 'email',
+    passwordField : 'password',
+    passReqToCallback : true
+  }, (req, email, password, done) => {
+    process.nextTick(() => {
+      users.findByEmail(email)
+        .then(user => {
+          if (user) {
+            done(null, false); // That email is already taken
+          } else {
+            users.saveLocalUser(email, password)
+              .then((user: TUser) => done(null, user))
+              .catch(done);
+          }
+        })
+    })
+  }));
 
   passport.use(new GoogleStrategy(config.googleAuth,
     (token: any, refreshToken: any, profile: any, done: any) => {

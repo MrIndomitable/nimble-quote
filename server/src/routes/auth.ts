@@ -1,19 +1,19 @@
-const {Router} = require('express');
+const { Router } = require('express');
 import { Response } from 'express';
 
-export const AuthRoute =  (passport: any) => {
+export const AuthRoute = (passport: any) => {
   const router = Router();
 
   router.get(
     '/auth/google',
-    passport.authenticate('google', { scope : ['profile', 'email'] })
+    passport.authenticate('google', { scope: ['profile', 'email'] })
   );
 
   router.get(
     '/auth/google/callback',
     passport.authenticate('google', {
-      successRedirect : '/',
-      failureRedirect : '/login'
+      successRedirect: '/',
+      failureRedirect: '/login'
     })
   );
 
@@ -21,6 +21,11 @@ export const AuthRoute =  (passport: any) => {
     req.logout();
     res.redirect('/');
   });
+
+  router.post('/auth/signup', passport.authenticate('local-signup', {
+    successRedirect: '/',
+    failureRedirect: '/signup'
+  }));
 
   return router;
 };
