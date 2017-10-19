@@ -10,7 +10,6 @@ class HeaderComp extends Component {
     return <div className="App-header">
       <AppLogo/>
       <NewQuoteButton/>
-      <AuthButton/>
       <div className="right-menu-wrap">
         <div className="menu-loginregister-container">
           <ul id="menu-loginregister" className="navigation-bar navigation-bar-right">
