@@ -18,9 +18,9 @@ const App = () => (
     <Route exact path="/login" component={Login} />
     <Route exact path="/" render={() => <Redirect to="/components?q=pending"/>}/>
     <ProtectedRoute exact path="/components" component={ComponentsPage}/>
-    <Route path="/components/:id" component={SingleComponent}/>
-    <Route path="/bom/create" component={NewQuoteWizard}/>
-    <Route path="/purchase-order/create" component={PurchaseOrderWizard}/>
+    <ProtectedRoute path="/components/:id" component={SingleComponent}/>
+    <ProtectedRoute path="/bom/create" component={NewQuoteWizard}/>
+    <ProtectedRoute path="/purchase-order/create" component={PurchaseOrderWizard}/>
     <Route path="/offer" component={OfferPage}/>
   </div>
 );
