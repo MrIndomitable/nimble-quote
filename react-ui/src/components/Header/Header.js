@@ -14,7 +14,7 @@ class HeaderComp extends Component {
         <div className="menu-loginregister-container">
           <ul id="menu-loginregister" className="navigation-bar navigation-bar-right">
             <li className="menu-item login-btn"><Link title="LOGIN" to="/login">LOGIN</Link></li>
-            <li className="menu-item register-btn"><Link title="REGISTER" to="#">REGISTER</Link></li>
+            <li className="menu-item register-btn"><Link title="REGISTER" to="/register">REGISTER</Link></li>
           </ul>
         </div>
       </div>
