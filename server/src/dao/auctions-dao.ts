@@ -1,6 +1,6 @@
 import { TAuction, TComponent, TOffer, TSupplier, TPurchaseOrder } from '../types/auctions';
 import { Guid } from '../types/common';
-import { OrdersDao } from './orders-dao';
+import { IOrdersDao } from './orders-dao';
 import { ISuppliersDao } from "./suppliers-dao";
 import { IOffersDao } from "./offers-dao";
 
@@ -31,14 +31,16 @@ export interface IAuctionsDao {
   addPurchaseOrder: (order: TPurchaseOrder) => void;
 }
 
-export const AuctionsDao = (suppliersDao: ISuppliersDao, offersDao: IOffersDao): IAuctionsDao => {
+export const AuctionsDao = (
+  suppliersDao: ISuppliersDao,
+  offersDao: IOffersDao,
+  ordersDao: IOrdersDao
+): IAuctionsDao => {
   const _auctionsByUser: { [userId: string]: Guid[] } = {};
   const _auctions: { [auctionId: string]: TDBAuction } = {};
   const _components: { [componentId: string]: TDBComponent } = {};
   const _componentsByAuction: { [auctionId: string]: Guid[] } = {};
   const _suppliersByAuction: { [auctionId: string]: Guid[] } = {};
-
-  const ordersDao = OrdersDao();
 
   const addAuction = (userId: Guid, auction: TAuction) => {
     _auctionsByUser[userId] = _auctionsByUser[userId] || [];

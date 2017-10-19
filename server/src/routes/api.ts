@@ -7,17 +7,22 @@ import { SuppliersDao } from "../dao/suppliers-dao";
 import { SuppliersService } from "../services/suppliers-service";
 // import { generateTestData } from "../test-data/test-data";
 import { OffersDao } from "../dao/offers-dao";
+import { OrdersDao } from "../dao/orders-dao";
+import { OrdersService } from "../services/orders-service";
 
 export const ApiRoute = (config: TConfig) => {
   const suppliersDao = SuppliersDao();
   const offersDao = OffersDao();
+  const ordersDao = OrdersDao();
+
   const suppliersService = SuppliersService(suppliersDao);
   const auctionService = AuctionsService(
-    AuctionsDao(suppliersDao, offersDao),
+    AuctionsDao(suppliersDao, offersDao, ordersDao),
     suppliersDao,
     offersDao,
     SendGridMailingService(config.email.sendGridApiKey)
   );
+  const ordersService = OrdersService(ordersDao, offersDao);
 
   // generateTestData(suppliersService, auctionService);
 
@@ -68,6 +73,10 @@ export const ApiRoute = (config: TConfig) => {
     const [auctionId, supplierId] = token.split('_');
     auctionService.addOffer(supplierId, offerDetails);
     res.sendStatus(201);
+  });
+
+  router.get('/order/:orderId', (req: Request, res: Response) => {
+    res.json(ordersService.getOrderById(req.params.orderId));
   });
 
   router.post('/order', requireLogin, (req: Request, res: Response) => {

@@ -1,6 +1,13 @@
 import { Guid } from '../types/common';
 import { TPurchaseOrder } from '../types/auctions';
 
+export interface IOrdersDao {
+  addOrder(order: TPurchaseOrder): void;
+  getOrderById(id: Guid): TPurchaseOrder;
+  getOrdersByAuctionId(auctionId: Guid): TPurchaseOrder[];
+  getOrderByComponentId(componentId: Guid): TPurchaseOrder;
+}
+
 export type TDBPurchaseOrder = {
   auctionId: Guid;
   details: TDBPurchaseOrderDetails[];
@@ -12,7 +19,7 @@ export type TDBPurchaseOrderDetails = {
   quantity: number;
 }
 
-export const OrdersDao = () => {
+export const OrdersDao = (): IOrdersDao => {
   const _orders: { [orderId: string]: TDBPurchaseOrder } = {};
   const _ordersByComponents: { [componentId: string]: Guid[] } = {};
   const _ordersByOffers: { [offerId: string]: Guid[] } = {};

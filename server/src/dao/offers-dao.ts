@@ -5,6 +5,7 @@ export interface IOffersDao {
   addOffer: (supplierId: Guid, offers: TOffer[]) => void;
   getOffersByComponentId: (componentId: Guid) => TOffer[],
   getSuppliersByOffers: (offerIds: Guid[]) => Guid[];
+  getOfferById: (offerId: Guid) => TOffer;
 }
 
 type TDBOffer = {
@@ -49,6 +50,7 @@ export const OffersDao = (): IOffersDao => {
   return {
     addOffer,
     getOffersByComponentId,
-    getSuppliersByOffers
+    getSuppliersByOffers,
+    getOfferById
   }
 };
