@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {AuthButton} from '../SignInButton/SignInButton';
 import {NewQuoteButton} from '../NewQuoteButton/NewQuoteButton';
 import {AppLogo} from '../AppLogo/AppLogo';
+import {Link} from 'react-router-dom';
 import './Header.css';
 
 class HeaderComp extends Component {
@@ -13,8 +14,8 @@ class HeaderComp extends Component {
       <div className="right-menu-wrap">
         <div className="menu-loginregister-container">
           <ul id="menu-loginregister" className="navigation-bar navigation-bar-right">
-            <li className="menu-item login-btn"><a title="LOGIN" href="/login">LOGIN</a></li>
-            <li className="menu-item register-btn"><a title="REGISTER" href="#">REGISTER</a></li>
+            <li className="menu-item login-btn"><Link title="LOGIN" to="/login">LOGIN</Link></li>
+            <li className="menu-item register-btn"><Link title="REGISTER" to="#">REGISTER</Link></li>
           </ul>
         </div>
       </div>
