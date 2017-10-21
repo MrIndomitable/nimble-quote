@@ -10,6 +10,8 @@ import { OffersDao } from "../dao/offers-dao";
 import { OrdersDao } from "../dao/orders-dao";
 import { OrdersService } from "../services/orders-service";
 import { IUsersService } from "../services/users-service";
+import { UserProfileService } from "../services/user-profile-service";
+import { UserProfileDao } from "../dao/user-profile-dao";
 
 export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
   const suppliersDao = SuppliersDao();
@@ -17,14 +19,17 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
   const ordersDao = OrdersDao();
 
   const suppliersService = SuppliersService(suppliersDao);
+  const auctionsDao = AuctionsDao(suppliersDao, offersDao, ordersDao);
   const auctionService = AuctionsService(
-    AuctionsDao(suppliersDao, offersDao, ordersDao),
+    auctionsDao,
     suppliersDao,
     offersDao,
     usersService,
     SendGridMailingService(config.email.sendGridApiKey)
   );
-  const ordersService = OrdersService(ordersDao, offersDao);
+  const userProfileDao = UserProfileDao();
+  const userProfileService = UserProfileService(userProfileDao);
+  const ordersService = OrdersService(ordersDao, offersDao, userProfileDao, auctionsDao);
 
   // generateTestData(suppliersService, auctionService);
 
@@ -70,7 +75,7 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
   });
 
   router.post('/offer', (req: Request, res: Response) => {
-    const { token, offerDetails } = req.body; // TODO save supplier info and company info if they exists
+    const { token, offerDetails } = req.body;
     // TODO extract supplier id from token
     const [auctionId, supplierId] = token.split('_');
     auctionService.addOffer(supplierId, offerDetails);
@@ -78,11 +83,17 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
   });
 
   router.get('/order/:orderId', (req: Request, res: Response) => {
-    res.json(ordersService.getOrderById(req.params.orderId));
+    ordersService.getOrderById(req.params.orderId)
+      .then((order: any) => res.json(order))
+      .catch((e: any) => {
+        console.log('error getting order by id', req.params.orderId, e);
+        res.sendStatus(400);
+      })
   });
 
   router.post('/order', requireLogin, (req: Request, res: Response) => {
-    const { auctionId, componentId, offerId } = req.body;
+    const { auctionId, componentId, offerId, company, supplier } = req.body; // TODO save supplier info and company info if they exists
+
     const order = {
       auctionId,
       details: [{
@@ -91,8 +102,15 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
         quantity: 10
       }]
     };
-    auctionService.addPurchaseOrder(req.user.id, order);
-    res.sendStatus(201);
+
+    Promise.all([
+      userProfileService.addProfile(req.user.id, company),
+      auctionService.addPurchaseOrder(req.user.id, order)
+    ]).then(() => res.sendStatus(201))
+      .catch((e: any) => {
+        console.log('error adding new order', JSON.stringify(req.body, null, 2), e);
+        res.sendStatus(500);
+      });
   });
 
   router.get('/user-details', (req: any, res: Response) => {

@@ -29,7 +29,7 @@ import { IUsersService, TUser } from "./users-service";
 interface IAuctionsService {
   addAuction: (userId: Guid, auction: TAuctionDTO) => Guid;
   addOffer: (supplierId: Guid, offers: TOffersDTO) => void;
-  addPurchaseOrder: (userId: Guid, order: TPurchaseOrderDTO) => void;
+  addPurchaseOrder: (userId: Guid, order: TPurchaseOrderDTO) => Promise<void>;
   getById: (id: Guid) => TAuctionResult;
   getAll: (userId: Guid) => TAuctionsResult;
   getComponents: () => TComponentsResult;
@@ -153,7 +153,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     return supplierIds.map(supplierId => suppliersDao.getSupplierById(userId, supplierId));
   };
 
-  const addPurchaseOrder = (userId: Guid, order: TPurchaseOrderDTO): void => {
+  const addPurchaseOrder = (userId: Guid, order: TPurchaseOrderDTO): Promise<void> => {
     const id = uuid();
     auctionsDao.addPurchaseOrder(Object.assign({}, order, { id }));
 
@@ -174,6 +174,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
       mailingService.sendPurchaseOrder(poEmail);
     });
 
+    return Promise.resolve();
   };
 
   return {
