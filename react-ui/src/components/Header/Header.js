@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {AuthButton} from '../SignInButton/SignInButton';
 import {NewQuoteButton} from '../NewQuoteButton/NewQuoteButton';
 import {AppLogo} from '../AppLogo/AppLogo';
 import {Link} from 'react-router-dom';
