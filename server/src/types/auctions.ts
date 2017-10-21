@@ -87,6 +87,7 @@ export type TAuctionBom = {
 
 export type TAuction = {
   id: Guid;
+  userId: Guid;
   suppliers: TSupplier[];
   subject: string;
   message: string;

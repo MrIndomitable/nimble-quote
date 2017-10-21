@@ -35,7 +35,12 @@ export const UsersService = (): IUsersService => {
   const _localUsers: { [email: string]: Guid } = {};
 
   const findById = (id: Guid): Promise<TUser> => {
-    return Promise.resolve(_users[id]);
+    const user = _users[id];
+    if (user) {
+      return Promise.resolve(user);
+    } else {
+      return Promise.reject(`cannot find user with id ${id}`);
+    }
   };
 
   const findByGoogleId = (googleId: string): Promise<TUser> => {

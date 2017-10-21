@@ -30,7 +30,8 @@ export const configureApp = (config: TConfig) => {
     }
   }));
 
-  const passport = configurePassport(UsersService(), config);
+  const users = UsersService();
+  const passport = configurePassport(users, config);
 
   app.use(passport.initialize());
   app.use(passport.session());
@@ -38,7 +39,7 @@ export const configureApp = (config: TConfig) => {
   app.use(express.static(path.resolve(__dirname, '../../react-ui/build')));
 
   app.use(AuthRoute(passport));
-  app.use('/api', ApiRoute(config));
+  app.use('/api', ApiRoute(config, users));
 
   // All remaining requests return the React app, so it can handle routing.
   app.get('*', function (request: Request, response: Response) {

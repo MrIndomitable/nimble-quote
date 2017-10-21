@@ -9,8 +9,9 @@ import { SuppliersService } from "../services/suppliers-service";
 import { OffersDao } from "../dao/offers-dao";
 import { OrdersDao } from "../dao/orders-dao";
 import { OrdersService } from "../services/orders-service";
+import { IUsersService } from "../services/users-service";
 
-export const ApiRoute = (config: TConfig) => {
+export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
   const suppliersDao = SuppliersDao();
   const offersDao = OffersDao();
   const ordersDao = OrdersDao();
@@ -20,6 +21,7 @@ export const ApiRoute = (config: TConfig) => {
     AuctionsDao(suppliersDao, offersDao, ordersDao),
     suppliersDao,
     offersDao,
+    usersService,
     SendGridMailingService(config.email.sendGridApiKey)
   );
   const ordersService = OrdersService(ordersDao, offersDao);

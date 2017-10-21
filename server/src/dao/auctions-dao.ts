@@ -72,8 +72,8 @@ export const AuctionsDao = (
     return toAuction(_auctions[auctionId]);
   };
 
-  const toAuction = (auction: TDBAuction) => {
-    const { id, message, subject } = auction;
+  const toAuction = (auction: TDBAuction): TAuction => {
+    const { id, message, subject, userId } = auction;
 
     const components: TComponent[] = _componentsByAuction[id].map(getComponentById);
     const suppliers: TSupplier[] = _suppliersByAuction[id]
@@ -81,7 +81,7 @@ export const AuctionsDao = (
 
     const purchaseOrders = ordersDao.getOrdersByAuctionId(id);
 
-    return { id, message, subject, bom: { components }, suppliers, purchaseOrders }
+    return { id, userId, message, subject, bom: { components }, suppliers, purchaseOrders }
   };
 
   const getAuctions = (userId: Guid): TAuction[] => {

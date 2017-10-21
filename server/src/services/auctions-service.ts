@@ -24,6 +24,7 @@ import {
 import { ISuppliersDao } from "../dao/suppliers-dao";
 import { IMailService } from "../mailing-service/send-grid-mailing-service";
 import { IOffersDao } from "../dao/offers-dao";
+import { IUsersService, TUser } from "./users-service";
 
 interface IAuctionsService {
   addAuction: (userId: Guid, auction: TAuctionDTO) => Guid;
@@ -38,6 +39,7 @@ interface IAuctionsService {
 export const AuctionsService = (auctionsDao: IAuctionsDao,
                                 suppliersDao: ISuppliersDao, // FIXME should probably be suppliersService
                                 offersDao: IOffersDao,
+                                usersService: IUsersService,
                                 mailingService: IMailService): IAuctionsService => {
   function getOrCreateSuppliers(userId: Guid, suppliers: TSupplierDTO[]) {
     return suppliers.map(({ id, email }) => {
@@ -63,6 +65,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
 
     const auction: TAuction = {
       id,
+      userId,
       suppliers,
       message,
       subject,
@@ -126,7 +129,22 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     };
 
     auctionsDao.addOffer(supplierId, offers.components.map(toOffer));
-    // TODO send mail to user
+
+    const [offer] = offers.components;
+    const component = auctionsDao.getComponentById(offer.componentId);
+    const userId = auctionsDao.getAuctionById(component.auctionId).userId;
+    const supplier = suppliersDao.getSupplierById(userId, supplierId);
+    usersService.findById(userId).then((user: TUser) => {
+      mailingService.sendNewOfferNotification({
+        buyer: {
+          email: user.email, displayName: user.displayName
+        },
+        supplier: {
+          email: supplier.email, displayName: supplier.email // todo: should be display name
+        },
+        offerLink: `https://nimble-quote.herokuapp.com/components/${component.id}`
+      });
+    }).catch(e => console.log('cannot find user', userId, e));
   };
 
   const getSuppliersForOrder = (userId: Guid, order: TPurchaseOrderDTO): TSupplier[] => {
