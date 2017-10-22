@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {logout} from "../../actions/user-actions";
+import './RegisterLoginOrProfile.css';
 
 export const RegisterLoginOrProfileComp = ({user, logout}) => {
   if (user.isLoggedIn) {
@@ -9,7 +10,7 @@ export const RegisterLoginOrProfileComp = ({user, logout}) => {
       <div className="right-menu-wrap">
         <span>Hello {user.name || user.email} </span>
         <img src={user.image} className="img-circle" alt=""/>
-        <button className="btn btn-default btn-sm" onClick={logout}>
+        <button className="btn btn-default btn-sm btn-logout" onClick={logout}>
           <span className="fa fa-sign-out"/> Logout
         </button>
       </div>
