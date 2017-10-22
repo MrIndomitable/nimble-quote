@@ -4,6 +4,7 @@ import {GoogleLoginButton} from "../../SignInButton/SignInButton";
 import {LoginForm} from "../../routes/Login/LoginForm";
 import {fetchUserDetails, login} from "../../../actions/user-actions";
 import {Redirect} from 'react-router-dom';
+import {Register} from "../../routes/Register/Register";
 
 export class LoginPageComp extends React.Component {
   componentWillMount() {
@@ -19,12 +20,13 @@ export class LoginPageComp extends React.Component {
       return <Redirect to={from}/>;
     }
 
-    const {login} = this.props;
+    const {login, renderLogin} = this.props;
 
     return (
       <div className="container">
         <div className="wrapper login-wrapper">
-          <LoginForm onSubmit={login}/>
+          {renderLogin && <LoginForm onSubmit={login}/>}
+          {!renderLogin && <Register/>}
           <GoogleLoginButton/>
         </div>
       </div>
