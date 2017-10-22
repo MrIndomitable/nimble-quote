@@ -1,0 +1,11 @@
+.view-order-container{
+    margin: 40px auto;
+    width: 60%;
+}
+.invoice-container {
+    margin: 13px auto;
+}
+.preview {
+    border: 1px solid #717171;
+    padding: 2em;
+}

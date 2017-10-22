@@ -48,7 +48,7 @@ export const Invoice = ({company, supplier, components, totals}) => {
             <td>Total</td>
             <td/>
             <td/>
-            <td>{totals.total}</td>
+            <td>$ {totals.total}</td>
           </tr>
           </tfoot>
           <tbody>
@@ -56,8 +56,8 @@ export const Invoice = ({company, supplier, components, totals}) => {
             <tr key={component.id}>
               <td>{component.description}</td>
               <td>{component.quantity}</td>
-              <td>{component.price}</td>
-              <td>{component.total}</td>
+              <td>$ {component.price}</td>
+              <td>$ {component.total}</td>
             </tr>)
           )}
           </tbody>
