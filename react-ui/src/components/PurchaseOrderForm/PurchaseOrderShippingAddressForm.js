@@ -6,8 +6,8 @@ import * as v from '../form/Validation/Validation';
 export const PurchaseOrderShippingAddressFormComp = ({handleSubmit}) => {
   return <form onSubmit={ handleSubmit }>
     <h4>Shipping address</h4>
-    <InputField id="company.name" label="Company" type="text" validate={[v.maxLength15]}/>
-    <InputField id="company.contactName" label="Contact name" type="text" validate={[v.maxLength15]}/>
+    <InputField id="company.name" label="Company" type="text" validate={[v.maxLength10]}/>
+    <InputField id="company.contactName" label="Contact name" type="text" validate={[v.maxLength10]}/>
     <InputField id="company.phone" label="Phone" type="text" validate={[v.required]}/>
     <InputField id="company.address" label="Address" type="text" validate={[v.required]}/>
     <InputField id="company.city" label="City" type="text" validate={[v.required]}/>
