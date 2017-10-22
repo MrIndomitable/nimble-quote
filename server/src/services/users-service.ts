@@ -55,8 +55,12 @@ export const UsersService = (): IUsersService => {
 
   const findByEmailAndPassword = (email: string, password: string): Promise<TUser> => {
     const userId = _localUsers[email];
+    if (!userId) {
+      return Promise.resolve(null);
+    }
+
     const user = _users[userId];
-    const isValidPassword = bcrypt.compareSync(password, user.local.password);
+    const isValidPassword = user.local && user.local.password && bcrypt.compareSync(password, user.local.password);
 
     return Promise.resolve(isValidPassword ? user : null);
   };
