@@ -1,24 +1,13 @@
 import React, {Component} from 'react';
 import {NewQuoteButton} from '../NewQuoteButton/NewQuoteButton';
 import {AppLogo} from '../AppLogo/AppLogo';
-import {Link} from 'react-router-dom';
 import './Header.css';
+import {RegisterLoginOrProfile} from "../RegisterLoginOrProfile/RegisterLoginOrProfile";
 
-class HeaderComp extends Component {
-  render() {
-    return <div className="App-header">
-      <AppLogo/>
-      <NewQuoteButton/>
-      <div className="right-menu-wrap">
-        <div className="menu-loginregister-container">
-          <ul id="menu-loginregister" className="navigation-bar navigation-bar-right">
-            <li className="menu-item login-btn"><Link title="LOGIN" to="/login">LOGIN</Link></li>
-            <li className="menu-item register-btn"><Link title="REGISTER" to="/register">REGISTER</Link></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  }
-}
-
-export const Header = HeaderComp;
+export const Header = () => (
+  <div className="App-header">
+    <AppLogo/>
+    <NewQuoteButton/>
+    <RegisterLoginOrProfile/>
+  </div>
+);

@@ -16,7 +16,7 @@ export const AuthRoute = (passport: any) => {
     })
   );
 
-  router.get('/auth/logout', (req: any, res: Response) => {
+  router.post('/auth/logout', (req: any, res: Response) => {
     req.logout();
     res.redirect('/');
   });

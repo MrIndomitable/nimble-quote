@@ -5,7 +5,9 @@ import {
   FETCH_USER_DETAILS_FAILURE,
   LOGIN_FAILURE,
   SIGNUP_SUCCESS,
-  SIGNUP_FAILURE
+  SIGNUP_FAILURE,
+  LOGOUT,
+  LOGOUT_FAILURE
 } from './types';
 
 const fetchUserDetailsSuccess = (userDetails) => ({
@@ -44,8 +46,17 @@ const signupFailure = error => ({
 });
 
 export const signup = ({email, password}) => dispatch => {
-  console.log('signup', email, password);
   axios.post('/auth/signup', {email, password})
     .then(() => signupSuccess(dispatch))
     .catch(e => dispatch(signupFailure(e)));
+};
+
+const logoutFailure = error => ({
+  type: LOGOUT_FAILURE, error
+});
+
+export const logout = () => dispatch => {
+  dispatch({type: LOGOUT});
+  axios.post('/auth/logout')
+    .catch(e => dispatch(logoutFailure(e)));
 };
