@@ -1,5 +1,4 @@
-const { Router } = require('express');
-import { Response } from 'express';
+import { Request, Response, Router } from 'express';
 
 export const AuthRoute = (passport: any) => {
   const router = Router();

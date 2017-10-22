@@ -1,5 +1,12 @@
 import axios from 'axios';
-import {FETCH_USER_DETAILS, FETCH_USER_DETAILS_SUCCESS, FETCH_USER_DETAILS_FAILURE, LOGIN_FAILURE} from './types';
+import {
+  FETCH_USER_DETAILS,
+  FETCH_USER_DETAILS_SUCCESS,
+  FETCH_USER_DETAILS_FAILURE,
+  LOGIN_FAILURE,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILURE
+} from './types';
 
 const fetchUserDetailsSuccess = (userDetails) => ({
   type: FETCH_USER_DETAILS_SUCCESS, userDetails
@@ -25,4 +32,20 @@ export const login = ({email, password}) => dispatch => {
   axios.post('/auth/login', {email, password})
     .then(() => dispatch(fetchUserDetails()))
     .catch(e => dispatch(loginFailure(e)));
+};
+
+const signupSuccess = dispatch => {
+  dispatch(fetchUserDetails());
+  dispatch({type: SIGNUP_SUCCESS});
+};
+
+const signupFailure = error => ({
+  type: SIGNUP_FAILURE, error
+});
+
+export const signup = ({email, password}) => dispatch => {
+  console.log('signup', email, password);
+  axios.post('/auth/signup', {email, password})
+    .then(() => signupSuccess(dispatch))
+    .catch(e => dispatch(signupFailure(e)));
 };

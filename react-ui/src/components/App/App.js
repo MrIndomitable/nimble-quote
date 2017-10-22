@@ -16,8 +16,8 @@ const App = () => (
   <div className="App">
     <Header/>
 
-    <Route exact path="/login" render={() => <LoginPage renderLogin={true}/>} />
-    <Route exact path="/register" render={() => <LoginPage renderLogin={false}/>} />
+    <Route exact path="/login" render={props => <LoginPage renderLogin={true} {...props}/>} />
+    <Route exact path="/register" render={props => <LoginPage renderLogin={false} {...props}/>} />
     <Route exact path="/" render={() => <Redirect to="/components?q=pending"/>}/>
     <ProtectedRoute exact path="/components" component={ComponentsPage}/>
     <ProtectedRoute path="/components/:id" component={SingleComponent}/>
