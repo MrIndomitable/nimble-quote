@@ -7,10 +7,10 @@ import * as v from '../form/Validation/Validation';
 
 const QuoteDetails = ({name}) => {
   return <div className="form-inline">
-    <InputField id={`${name}.manufacture`} placeholder="Manufacture" type="text" validate={[v.required,v.maxLength10]} />
-    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text"validate={[v.required,v.maxLength10]} />
-    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number"validate={[v.required,v.maxLength10]} />
-    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number"validate={[v.required,v.maxLength10]} />    
+    <InputField id={`${name}.manufacture`} placeholder="Manufacture" type="text" validate={[v.required]} />
+    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text"validate={[v.required]} />
+    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number"validate={[v.required]} />
+    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number"validate={[v.required]} />    
     <DatePickerField id={`${name}.partDate`} placeholder="Part date" type="date" validate={[v.required]} />
     <DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" validate={[v.required]} />
     <div className="form-group total-price">$12.00</div>
