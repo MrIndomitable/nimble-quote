@@ -29,7 +29,7 @@ const renderComponents = ({fields}) => {
 };
 
 export const NewOfferTableComp = ({handleSubmit}) => {
-  return <form onSubmit={handleSubmit}>
+  return <form className="new-offer-form" onSubmit={handleSubmit}>
     <table className="table">
       <thead>
       <tr>
