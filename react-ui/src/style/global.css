@@ -173,10 +173,16 @@ form span.error {
     color: #700;
     font-weight: bold;
 }
+form input.error {
+    border: 1px solid #dc3545;
+}
 
 /*form-control*/
 .form-control{
     border-radius: 4px !important;
+}
+.form-group input{
+    margin:0;
 }
 
 /*New Quote form*/

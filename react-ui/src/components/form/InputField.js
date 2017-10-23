@@ -1,11 +1,12 @@
 import React from 'react';
 import {Field} from 'redux-form';
+import classNames from 'classnames';
 
 const renderField = ({id, input, label, type, placeholder, className, meta: { touched, error, warning } }) => (
 <div className="form-group">
       {label && <label htmlFor={id}>{label}</label>}
     
-      <input {...input} placeholder={placeholder} type={type} className={className}/>
+      <input {...input} placeholder={placeholder} type={type} className={classNames(className, touched && {error})} />
       {touched && ((error && <span className="error">{error}</span>) || (warning && <span className="warning">{warning}</span>))}
   </div>
 )
