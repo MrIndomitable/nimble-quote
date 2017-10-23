@@ -2,12 +2,14 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import {InputField} from '../../form/InputField';
 import './LoginForm.css';
+import * as v from '../../form/Validation/Validation';
+
 
 const LoginFormComp = ({handleSubmit}) => (
   <form className="form-signin">
     <h3 className="form-signin-heading">Welcome to Nimble Quote</h3>
-    <InputField id="email" label="Email" placeholder="Email" type="text"/>
-    <InputField id="password" label="Password" placeholder="Password" type="password"/>
+    <InputField id="email" label="Email" placeholder="Email" type="text" validate={[v.required, v.email]} />
+    <InputField id="password" label="Password" placeholder="Password" type="password" validate={[v.required]} />
     <div className="form-group btns-wrapper">
       <button
         onClick={handleSubmit}
