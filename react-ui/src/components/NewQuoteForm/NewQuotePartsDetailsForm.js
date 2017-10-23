@@ -11,7 +11,6 @@ const QuoteDetails = ({name}) => {
     <InputField id={`${name}.partNumber`} placeholder="Part #" type="text"validate={[v.required]} />
     <InputField id={`${name}.quantity`} placeholder="Quantity" type="number"validate={[v.required]} />
     <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number"validate={[v.required]} />    
-    <DatePickerField id={`${name}.partDate`} placeholder="Part date" type="date" validate={[v.required]} />
     <DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" validate={[v.required]} />
     <div className="form-group total-price">$12.00</div>
 <hr/>
@@ -37,7 +36,6 @@ export const NewQuotePartsDetailsFormComp = ({handleSubmit}) => {
     <div className="">Part #</div>
     <div className="">Quantity</div>
     <div className="">Target price</div>
-    <div className="">Part date</div>
     <div className="">Supply date</div>
     <div className="">Total price</div>
   </div>
