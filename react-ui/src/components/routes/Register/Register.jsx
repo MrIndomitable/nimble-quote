@@ -7,7 +7,7 @@ import * as v from '../../form/Validation/Validation';
 const RegisterFormComp = ({handleSubmit}) => (
   <form className="form-signup">
     <h3 className="form-signup-heading">Welcome to Nimble Quote</h3>
-    <InputField id="email" label="Email" placeholder="Email" type="text" validate={[v.required]}/>
+    <InputField id="email" label="Email" placeholder="Email" type="text" validate={[v.required, v.email]}/>
     <InputField id="password" label="Password" placeholder="Password" type="password" validate={[v.required]}/>
     <InputField id="confirm-password" label="Confirm Password" placeholder="Confirm Password" type="password" validate={[v.required]}/>
     <div className="form-group btns-wrapper">
