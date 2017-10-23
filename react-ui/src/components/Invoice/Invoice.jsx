@@ -19,7 +19,7 @@ export const Invoice = ({company, supplier, components, totals}) => {
           <div>Phone: {company.phone}</div>
         </div>
         <div className="extra">
-          <div>INVOICE # {reference}</div>
+          <div>PO # {reference}</div>
           <div>Date of issue {today}</div>
         </div>
       </header>
