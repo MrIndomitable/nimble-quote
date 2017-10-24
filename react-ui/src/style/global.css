@@ -2,12 +2,17 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 /*preloader*/
+
 i.fa-spinner {
     margin: 0 auto;
     display: block;
 }
 
-.btn{border-radius: 1px !important;}
+.btn {
+    border-radius: 1px !important;
+}
+
+
 /*tr, td, th {
     border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -16,6 +21,7 @@ i.fa-spinner {
 ul.nav {
     margin-top: 15px;
 }
+
 .table-container {
     margin-left: 10px;
     margin-right: 10px;
@@ -30,21 +36,32 @@ ul.nav {
     padding: 10px;
 }
 
-.single-component-details p:nth-child(1) { color: #b4b0ad; }
-.single-component-details p:nth-child(2) { font-size: 1.5em; }
+.single-component-details p:nth-child(1) {
+    color: #b4b0ad;
+}
 
-table{ font-family: 'Open Sans', sans-serif; }
+.single-component-details p:nth-child(2) {
+    font-size: 1.5em;
+}
+
+table {
+    font-family: 'Open Sans', sans-serif;
+}
 
 .single-component-offers-table thead, .single-component-pending-table thead {
     border-top: 1px solid #dddddd;
     font-size: 1.2em;
 }
-.single-component-offers-table tbody tr, .single-component-pending-table tbody tr{
+
+.single-component-offers-table tbody tr, .single-component-pending-table tbody tr {
     font-size: 1.2em;
 }
-.single-component-pending-table h3{ font-weight: bold; }
 
-.btn-basic{
+.single-component-pending-table h3 {
+    font-weight: bold;
+}
+
+.btn-basic {
     display: inline-block;
     padding: 6px 12px;
     margin-bottom: 0;
@@ -61,82 +78,98 @@ table{ font-family: 'Open Sans', sans-serif; }
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    color:#636363;
+    color: #636363;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 3px;
 }
-.btn-turquoise:focus{
+
+.btn-turquoise:focus {
     text-decoration: none;
     color: #fff;
     background: #04af97;
 }
-.btn-turquoise:hover{
+
+.btn-turquoise:hover {
     text-decoration: none;
     color: #fff;
     background-color: #04af97;
 }
-.btn-turquoise:active{
+
+.btn-turquoise:active {
     outline: 0;
     background-image: none;
     -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     text-decoration: none;
-    color:#fff;
+    color: #fff;
 }
-.btn-clean{
+
+.btn-clean {
     padding: 2px 10px;
-    color:#636363
+    color: #636363
 }
-.btn-turquoise{
-    background-color:#01bfa5;
+
+.btn-turquoise {
+    background-color: #01bfa5;
     border: 1px solid #01bfa5;
-    color:#fff;
+    color: #fff;
     font-weight: bold;
 }
 
+
 /*Purchase order form*/
+
 .po-form-container {
     width: 850px;
     margin: 0 auto;
     margin-bottom: 30px;
     border: 1px solid #8fccff;
 }
+
 .po-form-container .nav {
     margin-top: 0;
     margin-bottom: 30px;
 }
+
 .po-form-container ul li {
     background-color: #d4e9fe;
     border-bottom: 1px solid #8fccff;
-    border-radius:0;
+    border-radius: 0;
 }
-.po-form-container ul li:hover {background-color: #d4e9fe !important;}
+
+.po-form-container ul li:hover {
+    background-color: #d4e9fe !important;
+}
 
 .po-form-container ul li a {
-    color:#253238;
+    color: #253238;
     font-weight: bold;
-    border-radius:0;
+    border-radius: 0;
     padding: 15px;
     font-size: 1.2em;
 }
 
 .po-form-container ul li.active a {
-    color:#fff;
+    color: #fff;
     background-color: #253238;
 }
-.po-form-container ul li.active a:hover,.po-form-container ul li.active a:focus { background-color: #253238 !important;}
+
+.po-form-container ul li.active a:hover, .po-form-container ul li.active a:focus {
+    background-color: #253238 !important;
+}
 
 .po-form-container form {
     width: 80%;
     margin: 0 auto;
     padding-top: 30px;
 }
+
 .po-form-container form h4 {
     padding-bottom: 20px;
 }
 
-.po-form-container .next-button{
+.po-form-container .next-button {
     background-color: #253238;
     border-color: #253238;
     color: #fff;
@@ -144,64 +177,80 @@ table{ font-family: 'Open Sans', sans-serif; }
     padding-left: 30px;
     margin-left: 20px;
 }
-.po-form-container .back-button{
+
+.po-form-container .back-button {
     padding-right: 30px;
     padding-left: 30px;
 }
+
 .po-form-container .btns-wrapper {
     text-align: right;
-    margin-top:30px; 
-    margin-bottom:30px; 
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-table.email-template{
+table.email-template {
     margin: 0 auto;
     display: block;
     width: 85%;
 }
+
 .email-template-wrapper {
     margin-bottom: 30px;
 }
+
 .po-form-container .form-group input[type=checkbox] {
     width: 20px;
     height: 20px;
     float: left;
-    margin-right:5px;
+    margin-right: 5px;
 }
+
+
 /*form error*/
+
 form span.error {
     color: #700;
     font-weight: bold;
 }
+
 form input.error {
     border: 1px solid #dc3545;
 }
 
+
 /*form-control*/
-.form-control{
+
+.form-control {
     border-radius: 4px !important;
 }
-.form-group input{
-    margin:0;
+
+.form-group input {
+    margin: 0;
 }
 
+
 /*New Quote form*/
+
 .new-quote-wrapper h3 {
     margin-left: 20px;
     margin-bottom: 50px;
 }
+
 .new-quote-wrapper h3 a {
     color: #2c353c;
-    font-weight:bold;
-    text-decoration:none;  
+    font-weight: bold;
+    text-decoration: none;
 }
+
 .new-quote-wrapper h3 a:hover {
     color: #2c353c;
-    text-decoration:none;
+    text-decoration: none;
 }
+
 .new-quote-wrapper h3 a i {
     color: #a8a9ad;
-    padding-right:8px;
+    padding-right: 8px;
 }
 
 .new-quote-form {
@@ -209,26 +258,32 @@ form input.error {
     margin: 0 auto;
     text-align: center;
 }
+
 .new-quote-form hr {
     width: 100%;
 }
+
 button.add-new-line {
     float: right;
     margin-bottom: 10px;
 }
-.new-quote-form button.choose-supplier{
+
+.new-quote-form button.choose-supplier {
     float: right;
 }
+
 form.new-quote-form-supplier {
     width: 650px;
     margin: 0 auto;
 }
-form.new-quote-form-supplier .btns-wrapper{
+
+form.new-quote-form-supplier .btns-wrapper {
     text-align: right;
     margin-top: 30px;
     margin-bottom: 30px;
 }
-form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
+
+form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
     margin-left: 15px;
 }
 
@@ -240,13 +295,14 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     width: 140px;
     margin-left: 6px;
     vertical-align: top;
-
 }
+
 .new-quote-fields-container .total-price {
     border: 1px solid #fefefe;
     border-radius: 4px;
 }
-.new-quote-fields-container .total-price{    
+
+.new-quote-fields-container .total-price {
     text-align: center;
     font-weight: bold;
 }
@@ -258,11 +314,14 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     font-weight: bold;
     padding: 50px;
 }
+
 .new-quote-wrapper .po-thanks-page>a {
     margin-top: 55px;
 }
 
+
 /*arrow progress bar*/
+
 .arrow-progress-bar {
     padding: 0;
     list-style-type: none;
@@ -274,7 +333,12 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     text-align: center;
     margin-top: 15px;
 }
-.arrow-progress-bar .badge{display: inline; background-color: red;}
+
+.arrow-progress-bar .badge {
+    display: inline;
+    background-color: red;
+}
+
 .arrow-progress-bar li {
     float: left;
     padding: 10px 30px 10px 40px;
@@ -295,8 +359,8 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     position: absolute;
     top: 0;
     left: 0;
-    
 }
+
 .arrow-progress-bar li:after {
     content: '';
     border-left: 16px solid #d2ecea;
@@ -308,27 +372,38 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     z-index: 20;
 }
 
-.arrow-progress-bar a.active li{
+.arrow-progress-bar a.active li {
     background: #2c353a;
 }
-.arrow-progress-bar a.active li{
-    color:#fff;
+
+.arrow-progress-bar a.active li {
+    color: #fff;
 }
 
 .arrow-progress-bar a.active li:after {
     border-left-color: #2c353a;
 }
-.arrow-progress-bar a:hover, .arrow-progress-bar a:focus{text-decoration: none;}
+
+.arrow-progress-bar a:hover, .arrow-progress-bar a:focus {
+    text-decoration: none;
+}
+
 .arrow-progress-bar a {
     color: #2c353a;
     font-size: 1.2em;
     font-weight: 600;
-    
 }
-.submit-offer{float: right;}
+
+.submit-offer {
+    float: right;
+}
+
+
 /*.react-datepicker-popper{position: relative !important;}*/
 
+
 /*New quote headers*/
+
 .new-quote-form-headers {
     background: #283339;
     color: #fff;
@@ -338,6 +413,7 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     line-height: 0.4;
     margin-bottom: 20px;
 }
+
 .new-quote-form-headers div {
     display: inline-block;
     margin-left: 40px;
@@ -345,32 +421,96 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn{
     margin-bottom: 20px;
 }
 
+
 /*New quote form progress bar */
-  .progress{width:100%;margin:40px auto;text-align:center; height: 100%; color:#fff; background-color: #fff; box-shadow: none;}
-  .progress .circle,.progress .bar{position:relative;display:inline-block;background:#cfcfcf;width:60px;height:60px;border-radius:40px;}
-  .progress .circle:not(:last-child){margin-right:150px;}
-  .progress .bar{position:absolute;width:150px;height:5px;top:27px;left:60px;border-left:none;border-right:none;border-radius:0}
-  .progress .circle .label{display:inline-block;width:32px;height:32px;line-height:50px;border-radius:32px;font-size:1.5em; padding-right: 0; padding-left: 0;}
-  .progress .circle .title{display:block; font-weight: bold; color:#000;font-size:1em;line-height:65px;width:200px;margin-left:-70px;text-align:center}
-  .progress .done .bar,.progress .circle.done{background:#000}
-  .progress .circle.done .label{color:#FFF;background:#000;}
-  /*.progress .circle.done .title{color:#444}*/
-  /*.progress .circle.active .label{color:#FFF;background:#0c95be}
+
+.progress {
+    width: 100%;
+    margin: 40px auto;
+    text-align: center;
+    height: 100%;
+    color: #fff;
+    background-color: #fff;
+    box-shadow: none;
+}
+
+.progress .circle, .progress .bar {
+    position: relative;
+    display: inline-block;
+    background: #cfcfcf;
+    width: 60px;
+    height: 60px;
+    border-radius: 40px;
+}
+
+.progress .circle:not(:last-child) {
+    margin-right: 150px;
+}
+
+.progress .bar {
+    position: absolute;
+    width: 150px;
+    height: 5px;
+    top: 27px;
+    left: 60px;
+    border-left: none;
+    border-right: none;
+    border-radius: 0
+}
+
+.progress .circle .label {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 50px;
+    border-radius: 32px;
+    font-size: 1.5em;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.progress .circle .title {
+    display: block;
+    font-weight: bold;
+    color: #000;
+    font-size: 1em;
+    line-height: 65px;
+    width: 200px;
+    margin-left: -70px;
+    text-align: center
+}
+
+.progress .done .bar, .progress .circle.done {
+    background: #000
+}
+
+.progress .circle.done .label {
+    color: #FFF;
+    background: #000;
+}
+
+
+/*.progress .circle.done .title{color:#444}*/
+
+
+/*.progress .circle.active .label{color:#FFF;background:#0c95be}
   .progress .circle.active .title{color:#0c95be}*/
- 
- .cart-details-headers {
+
+.cart-details-headers {
     color: #283339;
     font-weight: bold;
-    font-size:1.2em;
-    text-align:center;
+    font-size: 1.2em;
+    text-align: center;
 }
- .cart-details-headers>div{
+
+.cart-details-headers>div {
     display: inline-block;
     margin-left: 50px;
     margin-right: 50px;
     margin-bottom: 15px;
- }
- .cart-details-content {
+}
+
+.cart-details-content {
     background-color: #addaf1;
     margin-bottom: 30px;
     padding: 15px;
