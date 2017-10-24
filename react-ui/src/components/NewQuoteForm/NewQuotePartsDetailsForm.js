@@ -4,23 +4,29 @@ import {InputField} from '../form/InputField';
 import {DatePickerField} from '../form/DatePicker/DatePickerField';
 import * as v from '../form/Validation/Validation';
 
+const calculateTotalPrice = ({quantity, price}) => {
+  return quantity && price ? quantity * price : 0;
+};
 
-const QuoteDetails = ({name}) => {
+const QuoteDetails = ({name, total}) => {
   return <div className="form-inline">
     <InputField id={`${name}.manufacture`} placeholder="Manufacture" type="text" validate={[v.required]} />
-    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text"validate={[v.required]} />
-    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number"validate={[v.required]} />
-    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number"validate={[v.required]} />    
+    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text" validate={[v.required]} />
+    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number" validate={[v.required]} />
+    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number" validate={[v.required]} />
     <DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" validate={[v.required]} />
-    <div className="form-group total-price">$12.00</div>
+    <div className="form-group total-price">{total}</div>
 <hr/>
   </div>
 };
 
 const renderQuotes = ({fields}) => {
   return <div className="new-quote-fields-container">
-    {fields.map((quote, i) => {
-      return <div key={i}><QuoteDetails name={quote}/></div>
+    {fields.map((quote, i, allRows) => {
+      const {quantity, targetPrice} = allRows.get(i);
+      return <div key={i}>
+        <QuoteDetails name={quote} total={calculateTotalPrice({quantity, price: targetPrice})}/>
+      </div>
     })}
     <button className="btn btn-default add-new-line" type="button" onClick={() => fields.push({})}>
       <span className="fa fa-plus"/> Add new
