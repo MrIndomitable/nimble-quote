@@ -13,8 +13,8 @@ const FilterLink = ({label, filter, children, activeFilter}) => (
 );
 
 const ComponentsFilterComp = ({offersBadge, filter}) => (
-  <div className="arrow-progress-bar-container">
-    <ul className="arrow-progress-bar">
+  <nav  className="arrow-progress-bar-container">
+    <ul className="nav arrow-progress-bar">
       <FilterLink label="Pending" filter="pending" activeFilter={filter} />
       <FilterLink filter="offers" activeFilter={filter}>
         Offers {offersBadge > 0 && <span className="badge"> {offersBadge}</span>}
@@ -22,7 +22,7 @@ const ComponentsFilterComp = ({offersBadge, filter}) => (
       <FilterLink label="Imminent" filter="imminent" activeFilter={filter} />
       <FilterLink label="Archive" filter="archive" activeFilter={filter} />
     </ul>
-  </div>
+  </nav>
 );
 
 const mapStateToProps = (state, {location}) => {

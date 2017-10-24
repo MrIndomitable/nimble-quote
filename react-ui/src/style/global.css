@@ -322,6 +322,11 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
 
 /*arrow progress bar*/
 
+ul.nav.arrow-progress-bar {
+    margin: 25px auto !important;
+    width: 100%;
+}
+
 .arrow-progress-bar {
     padding: 0;
     list-style-type: none;
@@ -331,7 +336,7 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
     line-height: 1em;
     margin: 0 -1px;
     text-align: center;
-    margin-top: 15px;
+    /*margin-top: 15px;*/
 }
 
 .arrow-progress-bar .badge {
@@ -347,8 +352,8 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
     position: relative;
     /*border-top: 1px solid #666;
     border-bottom: 1px solid #666;*/
-    width: 15%;
-    margin: 0 4px;
+    width: 20%;
+    margin: 0 10px;
 }
 
 .arrow-progress-bar li:before {
@@ -398,11 +403,14 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
     float: right;
 }
 
+
 /*Datepicker*/
+
 .new-offer-form .react-datepicker-popper {
     position: relative !important;
     top: -50px !important;
 }
+
 
 /*New quote headers*/
 
