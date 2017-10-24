@@ -398,9 +398,11 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
     float: right;
 }
 
-
-/*.react-datepicker-popper{position: relative !important;}*/
-
+/*Datepicker*/
+.new-offer-form .react-datepicker-popper {
+    position: relative !important;
+    top: -50px !important;
+}
 
 /*New quote headers*/
 
