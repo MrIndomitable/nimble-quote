@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {NewQuoteButton} from '../NewQuoteButton/NewQuoteButton';
 import {AppLogo} from '../AppLogo/AppLogo';
 import './Header.css';

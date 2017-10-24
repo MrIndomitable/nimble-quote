@@ -56,8 +56,8 @@ export class NewQuoteWizardComp extends Component {
         </div>
         {page === 1 && <NewQuotePartsDetailsForm onSubmit={() => this.nextPage()}/>}
         {page === 2 && <NewQuoteSupplierDetailsForm previousPage={() => this.previousPage()} onSubmit={values => {
-          this.props.onSubmit(values),
-          this.nextPage()
+          this.props.onSubmit(values);
+          this.nextPage();
         }}/>}
         {page === 3 && <ThanksPage onSubmit={this.props.onSubmit}/>}
       </div>
