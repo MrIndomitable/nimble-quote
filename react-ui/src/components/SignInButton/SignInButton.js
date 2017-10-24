@@ -4,9 +4,9 @@ import {fetchUserDetails} from '../../actions/user-actions';
 import {Link} from 'react-router-dom';
 
 export const GoogleLoginButton = () => (
-  <Link className="auth-button btn btn-raised btn-danger" to="/auth/google">
+  <a className="auth-button btn btn-raised btn-danger" href="/auth/google">
     <span className="fa fa-google-plus"/> Sign In with Google
-  </Link>
+  </a>
 );
 
 const SignOutButton = ({user, className}) => (
