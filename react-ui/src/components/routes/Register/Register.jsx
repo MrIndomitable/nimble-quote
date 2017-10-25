@@ -2,14 +2,15 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import {InputField} from '../../form/InputField';
 import './register.css';
-import * as v from '../../form/Validation/Validation';
+import { required, email, confirmation } from 'redux-form-validators'
+
 
 const RegisterFormComp = ({handleSubmit}) => (
   <form className="form-signup">
     <h3 className="form-signup-heading">Welcome to Nimble Quote</h3>
-    <InputField id="email" label="Email" placeholder="Email" type="text" validate={[v.required, v.email]}/>
-    <InputField id="password" label="Password" placeholder="Password" type="password" validate={[v.required]}/>
-    <InputField id="confirm-password" label="Confirm Password" placeholder="Confirm Password" type="password" validate={[v.required]}/>
+    <InputField id="email" label="Email" placeholder="Email" type="text" validate={[required(), email()]}/>
+    <InputField id="password" label="Password" placeholder="Password" type="password" validate={[required()]}/>
+    <InputField id="confirmPassword" label="Confirm Password" placeholder="Confirm Password" type="password" validate={[required(), confirmation({ field: 'password', fieldLabel: 'Password' })]}/>
     <div className="form-group btns-wrapper">
       <button
         onClick={handleSubmit}
