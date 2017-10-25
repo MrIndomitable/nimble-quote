@@ -2,7 +2,8 @@ import React from 'react';
 import {FieldArray, reduxForm} from 'redux-form';
 import {InputField} from '../form/InputField';
 import {DatePickerField} from '../form/DatePicker/DatePickerField';
-import {required} from '../form/Validation/Validation';
+import { required, numericality } from 'redux-form-validators'
+
 
 const calculateTotalPrice = ({quantity, price}) => {
   return quantity && price ? quantity * price : 0;
@@ -10,11 +11,11 @@ const calculateTotalPrice = ({quantity, price}) => {
 
 const QuoteDetails = ({name, total}) => {
   return <div className="form-inline">
-    <InputField id={`${name}.manufacture`} placeholder="Manufacture" type="text" validate={[required]} />
-    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text" validate={[required]} />
-    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number" validate={[required]} />
-    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number" validate={[required]} />
-    <DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" validate={[required]} />
+    <InputField id={`${name}.manufacture`} placeholder="Manufacture" type="text" validate={required()} />
+    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text" validate={required()} />
+    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number" validate={[required(), numericality({ '>': 0 })]} />
+    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number" validate={[required(), numericality({ '>': 0 })]} />
+    <DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" validate={required()} />
     <div className="form-group total-price">{total}</div>
 <hr/>
   </div>
