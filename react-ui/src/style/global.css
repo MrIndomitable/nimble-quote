@@ -300,11 +300,9 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
 .new-quote-fields-container .total-price {
     border: 1px solid #fefefe;
     border-radius: 4px;
-}
-
-.new-quote-fields-container .total-price {
-    text-align: center;
+    margin-top: 12px;
     font-weight: bold;
+    text-align: center;
 }
 
 .new-quote-wrapper .po-thanks-page {
