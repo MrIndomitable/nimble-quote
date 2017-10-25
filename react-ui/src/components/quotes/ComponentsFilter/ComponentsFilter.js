@@ -13,6 +13,7 @@ const FilterLink = ({label, filter, children, activeFilter}) => (
 );
 
 const ComponentsFilterComp = ({offersBadge, filter}) => (
+  <div className="arrow-progress-bar-wrapper">
   <nav  className="arrow-progress-bar-container">
     <ul className="nav arrow-progress-bar">
       <FilterLink label="Pending" filter="pending" activeFilter={filter} />
@@ -23,6 +24,7 @@ const ComponentsFilterComp = ({offersBadge, filter}) => (
       <FilterLink label="Archive" filter="archive" activeFilter={filter} />
     </ul>
   </nav>
+  </div>
 );
 
 const mapStateToProps = (state, {location}) => {

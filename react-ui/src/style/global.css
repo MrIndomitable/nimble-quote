@@ -320,7 +320,14 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
 }
 
 
-/*arrow progress bar*/
+/*filters page - arrow progress bar*/
+
+.arrow-progress-bar-wrapper {
+    width: 100%;
+    padding-left: 65px;
+    padding-right: 65px;
+    background-color: #f2f2f2;
+}
 
 ul.nav.arrow-progress-bar {
     margin: 25px auto !important;
@@ -328,7 +335,7 @@ ul.nav.arrow-progress-bar {
 }
 
 .arrow-progress-bar {
-    padding: 0;
+    padding: 20px;
     list-style-type: none;
     font-family: arial;
     font-size: 12px;
@@ -346,21 +353,21 @@ ul.nav.arrow-progress-bar {
 
 .arrow-progress-bar li {
     float: left;
-    padding: 10px 30px 10px 40px;
+    padding: 20px 30px 20px 40px;
     background: #d2ecea;
     color: #000000;
     position: relative;
     /*border-top: 1px solid #666;
     border-bottom: 1px solid #666;*/
-    width: 20%;
-    margin: 0 10px;
+    width: 22%;
+    margin: 0 12px;
 }
 
 .arrow-progress-bar li:before {
     content: '';
-    border-left: 16px solid #fff;
-    border-top: 16px solid transparent;
-    border-bottom: 16px solid transparent;
+    border-left: 30px solid #f2f2f2;
+    border-top: 26px solid transparent;
+    border-bottom: 26px solid transparent;
     position: absolute;
     top: 0;
     left: 0;
@@ -368,9 +375,9 @@ ul.nav.arrow-progress-bar {
 
 .arrow-progress-bar li:after {
     content: '';
-    border-left: 16px solid #d2ecea;
-    border-top: 16px solid transparent;
-    border-bottom: 16px solid transparent;
+    border-left: 30px solid #d2ecea;
+    border-top: 26px solid transparent;
+    border-bottom: 26px solid transparent;
     position: absolute;
     top: 0;
     left: 100%;
@@ -382,7 +389,7 @@ ul.nav.arrow-progress-bar {
 }
 
 .arrow-progress-bar a.active li {
-    color: #fff;
+    color: #f2f2f2;
 }
 
 .arrow-progress-bar a.active li:after {
@@ -395,7 +402,7 @@ ul.nav.arrow-progress-bar {
 
 .arrow-progress-bar a {
     color: #2c353a;
-    font-size: 1.2em;
+    font-size: 1.4em;
     font-weight: 600;
 }
 
