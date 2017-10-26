@@ -5,7 +5,7 @@ import {Field} from 'redux-form';
 import 'react-datepicker/dist/react-datepicker.css';
 
 
-const DatePickerFieldComp = ({input, placeholder, dateFormat = 'DD-MM-YYYY'}) => {
+const DatePickerFieldComp = ({input, placeholder, dateFormat = 'DD-MM-YYYY', meta: { touched, error, warning }, validate}) => {
   const handleChange = (date) => {
     input.onChange(moment(date).format(dateFormat))
   };
@@ -20,7 +20,9 @@ const DatePickerFieldComp = ({input, placeholder, dateFormat = 'DD-MM-YYYY'}) =>
         selected={input.value ? moment(input.value, dateFormat) : null}
         onChange={handleChange}
         label={placeholder}
-      />
+        validate={validate}
+        />
+      { touched && ((error && <span className="error">{error}</span>) || (warning && <span className="warning">{warning}</span>)) }
     </div>
   )
 };
@@ -31,6 +33,6 @@ export const DatePickerField = ({id, ...props}) => {
       name={id}
       component={DatePickerFieldComp}
       {...props}
-    />
+      />
   );
 };

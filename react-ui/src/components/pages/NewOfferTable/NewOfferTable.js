@@ -3,7 +3,7 @@ import {InputField} from '../../form/InputField';
 import {FieldArray, reduxForm} from 'redux-form';
 import {DatePickerField} from "../../form/DatePicker/DatePickerField";
 import moment from 'moment';
-import { required } from 'redux-form-validators'
+import { required, numericality } from 'redux-form-validators'
 
 
 const DATE_FORMAT = 'DD-MM-YYYY';
@@ -14,8 +14,8 @@ const ComponentRow = ({name, manufacture, partNumber, targetPrice, quantity}) =>
     <td>{partNumber}</td>
     <td>{targetPrice}</td>
     <td>{quantity}</td>
-    <td><InputField id={`${name}.offerPrice`} type="number" placeholder="Offer price" validate={required()}/></td>
-    <td><InputField id={`${name}.offerQuantity`} type="number" placeholder="Offer quantity" validate={required()}/></td>
+    <td><InputField id={`${name}.offerPrice`} type="number" placeholder="Offer price" validate={[required(), numericality({ '>': 0 })]}/></td>
+    <td><InputField id={`${name}.offerQuantity`} type="number" placeholder="Offer quantity" validate={[required(), numericality({ '>': 0 })]}/></td>
     <td><DatePickerField id={`${name}.partDate`} placeholder="Part date" type="date" dateFormat={DATE_FORMAT} validate={required()} /></td>
     <td><DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" dateFormat={DATE_FORMAT} validate={required()}/></td>
   </tr>
