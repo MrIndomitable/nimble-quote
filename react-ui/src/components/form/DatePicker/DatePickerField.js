@@ -3,9 +3,10 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {Field} from 'redux-form';
 import 'react-datepicker/dist/react-datepicker.css';
+import classNames from 'classnames';
 
 
-const DatePickerFieldComp = ({input, placeholder, dateFormat = 'DD-MM-YYYY', meta: { touched, error, warning }, validate}) => {
+const DatePickerFieldComp = ({className, input, placeholder, dateFormat = 'DD-MM-YYYY', meta: { touched, error, warning }, validate}) => {
   const handleChange = (date) => {
     input.onChange(moment(date).format(dateFormat))
   };
@@ -15,7 +16,7 @@ const DatePickerFieldComp = ({input, placeholder, dateFormat = 'DD-MM-YYYY', met
       <DatePicker
         {...input}
         placeholderText={placeholder}
-        className="form-control"
+        className={classNames(className, touched && {error})}
         dateFormat={dateFormat}
         selected={input.value ? moment(input.value, dateFormat) : null}
         onChange={handleChange}
@@ -32,6 +33,7 @@ export const DatePickerField = ({id, ...props}) => {
     <Field
       name={id}
       component={DatePickerFieldComp}
+      className="form-control"
       {...props}
       />
   );
