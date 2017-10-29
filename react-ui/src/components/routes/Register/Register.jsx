@@ -8,9 +8,9 @@ import { required, length, email, confirmation } from 'redux-form-validators'
 const RegisterFormComp = ({handleSubmit}) => (
   <form className="form-signup">
     <h3 className="form-signup-heading">Welcome to Nimble Quote</h3>
-    <InputField id="email" label="Email" placeholder="Email" type="text" validate={[required(), length({ max: 20 }), email()]}/>
-    <InputField id="password" label="Password" placeholder="Password" type="password" validate={[required(), length({ max: 20 })]}/>
-    <InputField id="confirmPassword" label="Confirm Password" placeholder="Confirm Password" type="password" validate={[required(), length({ max: 20 }), confirmation({ field: 'password', fieldLabel: 'Password' })]}/>
+    <InputField id="email" label="Email" placeholder="Email" type="text" validate={[required(), length({ max: 50 }), email()]}/>
+    <InputField id="password" label="Password" placeholder="Password" type="password" validate={[required(), length({ max: 50 })]}/>
+    <InputField id="confirmPassword" label="Confirm Password" placeholder="Confirm Password" type="password" validate={[required(), length({ max: 50 }), confirmation({ field: 'password', fieldLabel: 'Password' })]}/>
     <div className="form-group btns-wrapper">
       <button
         onClick={handleSubmit}

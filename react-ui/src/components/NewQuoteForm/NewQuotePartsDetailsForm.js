@@ -11,10 +11,10 @@ const calculateTotalPrice = ({quantity, price}) => {
 
 const QuoteDetails = ({name, total}) => {
   return <div className="form-inline">
-    <InputField id={`${name}.manufacture`} placeholder="Manufacture" type="text" validate={[required(), length({ max: 20 })]} />
-    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text" validate={[required(), length({ max: 20 })]} />
-    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number" validate={[required(), length({ max: 20 }), numericality({ '>': 0 })]} />
-    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number" validate={[required(), length({ max: 20 }), numericality({ '>': 0 })]} />
+    <InputField id={`${name}.manufacture`} placeholder="Manufacture" type="text" validate={[required(), length({ max: 50 })]} />
+    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text" validate={[required(), length({ max: 50 })]} />
+    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} />
+    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} />
     <DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" validate={[required()]} />
     <div className="form-group total-price">{total}</div>
 <hr/>

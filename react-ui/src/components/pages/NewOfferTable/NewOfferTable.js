@@ -14,8 +14,8 @@ const ComponentRow = ({name, manufacture, partNumber, targetPrice, quantity}) =>
     <td>{partNumber}</td>
     <td>{targetPrice}</td>
     <td>{quantity}</td>
-    <td><InputField id={`${name}.offerPrice`} type="number" placeholder="Offer price" validate={[required(), length({ max: 20 }), numericality({ '>': 0 })]}/></td>
-    <td><InputField id={`${name}.offerQuantity`} type="number" placeholder="Offer quantity" validate={[required(), length({ max: 20 }), numericality({ '>': 0 })]}/></td>
+    <td><InputField id={`${name}.offerPrice`} type="number" placeholder="Offer price" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]}/></td>
+    <td><InputField id={`${name}.offerQuantity`} type="number" placeholder="Offer quantity" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]}/></td>
     <td><DatePickerField id={`${name}.partDate`} placeholder="Part date" type="date" dateFormat={DATE_FORMAT} validate={required()} /></td>
     <td><DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" dateFormat={DATE_FORMAT} validate={required()}/></td>
   </tr>
