@@ -1,15 +1,18 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import moment from 'moment';
 import {PurchaseOrderButton} from '../../PurchaseOrderButton/PurchaseOrderButton';
 import {findComponentById} from '../../../selectors/components-selector';
 import {withRouter} from 'react-router';
 import {getSupplierEmail} from "../../../selectors/suppliers-selector";
 
+const dateFormat = 'DD/MM/YYYY';
+
 const OfferRow = ({supplier, partDate, supplyDate, quantity, price, total, auctionId, componentId, offerId}) => (
   <tr>
     <td>{supplier}</td>
-    <td>{partDate}</td>
-    <td>{supplyDate}</td>
+    <td>{moment({partDate}).format(dateFormat)}</td>
+    <td>{moment({supplyDate}).format(dateFormat)}</td>
     <td>{quantity}</td>
     <td>{price}</td>
     <td>{total}</td>
