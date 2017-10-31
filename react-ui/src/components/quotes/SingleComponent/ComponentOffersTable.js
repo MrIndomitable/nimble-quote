@@ -11,8 +11,8 @@ const dateFormat = 'DD/MM/YYYY';
 const OfferRow = ({supplier, partDate, supplyDate, quantity, price, total, auctionId, componentId, offerId}) => (
   <tr>
     <td>{supplier}</td>
-    <td>{moment({partDate}).format(dateFormat)}</td>
-    <td>{moment({supplyDate}).format(dateFormat)}</td>
+    <td>{moment(partDate).format(dateFormat)}</td>
+    <td>{moment(supplyDate).format(dateFormat)}</td>
     <td>{quantity}</td>
     <td>{price}</td>
     <td>{total}</td>
