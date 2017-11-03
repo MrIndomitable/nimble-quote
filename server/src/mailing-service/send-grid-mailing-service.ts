@@ -52,7 +52,7 @@ style="
     };
 
     console.log('----------- for local development ----------');
-    console.log(offerQuoteEmail.offerLink.replace('https://nimble-quote.herokuapp.com/', 'localhost:3000/'));
+    console.log(offerQuoteEmail.offerLink.replace('https://nimble-quote.herokuapp.com/', 'http://localhost:3000/'));
     console.log('--------------------------------------------');
     sgMail.send(msg);
   };
@@ -80,7 +80,7 @@ href="https://nimble-quote.herokuapp.com/view?order=${order.id}">View Order</a>`
     };
 
     console.log('----------- for local development ----------');
-    console.log(`localhost:3000/view?order=${order.id}`);
+    console.log(`http://localhost:3000/view?order=${order.id}`);
     console.log('--------------------------------------------');
     sgMail.send(msg);
   };
