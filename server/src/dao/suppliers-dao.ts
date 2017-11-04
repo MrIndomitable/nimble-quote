@@ -1,13 +1,21 @@
-import { TSupplier } from "../types/auctions";
+import { TSupplier, TSupplierDetails } from '../types/auctions';
 import { Guid } from "../types/common";
 
 type TDBSupplier = {
   id: Guid;
   email: string;
+  company?: string;
+  contactName?: string;
+  phone?: string;
+  address?: string;
+  state?: string;
+  country?: string;
+  zip?: string;
 }
 
 export interface ISuppliersDao {
   addSupplier: (userId: Guid, supplier: TSupplier) => Guid;
+  addSupplierDetails(userId: Guid, supplierDetails: TSupplierDetails): Promise<void>;
   getSupplierById: (userId: Guid, id: Guid) => TSupplier;
   getAll: (userId: Guid) => TSupplier[];
 }
@@ -34,8 +42,30 @@ export const SuppliersDao = (): ISuppliersDao => {
     return (_suppliersByUser[userId] || []).map(id => _suppliers[id]);
   };
 
+  const addSupplierDetails = (userId: Guid, supplierDetails: TSupplierDetails): Promise<void> => {
+    const supplier = _suppliers[supplierDetails.id];
+    if (!supplier) {
+      console.log(`supplier with id ${supplierDetails.id} doesn't exists`);
+    } else {
+      const { company, contactName, phone, address, state, country, zip } = supplierDetails;
+      _suppliers[supplierDetails.id] = {
+        ...supplier,
+        company,
+        contactName,
+        phone,
+        address,
+        state,
+        country,
+        zip
+      };
+    }
+
+    return Promise.resolve();
+  };
+
   return {
     addSupplier,
+    addSupplierDetails,
     getSupplierById,
     getAll
   }

@@ -103,7 +103,10 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
       }]
     };
 
+    const { supplierId } = offersDao.getOfferById(offerId);
+
     Promise.all([
+      suppliersDao.addSupplierDetails(req.user.id, { ...supplier, id: supplierId }), //TODO suppliersService should be called here instead of suppliersDao
       userProfileService.addProfile(req.user.id, company),
       auctionService.addPurchaseOrder(req.user.id, order)
     ]).then(() => res.sendStatus(201))

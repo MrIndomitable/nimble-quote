@@ -47,6 +47,16 @@ export type TSupplier = {
   email: string;
 }
 
+export type TSupplierDetails = TSupplier & {
+  company: string;
+  contactName: string;
+  phone: string;
+  address: string;
+  state: string;
+  country: string;
+  zip: string;
+}
+
 export type TComponent = {
   id: Guid;
   partNumber: string;
