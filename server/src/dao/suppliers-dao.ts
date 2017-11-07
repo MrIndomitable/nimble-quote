@@ -16,6 +16,7 @@ type TDBSupplier = {
 export interface ISuppliersDao {
   addSupplier: (userId: Guid, supplier: TSupplier) => Guid;
   addSupplierDetails(userId: Guid, supplierDetails: TSupplierDetails): Promise<void>;
+  getSupplierDetails(supplierId: Guid): Promise<TSupplierDetails>;
   getSupplierById: (userId: Guid, id: Guid) => TSupplier;
   getAll: (userId: Guid) => TSupplier[];
 }
@@ -63,9 +64,25 @@ export const SuppliersDao = (): ISuppliersDao => {
     return Promise.resolve();
   };
 
+  const getSupplierDetails = (supplierId: Guid): Promise<TSupplierDetails> => {
+    const { id, email, company, contactName, phone, address, state, country, zip } = _suppliers[supplierId];
+    return Promise.resolve({
+      id,
+      email,
+      company,
+      contactName,
+      phone,
+      address,
+      state,
+      country,
+      zip
+    });
+  };
+
   return {
     addSupplier,
     addSupplierDetails,
+    getSupplierDetails,
     getSupplierById,
     getAll
   }

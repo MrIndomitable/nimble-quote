@@ -29,7 +29,7 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
   );
   const userProfileDao = UserProfileDao();
   const userProfileService = UserProfileService(userProfileDao);
-  const ordersService = OrdersService(ordersDao, offersDao, userProfileDao, auctionsDao);
+  const ordersService = OrdersService(ordersDao, offersDao, userProfileDao, auctionsDao, suppliersDao);
 
   // generateTestData(suppliersService, auctionService);
 
@@ -82,6 +82,7 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
     res.sendStatus(201);
   });
 
+  // TODO this endpoint is unsecured. it should use a token and not orderId
   router.get('/order/:orderId', (req: Request, res: Response) => {
     ordersService.getOrderById(req.params.orderId)
       .then((order: any) => res.json(order))
