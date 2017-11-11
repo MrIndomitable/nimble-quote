@@ -40,18 +40,21 @@ export class ViewOrderPage extends React.Component {
       .catch(e => console.log(e));
   }
 
+  acknowledge() {
+    const {order} = parse(this.props.location.search);
+    axios.post(`/api/acknowledge`, {token: order})
+      .then(() => this.setState({submitted: true}))
+      .catch(e => this.setState({hasErrors: true}));
+    // .then(res => console.log({ order: res.data }))
+    // .catch(e => console.log(e));
+  }
+
   render() {
     console.log(this.state);
     const {order} = this.state;
     const {submitted, hasErrors} = this.state;
+    const acknowledge = () => this.acknowledge();
 
-    const acknowledge = () => {
-      axios.post(`/api/acknowledge`, { token: order })
-        .then(() => this.setState({ submitted: true }))
-        .catch(e => this.setState({ hasErrors: true }));
-      // .then(res => console.log({ order: res.data }))
-      // .catch(e => console.log(e));
-    }
     const AcknowledgeButton = ({acknowledge}) => {
       return <nav className="navbar navbar-light bg-light">
         <button className="btn btn-lg btn-primary pull-right" type="button" onClick={acknowledge} >Acknowledge</button>

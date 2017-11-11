@@ -12,6 +12,7 @@ import { OrdersService } from "../services/orders-service";
 import { IUsersService } from "../services/users-service";
 import { UserProfileService } from "../services/user-profile-service";
 import { UserProfileDao } from "../dao/user-profile-dao";
+import { verify } from 'jsonwebtoken';
 
 export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
   const suppliersDao = SuppliersDao();
@@ -82,14 +83,24 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
     res.sendStatus(201);
   });
 
-  // TODO this endpoint is unsecured. it should use a token and not orderId
-  router.get('/order/:orderId', (req: Request, res: Response) => {
-    ordersService.getOrderById(req.params.orderId)
+  router.get('/order/:purchaseToken', (req: Request, res: Response) => {
+    const { orderId }: any = verify(req.params.purchaseToken, config.email.tokenEncryptionKey);
+    ordersService.getOrderById(orderId)
       .then((order: any) => res.json(order))
       .catch((e: any) => {
         console.log('error getting order by id', req.params.orderId, e);
         res.sendStatus(400);
       })
+  });
+
+  router.post('/acknowledge', (req: Request, res: Response) => {
+    const { orderId }: any = verify(req.body.token, config.email.tokenEncryptionKey);
+    ordersService.acknowledgeOrder(orderId)
+      .then(() => res.sendStatus(201))
+      .catch(e => {
+        console.log('error during acknowledge purchase flow', e);
+        return res.sendStatus(500);
+      });
   });
 
   router.post('/order', requireLogin, (req: Request, res: Response) => {

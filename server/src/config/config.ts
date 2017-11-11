@@ -10,6 +10,7 @@ export type TConfig = {
     callbackURL: string;
   },
   email: {
+    tokenEncryptionKey: string;
     sendGridApiKey: string;
   }
 }
@@ -24,6 +25,7 @@ const config: TConfig = {
     callbackURL: env.GOOGLE_CALLBACK_URL
   },
   email: {
+    tokenEncryptionKey: env.EMAIL_TOKEN_ENCRYPTION_KEY,
     sendGridApiKey: env.SENDGRID_API_KEY
   }
 };

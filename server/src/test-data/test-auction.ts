@@ -1,5 +1,6 @@
 import { Guid } from '../types/common';
 import { TOfferDTO, TPurchaseOrder, TPurchaseOrderDetail, TSupplierDTO } from '../types/auctions';
+import { OrderStatus } from '../dao/orders-dao';
 const chance = require('chance').Chance();
 
 export const anAuction = (components: any[] = [], suppliers: TSupplierDTO[] = []) => ({
@@ -30,7 +31,8 @@ export const anOffer = (componentId: Guid): TOfferDTO => {
 export const aPurchaseOrder = (auctionId: Guid, details: TPurchaseOrderDetail[]): TPurchaseOrder => ({
   id: chance.guid(),
   auctionId,
-  details
+  details,
+  status: OrderStatus.NEW
 });
 
 export const aPurchaseOrderDetails = (componentId: Guid, offerId: Guid): TPurchaseOrderDetail => ({

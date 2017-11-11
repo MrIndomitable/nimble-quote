@@ -1,7 +1,7 @@
 export const isPending = component => component.status === 'PENDING';
 export const hasOffers = component => component.status === 'HAS_OFFERS';
 export const isImminent = component => component.status === 'IN_PURCHASE';
-export const isArchived = component => false;
+export const isArchived = component => component.status === 'ARCHIVED';
 
 export const componentsSelector = ({components}, filter) => {
   const allComponents = Object.values(components);

@@ -20,7 +20,7 @@ type OfferQuoteEmail = {
 type PurchaseOrderEmail = {
   supplier: { displayName: string, email: string };
   company: { email: string };
-  order: { id: Guid };
+  link: string;
 }
 
 type NewOfferNotification = {
@@ -57,7 +57,7 @@ style="
     sgMail.send(msg);
   };
 
-  const sendPurchaseOrder = ({ supplier, company, order }: PurchaseOrderEmail) => {
+  const sendPurchaseOrder = ({ supplier, company, link }: PurchaseOrderEmail) => {
     const html = `<h2>Hi ${supplier.displayName}</h2>
 <p>You have a new order waiting for you from ${company.email}</p>
 <a style="
@@ -69,7 +69,7 @@ style="
     display: inline-block;
     border-radius: 25px;
 "
-href="https://nimble-quote.herokuapp.com/view?order=${order.id}">View Order</a>`;
+href="${link}">View Order</a>`;
 
     const msg = {
       to: supplier.email,
@@ -80,7 +80,7 @@ href="https://nimble-quote.herokuapp.com/view?order=${order.id}">View Order</a>`
     };
 
     console.log('----------- for local development ----------');
-    console.log(`http://localhost:3000/view?order=${order.id}`);
+    console.log(link.replace('https://nimble-quote.herokuapp.com/', 'http://localhost:3000/'));
     console.log('--------------------------------------------');
     sgMail.send(msg);
   };

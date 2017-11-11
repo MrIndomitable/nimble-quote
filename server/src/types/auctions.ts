@@ -1,4 +1,5 @@
 import { Guid } from './common';
+import { OrderStatus } from '../dao/orders-dao';
 
 export type TSupplierDTO = {
   id?: Guid;
@@ -83,6 +84,7 @@ export type TPurchaseOrder = {
   id: Guid;
   auctionId: Guid;
   details: TPurchaseOrderDetail[];
+  status: OrderStatus;
 }
 
 export type TPurchaseOrderDetail = {

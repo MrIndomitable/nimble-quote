@@ -17,7 +17,7 @@ export const OrdersService = (ordersDao: IOrdersDao,
     return Promise.resolve(auctionsDao.getAuctionById(auctionId).userId);
   };
 
-  const getCompany = async(order: TPurchaseOrder) => {
+  const getCompany = async (order: TPurchaseOrder) => {
     const userId = await getUserIdByOrderId(order);
     const userProfile: TUserProfile = await userProfileDao.getProfileByUserId(userId);
 
@@ -48,7 +48,7 @@ export const OrdersService = (ordersDao: IOrdersDao,
     });
   };
 
-  const getSupplier = async(order: TPurchaseOrder) => {
+  const getSupplier = async (order: TPurchaseOrder) => {
     const offerIds = order.details.map(d => d.offerId);
     const [supplierId] = offersDao.getSuppliersByOffers(offerIds);
     return supplierDao.getSupplierDetails((supplierId));
@@ -81,7 +81,12 @@ export const OrdersService = (ordersDao: IOrdersDao,
     };
   };
 
+  const acknowledgeOrder = async (orderId: Guid): Promise<void> => {
+    return ordersDao.acknowledgeOrder(orderId);
+  };
+
   return {
-    getOrderById
+    getOrderById,
+    acknowledgeOrder
   };
 };

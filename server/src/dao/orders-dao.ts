@@ -6,11 +6,18 @@ export interface IOrdersDao {
   getOrderById(id: Guid): TPurchaseOrder;
   getOrdersByAuctionId(auctionId: Guid): TPurchaseOrder[];
   getOrderByComponentId(componentId: Guid): TPurchaseOrder;
+  acknowledgeOrder(orderId: Guid): Promise<void>;
+}
+
+export enum OrderStatus {
+  NEW = 'NEW',
+  ACKNOWLEDGE = 'ACKNOWLEDGE'
 }
 
 export type TDBPurchaseOrder = {
   auctionId: Guid;
   details: TDBPurchaseOrderDetails[];
+  status: OrderStatus;
 }
 
 export type TDBPurchaseOrderDetails = {
@@ -45,20 +52,26 @@ export const OrdersDao = (): IOrdersDao => {
       return { componentId, offerId, quantity };
     });
 
-    _orders[id] = { auctionId, details: dbDetails };
+    _orders[id] = { auctionId, details: dbDetails, status: OrderStatus.NEW };
   };
 
   const getOrderById = (id: Guid): TPurchaseOrder => {
     if (!_orders[id]) return null;
 
-    const { auctionId, details } = _orders[id];
-    return { id, auctionId, details };
+    const { auctionId, details, status } = _orders[id];
+    return { id, auctionId, details, status };
+  };
+
+  const acknowledgeOrder = async (orderId: Guid) => {
+    _orders[orderId].status = OrderStatus.ACKNOWLEDGE;
+    return Promise.resolve();
   };
 
   return {
     addOrder,
     getOrderById,
     getOrdersByAuctionId: (auctionId: Guid) => (_ordersByAuctions[auctionId] || []).map(getOrderById),
-    getOrderByComponentId: (componentId: Guid) => (_ordersByComponents[componentId] || []).map(getOrderById)[0]
+    getOrderByComponentId: (componentId: Guid) => (_ordersByComponents[componentId] || []).map(getOrderById)[0],
+    acknowledgeOrder
   }
 };

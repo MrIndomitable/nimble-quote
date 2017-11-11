@@ -25,6 +25,9 @@ import { ISuppliersDao } from "../dao/suppliers-dao";
 import { IMailService } from "../mailing-service/send-grid-mailing-service";
 import { IOffersDao } from "../dao/offers-dao";
 import { IUsersService, TUser } from "./users-service";
+import { sign } from 'jsonwebtoken';
+import config from '../config/config';
+import { OrderStatus } from '../dao/orders-dao';
 
 interface IAuctionsService {
   addAuction: (userId: Guid, auction: TAuctionDTO) => Guid;
@@ -155,7 +158,9 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
 
   const addPurchaseOrder = (userId: Guid, order: TPurchaseOrderDTO): Promise<void> => {
     const id = uuid();
-    auctionsDao.addPurchaseOrder(Object.assign({}, order, { id }));
+    auctionsDao.addPurchaseOrder(Object.assign({}, order, { id, status: OrderStatus.NEW }));
+
+    const purchaseToken = sign({ orderId: id }, config.email.tokenEncryptionKey);
 
     getSuppliersForOrder(userId, order).forEach(supplier => {
       const poEmail = {
@@ -166,9 +171,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
         company: {
           email: 'info@nimble-quote.com' // FIXME should be the email of current logged user
         },
-        order: {
-          id
-        }
+        link: `https://nimble-quote.herokuapp.com/view?order=${purchaseToken}`
       };
 
       mailingService.sendPurchaseOrder(poEmail);
@@ -223,7 +226,9 @@ const toComponentResult = (component: TComponent): TComponentResult => {
   const offersCount = !!offers ? offers.length : 0;
 
   const getStatus = () => {
-    if (purchaseOrder) {
+    if (purchaseOrder && purchaseOrder.status === OrderStatus.ACKNOWLEDGE) {
+      return ComponentStatus.ARCHIVED;
+    } else if (purchaseOrder) {
       return ComponentStatus.IN_PURCHASE;
     }
 
