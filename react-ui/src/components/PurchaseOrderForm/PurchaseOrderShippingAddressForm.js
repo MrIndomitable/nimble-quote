@@ -6,7 +6,7 @@ import { required, length } from 'redux-form-validators'
 export const PurchaseOrderShippingAddressFormComp = ({handleSubmit}) => {
   return <form onSubmit={ handleSubmit }>
     <h4>Shipping address</h4>
-    <InputField id="company.name" label="Company" type="text" validate={[required(), length({ max: 50 })]}/>
+    <InputField autoFocus id="company.name" label="Company" type="text" validate={[required(), length({ max: 50 })]}/>
     <InputField id="company.contactName" label="Contact name" type="text" validate={[required(), length({ max: 50 }),]}/>
     <InputField id="company.phone" label="Phone" type="text" validate={[required(), length({ max: 50 })]}/>
     <InputField id="company.address" label="Address" type="text" validate={[required(), length({ max: 50 })]}/>
