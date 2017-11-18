@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {findComponentById} from "../../selectors/components-selector";
 import {removeFromCart} from "../../actions/cart-actions";
 import Moment from 'moment';
+import {getSupplierEmail} from "../../selectors/suppliers-selector";
 
 const CartDetailsComp = ({componentId, offer, removeFromCart}) => {
   return (
@@ -49,12 +50,10 @@ const mapStateToProps = (state) => {
   const component = findComponentById(state, componentId);
   const offer = component.offers.find(o => o.id === offerId);
 
-  const supplier = offer.supplierId; // FIXME should be supplier email (not yet in redux store)
-
   return {
     componentId,
     offer: {
-      supplier,
+      supplier: getSupplierEmail(state, offer.supplierId),
       price: offer.price,
       quantity: offer.quantity,
       partDate: offer.partDate,
