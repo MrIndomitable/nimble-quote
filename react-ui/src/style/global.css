@@ -408,15 +408,6 @@ ul.nav.arrow-progress-bar {
     float: right;
 }
 
-
-/*Datepicker*/
-
-.new-offer-form .react-datepicker-popper {
-    position: relative !important;
-    top: -50px !important;
-}
-
-
 /*New quote headers*/
 
 .new-quote-form-headers {
