@@ -6,6 +6,7 @@ import {NewQuoteSupplierDetailsForm} from './NewQuoteSupplierDetailsForm';
 import {Link} from 'react-router-dom';
 import {fetchSuppliers} from "../../actions/suppliers-actions";
 import classNames from 'classnames';
+import {destroy} from 'redux-form';
 
 const ThanksPage = () =>{
   return <div className="po-thanks-page">
@@ -21,6 +22,10 @@ export class NewQuoteWizardComp extends Component {
 
   componentWillMount() {
     this.props.fetchSuppliers();
+  }
+
+  componentWillUnmount() {
+    this.props.destroy();
   }
 
   nextPage() {
@@ -67,7 +72,8 @@ export class NewQuoteWizardComp extends Component {
 
 const mapDispatchToProps = {
   onSubmit: submitRFP,
-  fetchSuppliers
+  fetchSuppliers,
+  destroy: () => destroy('NewQuoteForm')
 };
 
 export const NewQuoteWizard = connect(null, mapDispatchToProps)(NewQuoteWizardComp);

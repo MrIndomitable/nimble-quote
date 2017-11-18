@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {destroy} from 'redux-form';
 import {PurchaseOrderShippingAddressForm} from './PurchaseOrderShippingAddressForm';
 import {PurchaseOrderSupplierAddressForm} from './PurchaseOrderSupplierAddressForm';
 import {PurchaseOrderSendForm} from './PurchaseOrderSendForm';
@@ -11,6 +12,10 @@ export class PurchaseOrderWizardComp extends Component {
   state = {
     page: 1
   };
+
+  componentWillUnmount() {
+    this.props.destroy();
+  }
 
   nextPage() {
     this.setState({page: this.state.page + 1})
@@ -52,11 +57,13 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  submitOrder
+  submitOrder,
+  destroy: () => destroy('PurchaseOrderForm')
 };
 
-const mergeProps = ({auctionId, componentId, offerId}, {submitOrder}, ownProps) => ({
+const mergeProps = ({auctionId, componentId, offerId}, {submitOrder, destroy}, ownProps) => ({
   onSubmit: submitOrder(auctionId, componentId, offerId),
+  destroy,
   ...ownProps
 });
 
