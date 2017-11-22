@@ -34,13 +34,26 @@ type TGoogleUser = {
 }
 
 export const UsersService = (usersDao: IUsersDao): IUsersService => {
+  const findByEmail = (email: string) => {
+    return usersDao.findByEmail(email).catch(e => {
+      if (e === 'user not found') return null;
+      else throw e;
+    });
+  };
+  const findByGoogleId = (googleId: string) => {
+    return usersDao.findByGoogleId(googleId).catch(e => {
+      if (e === 'user not found') return null;
+      else throw e;
+    });
+  };
+
   const findByEmailAndPassword = (email: string, password: string): Promise<TUser> => {
-    return usersDao.findByEmail(email)
+    return findByEmail(email)
       .then(user => {
+        if (!user) return null;
         const isValidPassword = user.local && user.local.password && bcrypt.compareSync(password, user.local.password);
-        return Promise.resolve(isValidPassword ? user : null);
-      })
-      .catch(e => null);
+        return isValidPassword ? user : null;
+      });
   };
 
   const saveGoogleUser = (googleUser: TGoogleUser): Promise<TUser> => {
@@ -66,8 +79,8 @@ export const UsersService = (usersDao: IUsersDao): IUsersService => {
 
   return {
     findById: (id: Guid) => usersDao.findById(id),
-    findByGoogleId: (googleId: string) => usersDao.findByGoogleId(googleId),
-    findByEmail: (email: string) => usersDao.findByEmail(email),
+    findByGoogleId,
+    findByEmail,
     findByEmailAndPassword,
     saveGoogleUser,
     saveLocalUser

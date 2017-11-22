@@ -11,6 +11,7 @@ import { ApiRoute } from './routes/api';
 import { UsersService } from './services/users-service';
 import { TConfig } from './config/config';
 import { UsersDao } from './dao/users-dao';
+import { createDBIfNotExists } from './dao/config/create-db';
 
 export const configureApp = (config: TConfig) => {
   const app = express();
@@ -31,7 +32,8 @@ export const configureApp = (config: TConfig) => {
     }
   }));
 
-  const users = UsersService(UsersDao());
+  createDBIfNotExists(config.db);
+  const users = UsersService(UsersDao(config.db));
   const passport = configurePassport(users, config);
 
   app.use(passport.initialize());
