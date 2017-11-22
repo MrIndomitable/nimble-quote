@@ -1,6 +1,7 @@
-import { Guid } from "../types/common";
+import { Guid } from '../types/common';
 const uuid = require('uuid').v4;
 import * as bcrypt from 'bcrypt-nodejs';
+import { IUsersDao } from '../dao/users-dao';
 
 export interface IUsersService {
   findById(id: Guid): Promise<TUser>;
@@ -19,6 +20,9 @@ export type TUser = {
   local?: {
     email: string;
     password: string;
+  };
+  google?: {
+    id: string;
   }
 }
 
@@ -29,49 +33,22 @@ type TGoogleUser = {
   profileImage?: string;
 }
 
-export const UsersService = (): IUsersService => {
-  const _users: { [id: string]: TUser; } = {};
-  const _googleUsers: { [googleId: string]: Guid } = {};
-  const _localUsers: { [email: string]: Guid } = {};
-
-  const findById = (id: Guid): Promise<TUser> => {
-    const user = _users[id];
-    if (user) {
-      return Promise.resolve(user);
-    } else {
-      return Promise.reject(`cannot find user with id ${id}`);
-    }
-  };
-
-  const findByGoogleId = (googleId: string): Promise<TUser> => {
-    const userId = _googleUsers[googleId];
-    return Promise.resolve(_users[userId]);
-  };
-
-  const findByEmail = (email: string): Promise<TUser> => {
-    const userId = _localUsers[email];
-    return Promise.resolve(_users[userId]);
-  };
-
+export const UsersService = (usersDao: IUsersDao): IUsersService => {
   const findByEmailAndPassword = (email: string, password: string): Promise<TUser> => {
-    const userId = _localUsers[email];
-    if (!userId) {
-      return Promise.resolve(null);
-    }
-
-    const user = _users[userId];
-    const isValidPassword = user.local && user.local.password && bcrypt.compareSync(password, user.local.password);
-
-    return Promise.resolve(isValidPassword ? user : null);
+    return usersDao.findByEmail(email)
+      .then(user => {
+        const isValidPassword = user.local && user.local.password && bcrypt.compareSync(password, user.local.password);
+        return Promise.resolve(isValidPassword ? user : null);
+      })
+      .catch(e => null);
   };
 
   const saveGoogleUser = (googleUser: TGoogleUser): Promise<TUser> => {
     const id = uuid();
     const { googleId, email, profileImage, displayName } = googleUser;
-    const user = { id: id, email, profileImage, displayName };
-    _users[id] = user;
-    _googleUsers[googleId] = id;
-    return Promise.resolve(user);
+    const user = { id: id, email, profileImage, displayName, google: { id: googleId } };
+
+    return usersDao.saveUser(user).then(() => user);
   };
 
   const saveLocalUser = (email: string, password: string): Promise<TUser> => {
@@ -84,18 +61,15 @@ export const UsersService = (): IUsersService => {
       }
     };
 
-    _users[user.id] = user;
-    _localUsers[email] = user.id;
-
-    return Promise.resolve(user);
+    return usersDao.saveUser(user).then(() => user);
   };
 
   return {
-    findById,
-    findByGoogleId,
-    findByEmail,
+    findById: (id: Guid) => usersDao.findById(id),
+    findByGoogleId: (googleId: string) => usersDao.findByGoogleId(googleId),
+    findByEmail: (email: string) => usersDao.findByEmail(email),
     findByEmailAndPassword,
     saveGoogleUser,
     saveLocalUser
-  }
+  };
 };

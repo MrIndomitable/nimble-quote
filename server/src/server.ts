@@ -10,6 +10,7 @@ import { AuthRoute } from './routes/auth';
 import { ApiRoute } from './routes/api';
 import { UsersService } from './services/users-service';
 import { TConfig } from './config/config';
+import { UsersDao } from './dao/users-dao';
 
 export const configureApp = (config: TConfig) => {
   const app = express();
@@ -30,7 +31,7 @@ export const configureApp = (config: TConfig) => {
     }
   }));
 
-  const users = UsersService();
+  const users = UsersService(UsersDao());
   const passport = configurePassport(users, config);
 
   app.use(passport.initialize());
