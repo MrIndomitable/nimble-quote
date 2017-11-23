@@ -24,7 +24,7 @@ export type DBConfig = {
 };
 
 const dbConfig = () => {
-  const r = /^mysql:\/\/(\w+):(\w+)@([\w|\.]+):3306\/(\w+)$/;
+  const r = /^mysql:\/\/(\w+):(\w+)@([\w|\.|-]+):3306\/(\w+)$/;
   const [input, user, password, host, database] = r.exec(env.JAWSDB_URL);
   return { user, password, host, database };
 };
