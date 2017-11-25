@@ -4,7 +4,6 @@ import * as path from 'path';
 import * as morgan from 'morgan';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
-import * as session from 'express-session';
 import configurePassport from './config/passport';
 import { AuthRoute } from './routes/auth';
 import { ApiRoute } from './routes/api';
@@ -12,6 +11,7 @@ import { UsersService } from './services/users-service';
 import { TConfig } from './config/config';
 import { UsersDao } from './dao/users-dao';
 import { configureMysql } from './dao/config/configure-mysql';
+import cookieSession = require('cookie-session');
 
 export const configureApp = async(config: TConfig) => {
   const app = express();
@@ -21,15 +21,12 @@ export const configureApp = async(config: TConfig) => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
-  app.use(session({
+  app.use(cookieSession({
+    name: 'session',
     secret: config.session.secret,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: false, // FIXME set to true when serving via https
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24
-    }
+    secure: false, // FIXME set to true when serving via https
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24,
   }));
 
   const db = await configureMysql(config.db);
