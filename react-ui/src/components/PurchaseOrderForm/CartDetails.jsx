@@ -28,11 +28,11 @@ const CartDetailsComp = ({componentId, offer, removeFromCart}) => {
         </div>
         <div className="col-lg-2 ">
           <p>Offer Price</p>
-          <p className=""><strong>$ {offer.price}</strong></p>
+          <p className=""><strong>${offer.price}</strong></p>
         </div>
         <div className="col-lg-2 ">
           <p>Total</p>
-          <p className=""><strong>$ 79920</strong></p>
+          <p className=""><strong>${offer.quantity * offer.price}</strong></p> //Temp solution
         </div>
         <div className="col-lg-2 ">
         <button className="btn btn-danger" onClick={() => removeFromCart(componentId)}>
