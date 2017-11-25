@@ -3,15 +3,15 @@ import { AuctionsService } from '../services/auctions-service';
 import { AuctionsDao } from '../dao/auctions-dao';
 import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
 import { TConfig } from '../config/config';
-import { SuppliersDao } from "../dao/suppliers-dao";
-import { SuppliersService } from "../services/suppliers-service";
+import { SuppliersDao } from '../dao/suppliers-dao';
+import { SuppliersService } from '../services/suppliers-service';
 // import { generateTestData } from "../test-data/test-data";
-import { OffersDao } from "../dao/offers-dao";
-import { OrdersDao } from "../dao/orders-dao";
-import { OrdersService } from "../services/orders-service";
-import { IUsersService } from "../services/users-service";
-import { UserProfileService } from "../services/user-profile-service";
-import { UserProfileDao } from "../dao/user-profile-dao";
+import { OffersDao } from '../dao/offers-dao';
+import { OrdersDao } from '../dao/orders-dao';
+import { OrdersService } from '../services/orders-service';
+import { IUsersService } from '../services/users-service';
+import { UserProfileService } from '../services/user-profile-service';
+import { UserProfileDao } from '../dao/user-profile-dao';
 import { verify } from 'jsonwebtoken';
 
 export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
@@ -45,20 +45,21 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
   };
 
   router.get('/suppliers', requireLogin, (req: Request, res: Response) => {
-    res.json(suppliersService.getAll(req.user));
+    suppliersService.getAll(req.user.id).then(suppliers => res.json(suppliers));
   });
 
   router.post('/suppliers', requireLogin, (req: Request, res: Response) => {
-    res.json(suppliersService.addSupplier(req.user, req.body));
+    suppliersService.addSupplier(req.user.id, req.body).then(supplierId => res.json(supplierId));
   });
 
   router.get('/auctions/:id?', requireLogin, (req: Request, res: Response) => {
-    res.json(auctionService.getAll(req.user.id));
+    auctionService.getAll(req.user.id).then(auctions => res.json(auctions));
   });
 
   router.post('/auctions', requireLogin, (req: Request, res: Response) => {
-    const auctionId = auctionService.addAuction(req.user.id, req.body);
-    res.status(201).json(auctionId);
+    auctionService.addAuction(req.user.id, req.body).then(auctionId => {
+      res.status(201).json(auctionId);
+    });
   });
 
   router.get('/components/:id?', requireLogin, (req: Request, res: Response) => {
@@ -72,15 +73,17 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
 
   router.get('/offer', (req: Request, res: Response) => {
     const [auctionId] = req.query.token.split('_');
-    res.json(auctionService.getById(auctionId));
+    auctionService.getById(auctionId).then(auction => {
+      res.json(auction);
+    });
   });
 
   router.post('/offer', (req: Request, res: Response) => {
     const { token, offerDetails } = req.body;
     // TODO extract supplier id from token
     const [auctionId, supplierId] = token.split('_');
-    auctionService.addOffer(supplierId, offerDetails);
-    res.sendStatus(201);
+    auctionService.addOffer(supplierId, offerDetails)
+      .then(() => res.sendStatus(201));
   });
 
   router.get('/order/:purchaseToken', (req: Request, res: Response) => {
@@ -90,7 +93,7 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
       .catch((e: any) => {
         console.log('error getting order by id', req.params.orderId, e);
         res.sendStatus(400);
-      })
+      });
   });
 
   router.post('/acknowledge', (req: Request, res: Response) => {

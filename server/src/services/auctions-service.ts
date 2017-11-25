@@ -30,11 +30,11 @@ import config from '../config/config';
 import { OrderStatus } from '../dao/orders-dao';
 
 interface IAuctionsService {
-  addAuction: (userId: Guid, auction: TAuctionDTO) => Guid;
-  addOffer: (supplierId: Guid, offers: TOffersDTO) => void;
+  addAuction: (userId: Guid, auction: TAuctionDTO) => Promise<Guid>;
+  addOffer: (supplierId: Guid, offers: TOffersDTO) => Promise<void>;
   addPurchaseOrder: (userId: Guid, order: TPurchaseOrderDTO) => Promise<void>;
-  getById: (id: Guid) => TAuctionResult;
-  getAll: (userId: Guid) => TAuctionsResult;
+  getById: (id: Guid) => Promise<TAuctionResult>;
+  getAll: (userId: Guid) => Promise<TAuctionsResult>;
   getComponents: () => TComponentsResult;
   getComponentById: (id: Guid) => TComponentsWithOffersResult;
 }
@@ -44,27 +44,25 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
                                 offersDao: IOffersDao,
                                 usersService: IUsersService,
                                 mailingService: IMailService): IAuctionsService => {
-  function getOrCreateSuppliers(userId: Guid, suppliers: TSupplierDTO[]) {
-    return suppliers.map(({ id, email }) => {
-      if (!id) {
-        return {
-          id: suppliersDao.addSupplier(userId, { id: uuid(), email }),
-          email
-        }
-      }
+  const getOrCreateSuppliers = async(userId: Guid, suppliers: TSupplierDTO[]): Promise<TSupplier[]> => {
+    const existingSupplierIds = suppliers.filter(({ id }) => !!id).map(({ id }) => id);
+    const newSuppliers = suppliers.filter(({ id }) => !id);
+    const newSupplierIds = await Promise.all(newSuppliers.map(({ email }) => {
+      return suppliersDao.addSupplier(userId, { id: uuid(), email });
+    }));
 
-      return ({
-        id,
-        email: suppliersDao.getSupplierById(userId, id).email
-      });
-    });
-  }
+    const allSupplierIds = [...existingSupplierIds, ...newSupplierIds];
 
-  const addAuction = (userId: Guid, auctionDTO: TAuctionDTO): Guid => {
+    return Promise.all(allSupplierIds.map((id: Guid) => {
+      return suppliersDao.getSupplierById(userId, id);
+    }));
+  };
+
+  const addAuction = async(userId: Guid, auctionDTO: TAuctionDTO): Promise<Guid> => {
     const { message, subject } = auctionDTO;
     const id = uuid();
     const components: TComponent[] = auctionDTO.bom.components.map(toComponentOf(id));
-    const suppliers = getOrCreateSuppliers(userId, auctionDTO.suppliers);
+    const suppliers = await getOrCreateSuppliers(userId, auctionDTO.suppliers);
 
     const auction: TAuction = {
       id,
@@ -90,14 +88,15 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     return id;
   };
 
-  const getById = (id: Guid): TAuctionResult => {
-    const auction = auctionsDao.getAuctionById(id);
+  const getById = async(id: Guid): Promise<TAuctionResult> => {
+    const auction = await auctionsDao.getAuctionById(id);
     if (!auction) return null;
     return toAuctionResult(auction);
   };
 
-  const getAll = (userId: Guid): TAuctionsResult => {
-    return { auctions: auctionsDao.getAuctions(userId).map(toAuctionResult) };
+  const getAll = async(userId: Guid): Promise<TAuctionsResult> => {
+    const auctions = await auctionsDao.getAuctions(userId);
+    return { auctions: auctions.map(toAuctionResult) };
   };
 
   const getComponents = (): TComponentsResult => {
@@ -117,7 +116,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     }
   };
 
-  const addOffer = (supplierId: Guid, offers: TOffersDTO): void => {
+  const addOffer = async (supplierId: Guid, offers: TOffersDTO): Promise<void> => {
     const toOffer = (offerDTO: TOfferDTO): TOffer => {
       const {componentId, quantity, price, partDate, supplyDate} = offerDTO;
       return {
@@ -135,8 +134,8 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
 
     const [offer] = offers.components;
     const component = auctionsDao.getComponentById(offer.componentId);
-    const userId = auctionsDao.getAuctionById(component.auctionId).userId;
-    const supplier = suppliersDao.getSupplierById(userId, supplierId);
+    const { userId } = await auctionsDao.getAuctionById(component.auctionId);
+    const supplier = await suppliersDao.getSupplierById(userId, supplierId);
     usersService.findById(userId).then((user: TUser) => {
       mailingService.sendNewOfferNotification({
         buyer: {
@@ -150,19 +149,20 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     }).catch(e => console.log('cannot find user', userId, e));
   };
 
-  const getSuppliersForOrder = (userId: Guid, order: TPurchaseOrderDTO): TSupplier[] => {
+  const getSuppliersForOrder = async (userId: Guid, order: TPurchaseOrderDTO): Promise<TSupplier[]> => {
     const offerIds = order.details.map(detail => detail.offerId);
     const supplierIds = offersDao.getSuppliersByOffers(offerIds);
-    return supplierIds.map(supplierId => suppliersDao.getSupplierById(userId, supplierId));
+    return Promise.all(supplierIds.map(supplierId => suppliersDao.getSupplierById(userId, supplierId)));
   };
 
-  const addPurchaseOrder = (userId: Guid, order: TPurchaseOrderDTO): Promise<void> => {
+  const addPurchaseOrder = async (userId: Guid, order: TPurchaseOrderDTO): Promise<void> => {
     const id = uuid();
     auctionsDao.addPurchaseOrder(Object.assign({}, order, { id, status: OrderStatus.NEW }));
 
     const purchaseToken = sign({ orderId: id }, config.email.tokenEncryptionKey);
 
-    getSuppliersForOrder(userId, order).forEach(supplier => {
+    const suppliersForOrder = await getSuppliersForOrder(userId, order);
+    suppliersForOrder.forEach(supplier => {
       const poEmail = {
         supplier: {
           displayName: supplier.email, // TODO should be name or email

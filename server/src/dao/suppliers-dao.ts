@@ -14,11 +14,11 @@ type TDBSupplier = {
 }
 
 export interface ISuppliersDao {
-  addSupplier: (userId: Guid, supplier: TSupplier) => Guid;
+  addSupplier(userId: Guid, supplier: TSupplier): Promise<Guid>;
   addSupplierDetails(userId: Guid, supplierDetails: TSupplierDetails): Promise<void>;
   getSupplierDetails(supplierId: Guid): Promise<TSupplierDetails>;
-  getSupplierById: (userId: Guid, id: Guid) => TSupplier;
-  getAll: (userId: Guid) => TSupplier[];
+  getSupplierById(userId: Guid, id: Guid): Promise<TSupplier>;
+  getAll(userId: Guid): Promise<TSupplier[]>;
 }
 
 export const SuppliersDao = (): ISuppliersDao => {
@@ -34,13 +34,13 @@ export const SuppliersDao = (): ISuppliersDao => {
     _suppliersByUser[userId] = _suppliersByUser[userId] || [];
     _suppliersByUser[userId].push(id);
 
-    return id;
+    return Promise.resolve(id);
   };
 
-  const getSupplierById = (userId: Guid, id: Guid) => _suppliers[id];
+  const getSupplierById = (userId: Guid, id: Guid) => Promise.resolve(_suppliers[id]);
 
   const getAll = (userId: Guid) => {
-    return (_suppliersByUser[userId] || []).map(id => _suppliers[id]);
+    return Promise.resolve((_suppliersByUser[userId] || []).map(id => _suppliers[id]));
   };
 
   const addSupplierDetails = (userId: Guid, supplierDetails: TSupplierDetails): Promise<void> => {

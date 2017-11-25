@@ -14,7 +14,8 @@ export const OrdersService = (ordersDao: IOrdersDao,
                               supplierDao: ISuppliersDao) => {
   const getUserIdByOrderId = async (order: TPurchaseOrder): Promise<Guid> => {
     const auctionId = order.auctionId;
-    return Promise.resolve(auctionsDao.getAuctionById(auctionId).userId);
+    const { userId } = await auctionsDao.getAuctionById(auctionId);
+    return userId;
   };
 
   const getCompany = async (order: TPurchaseOrder) => {
