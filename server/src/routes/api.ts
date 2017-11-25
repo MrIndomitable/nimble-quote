@@ -3,7 +3,6 @@ import { AuctionsService } from '../services/auctions-service';
 import { AuctionsDao } from '../dao/auctions-dao';
 import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
 import { TConfig } from '../config/config';
-import { SuppliersDao } from '../dao/suppliers-dao';
 import { SuppliersService } from '../services/suppliers-service';
 // import { generateTestData } from "../test-data/test-data";
 import { OffersDao } from '../dao/offers-dao';
@@ -13,9 +12,11 @@ import { IUsersService } from '../services/users-service';
 import { UserProfileService } from '../services/user-profile-service';
 import { UserProfileDao } from '../dao/user-profile-dao';
 import { verify } from 'jsonwebtoken';
+import { SuppliersDaoMysql } from '../dao/supplier-dao-mysql';
+import { Database } from '../dao/config/configure-mysql';
 
-export const ApiRoute = (config: TConfig, usersService: IUsersService) => {
-  const suppliersDao = SuppliersDao();
+export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Database) => {
+  const suppliersDao = SuppliersDaoMysql(db);
   const offersDao = OffersDao();
   const ordersDao = OrdersDao();
 
