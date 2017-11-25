@@ -32,7 +32,7 @@ const CartDetailsComp = ({componentId, offer, removeFromCart}) => {
         </div>
         <div className="col-lg-2 ">
           <p>Total</p>
-          <p className=""><strong>${offer.quantity * offer.price}</strong></p> //Temp solution
+          <p className=""><strong>${offer.quantity * offer.price}</strong></p>
         </div>
         <div className="col-lg-2 ">
         <button className="btn btn-danger" onClick={() => removeFromCart(componentId)}>
