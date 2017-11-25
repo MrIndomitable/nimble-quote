@@ -6,7 +6,9 @@ import Moment from 'moment';
 export const Invoice = ({company, supplier, components, totals}) => {
   // const today = '11/12/13';
   const today = Moment().format('DD/MM/YYYY');
-  const reference = '123';
+  // const reference = '123';
+  const currentUrl = window.location.href;
+  const reference = currentUrl.substr(currentUrl.lastIndexOf('/')+1) ;
 
   const stateAndCountry = ({state, country}) => state ? `${state}, ${country}` : country;
 
@@ -22,8 +24,8 @@ export const Invoice = ({company, supplier, components, totals}) => {
           <div>Phone: {company.phone}</div>
         </div>
         <div className="extra">
-          <div>PO # {reference}</div>
-          <div>Date of issue {today}</div>
+          <div><strong>PO #</strong> {reference}</div>
+          <div><strong>Date of issue</strong> {today}</div>
         </div>
       </header>
       <section>
