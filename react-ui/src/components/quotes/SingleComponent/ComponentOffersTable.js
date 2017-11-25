@@ -14,8 +14,8 @@ const OfferRow = ({supplier, partDate, supplyDate, quantity, price, total, aucti
     <td>{moment(partDate).format(dateFormat)}</td>
     <td>{moment(supplyDate).format(dateFormat)}</td>
     <td>{quantity}</td>
-    <td>{price}</td>
-    <td>{total}</td>
+    <td>${price}</td>
+    <td>${total}</td>
     <td><PurchaseOrderButton auctionId={auctionId} componentId={componentId} offerId={offerId}/></td>
   </tr>
 );
