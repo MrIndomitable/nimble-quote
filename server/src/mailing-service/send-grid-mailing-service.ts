@@ -33,7 +33,7 @@ export const SendGridMailingService = (apiKey: string): IMailService => {
   sgMail.setApiKey(apiKey);
 
   const sendOfferQuoteEmail = (offerQuoteEmail: OfferQuoteEmail) => {
-    const html = `<div>Come check out the latest quote of momats@gmail.com <a
+    const html = `<div>Come check out the latest quote of ${offerQuoteEmail.buyer.email} <a
 style="
     background-color: #1E90FF;
     color: white;
@@ -45,8 +45,8 @@ style="
 " href="${offerQuoteEmail.offerLink}">Click here</a></div>`;
     const msg = {
       to: offerQuoteEmail.supplier.email,
-      from: 'momats@gmail.com',
-      subject: 'New quote is available for you at nimble-quote.com',
+      from: 'Nimblequote.com',
+      subject: 'New quote is available for you at nimblequote.com',
       text: `Come check out the latest quote of ${offerQuoteEmail.buyer.email}`,
       html,
     };
