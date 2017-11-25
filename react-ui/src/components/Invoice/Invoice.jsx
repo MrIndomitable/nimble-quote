@@ -1,8 +1,11 @@
 import React from 'react';
 import './Invoice.css';
+import Moment from 'moment';
+
 
 export const Invoice = ({company, supplier, components, totals}) => {
-  const today = '11/12/13';
+  // const today = '11/12/13';
+  const today = Moment().format('DD/MM/YYYY');
   const reference = '123';
 
   const stateAndCountry = ({state, country}) => state ? `${state}, ${country}` : country;
