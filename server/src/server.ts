@@ -11,9 +11,9 @@ import { ApiRoute } from './routes/api';
 import { UsersService } from './services/users-service';
 import { TConfig } from './config/config';
 import { UsersDao } from './dao/users-dao';
-import { createDBIfNotExists } from './dao/config/create-db';
+import { configureMysql } from './dao/config/configure-mysql';
 
-export const configureApp = (config: TConfig) => {
+export const configureApp = async(config: TConfig) => {
   const app = express();
 
   app.use(morgan('dev'));
@@ -32,8 +32,8 @@ export const configureApp = (config: TConfig) => {
     }
   }));
 
-  createDBIfNotExists(config.db);
-  const users = UsersService(UsersDao(config.db));
+  const db = await configureMysql(config.db);
+  const users = UsersService(UsersDao(db));
   const passport = configurePassport(users, config);
 
   app.use(passport.initialize());

@@ -21,12 +21,13 @@ export type DBConfig = {
   user: string;
   password: string;
   database: string;
+  connectionLimit: number;
 };
 
 const dbConfig = () => {
   const r = /^mysql:\/\/(\w+):(\w+)@([\w|\.|-]+):3306\/(\w+)$/;
   const [input, user, password, host, database] = r.exec(env.JAWSDB_URL);
-  return { user, password, host, database };
+  return { user, password, host, database, connectionLimit: 10 };
 };
 
 const config: TConfig = {
