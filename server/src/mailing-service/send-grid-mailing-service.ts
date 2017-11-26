@@ -1,10 +1,9 @@
-import { Guid } from "../types/common";
 const sgMail = require('@sendgrid/mail');
 
 export interface IMailService {
-  sendOfferQuoteEmail: (offer: OfferQuoteEmail) => void;
-  sendPurchaseOrder: (purchase: PurchaseOrderEmail) => void;
-  sendNewOfferNotification: (offer: NewOfferNotification) => void;
+  sendOfferQuoteEmail(offer: OfferQuoteEmail): Promise<void>;
+  sendPurchaseOrder(purchase: PurchaseOrderEmail): Promise<void>;
+  sendNewOfferNotification(offer: NewOfferNotification): Promise<void>;
 }
 
 type UserProfile = {
@@ -32,8 +31,8 @@ type NewOfferNotification = {
 export const SendGridMailingService = (apiKey: string): IMailService => {
   sgMail.setApiKey(apiKey);
 
-  const sendOfferQuoteEmail = (offerQuoteEmail: OfferQuoteEmail) => {
-    const html = `<div>Come check out the latest quote of momats@gmail.com <a
+  const sendOfferQuoteEmail = async(offerQuoteEmail: OfferQuoteEmail) => {
+    const html = `<div>Come check out the latest quote of ${offerQuoteEmail.buyer.email} <a
 style="
     background-color: #1E90FF;
     color: white;
@@ -45,7 +44,7 @@ style="
 " href="${offerQuoteEmail.offerLink}">Click here</a></div>`;
     const msg = {
       to: offerQuoteEmail.supplier.email,
-      from: 'momats@gmail.com',
+      from: offerQuoteEmail.buyer.email,
       subject: 'New quote is available for you at nimble-quote.com',
       text: `Come check out the latest quote of ${offerQuoteEmail.buyer.email}`,
       html,
@@ -54,10 +53,10 @@ style="
     console.log('----------- for local development ----------');
     console.log(offerQuoteEmail.offerLink.replace('https://nimble-quote.herokuapp.com/', 'http://localhost:3000/'));
     console.log('--------------------------------------------');
-    sgMail.send(msg);
+    await sgMail.send(msg);
   };
 
-  const sendPurchaseOrder = ({ supplier, company, link }: PurchaseOrderEmail) => {
+  const sendPurchaseOrder = async({ supplier, company, link }: PurchaseOrderEmail) => {
     const html = `<h2>Hi ${supplier.displayName}</h2>
 <p>You have a new order waiting for you from ${company.email}</p>
 <a style="
@@ -82,10 +81,10 @@ href="${link}">View Order</a>`;
     console.log('----------- for local development ----------');
     console.log(link.replace('https://nimble-quote.herokuapp.com/', 'http://localhost:3000/'));
     console.log('--------------------------------------------');
-    sgMail.send(msg);
+    await sgMail.send(msg);
   };
 
-  const sendNewOfferNotification = (offer: NewOfferNotification) => {
+  const sendNewOfferNotification = async(offer: NewOfferNotification) => {
     const html = `<h2>Hi ${offer.buyer.displayName}</h2>
 <p>You have a new offer waiting for you from ${offer.supplier.email}</p>
 <a style="
@@ -108,7 +107,7 @@ href="${offer.offerLink}">View Order</a>`;
     };
 
     console.log(msg);
-    sgMail.send(msg);
+    await sgMail.send(msg);
   };
 
   return {

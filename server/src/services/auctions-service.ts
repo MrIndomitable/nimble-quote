@@ -21,10 +21,10 @@ import {
   TAuctionsResult,
   TAuctionResult
 } from '../types/response';
-import { ISuppliersDao } from "../dao/suppliers-dao";
-import { IMailService } from "../mailing-service/send-grid-mailing-service";
-import { IOffersDao } from "../dao/offers-dao";
-import { IUsersService, TUser } from "./users-service";
+import { ISuppliersDao } from '../dao/suppliers-dao';
+import { IMailService } from '../mailing-service/send-grid-mailing-service';
+import { IOffersDao } from '../dao/offers-dao';
+import { IUsersService } from './users-service';
 import { sign } from 'jsonwebtoken';
 import config from '../config/config';
 import { OrderStatus } from '../dao/orders-dao';
@@ -62,7 +62,10 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     const { message, subject } = auctionDTO;
     const id = uuid();
     const components: TComponent[] = auctionDTO.bom.components.map(toComponentOf(id));
-    const suppliers = await getOrCreateSuppliers(userId, auctionDTO.suppliers);
+    const [user, suppliers] = await Promise.all([
+      usersService.findById(userId),
+      getOrCreateSuppliers(userId, auctionDTO.suppliers)
+    ]);
 
     const auction: TAuction = {
       id,
@@ -77,13 +80,14 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     };
     auctionsDao.addAuction(userId, auction);
 
-    suppliers.forEach((supplier: TSupplier) => {
-      mailingService.sendOfferQuoteEmail({
-        supplier,
-        buyer: { email: 'info@nimble-quote.com' },
-        offerLink: `https://nimble-quote.herokuapp.com/offer?t=${id}_${supplier.id}`
-      })
-    });
+    const emails = suppliers.map((supplier: TSupplier) => ({
+      supplier,
+      buyer: { email: user.email },
+      offerLink: `https://nimble-quote.herokuapp.com/offer?t=${id}_${supplier.id}`
+    }));
+
+    Promise.all(emails.map(email => mailingService.sendOfferQuoteEmail(email)))
+      .then(e => console.log('ERROR while sending mail', e));
 
     return id;
   };
@@ -113,7 +117,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
 
     return {
       components: [toComponentWithOffersResult(component)]
-    }
+    };
   };
 
   const addOffer = async (supplierId: Guid, offers: TOffersDTO): Promise<void> => {
@@ -127,7 +131,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
         price,
         partDate,
         supplyDate
-      }
+      };
     };
 
     auctionsDao.addOffer(supplierId, offers.components.map(toOffer));
@@ -135,18 +139,21 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     const [offer] = offers.components;
     const component = auctionsDao.getComponentById(offer.componentId);
     const { userId } = await auctionsDao.getAuctionById(component.auctionId);
-    const supplier = await suppliersDao.getSupplierById(userId, supplierId);
-    usersService.findById(userId).then((user: TUser) => {
-      mailingService.sendNewOfferNotification({
-        buyer: {
-          email: user.email, displayName: user.displayName
-        },
-        supplier: {
-          email: supplier.email, displayName: supplier.email // todo: should be display name
-        },
-        offerLink: `https://nimble-quote.herokuapp.com/components/${component.id}`
-      });
-    }).catch(e => console.log('cannot find user', userId, e));
+
+    const [user, supplier] = await Promise.all([
+      usersService.findById(userId),
+      suppliersDao.getSupplierById(userId, supplierId)
+    ]);
+
+    mailingService.sendNewOfferNotification({
+      buyer: {
+        email: user.email, displayName: user.displayName
+      },
+      supplier: {
+        email: supplier.email, displayName: supplier.email // todo: should be display name
+      },
+      offerLink: `https://nimble-quote.herokuapp.com/components/${component.id}`
+    }).then(e => console.log('ERROR while sending mail', e));;
   };
 
   const getSuppliersForOrder = async (userId: Guid, order: TPurchaseOrderDTO): Promise<TSupplier[]> => {
@@ -161,23 +168,24 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
 
     const purchaseToken = sign({ orderId: id }, config.email.tokenEncryptionKey);
 
-    const suppliersForOrder = await getSuppliersForOrder(userId, order);
-    suppliersForOrder.forEach(supplier => {
-      const poEmail = {
-        supplier: {
-          displayName: supplier.email, // TODO should be name or email
-          email: supplier.email
-        },
-        company: {
-          email: 'info@nimble-quote.com' // FIXME should be the email of current logged user
-        },
-        link: `https://nimble-quote.herokuapp.com/view?order=${purchaseToken}`
-      };
+    const [user, suppliersForOrder] = await Promise.all([
+      usersService.findById(userId),
+      getSuppliersForOrder(userId, order)
+    ]);
 
-      mailingService.sendPurchaseOrder(poEmail);
-    });
+    const emails = suppliersForOrder.map(supplier => ({
+      supplier: {
+        displayName: supplier.email, // TODO should be name or email
+        email: supplier.email
+      },
+      company: {
+        email: user.email
+      },
+      link: `https://nimble-quote.herokuapp.com/view?order=${purchaseToken}`
+    }));
 
-    return Promise.resolve();
+    Promise.all(emails.map(email => mailingService.sendPurchaseOrder(email)))
+      .then(e => console.log('ERROR while sending mail', e));
   };
 
   return {
@@ -188,7 +196,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     getAll,
     getComponents,
     getComponentById
-  }
+  };
 };
 
 const toComponentOf = (auctionId: Guid) => (component: TComponentDTO): TComponent => {
@@ -203,7 +211,7 @@ const toComponentOf = (auctionId: Guid) => (component: TComponentDTO): TComponen
     offers: [],
     auctionId,
     purchaseOrder: null
-  }
+  };
 };
 
 const toAuctionResult = (auction: TAuction): TAuctionResult => {
@@ -215,7 +223,7 @@ const toAuctionResult = (auction: TAuction): TAuctionResult => {
     message,
     bom: { components: bom.components.map(toComponentResult) },
     suppliers: suppliers.map(toSupplierResult)
-  }
+  };
 };
 
 const toSupplierResult = ({ id, email }: TSupplier) => ({ id, email });
