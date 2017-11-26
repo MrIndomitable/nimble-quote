@@ -4,11 +4,11 @@ import Moment from 'moment';
 
 
 export const Invoice = ({company, supplier, components, totals}) => {
-  // const today = '11/12/13';
-  const today = Moment().format('DD/MM/YYYY');
-  // const reference = '123';
-  const currentUrl = window.location.href;
-  const reference = currentUrl.substr(currentUrl.lastIndexOf('/')+1) ;
+  const today = '';
+  // const today = Moment().format('DD/MM/YYYY');
+  const reference = '';
+  // const currentUrl = window.location.href;
+  // const reference = currentUrl.substr(currentUrl.lastIndexOf('/')+1) ;
 
   const stateAndCountry = ({state, country}) => state ? `${state}, ${country}` : country;
 
