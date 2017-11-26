@@ -33,27 +33,22 @@ type TGoogleUser = {
   profileImage?: string;
 }
 
+const handleUserNotFound = (e: any): any => {
+  if (e === 'user not found') return null;
+  else throw e;
+};
+
 export const UsersService = (usersDao: IUsersDao): IUsersService => {
-  const findByEmail = (email: string) => {
-    return usersDao.findByEmail(email).catch(e => {
-      if (e === 'user not found') return null;
-      else throw e;
-    });
-  };
-  const findByGoogleId = (googleId: string) => {
-    return usersDao.findByGoogleId(googleId).catch(e => {
-      if (e === 'user not found') return null;
-      else throw e;
-    });
-  };
+  const findByEmail = (email: string) => usersDao.findByEmail(email).catch(handleUserNotFound);
+  const findByGoogleId = (googleId: string) => usersDao.findByGoogleId(googleId).catch(handleUserNotFound);
+  const findById = (id: Guid) => usersDao.findById(id).catch(handleUserNotFound);
 
   const findByEmailAndPassword = (email: string, password: string): Promise<TUser> => {
-    return findByEmail(email)
-      .then(user => {
-        if (!user) return null;
-        const isValidPassword = user.local && user.local.password && bcrypt.compareSync(password, user.local.password);
-        return isValidPassword ? user : null;
-      });
+    return findByEmail(email).then(user => {
+      if (!user) return null;
+      const isValidPassword = user.local && user.local.password && bcrypt.compareSync(password, user.local.password);
+      return isValidPassword ? user : null;
+    });
   };
 
   const saveGoogleUser = (googleUser: TGoogleUser): Promise<TUser> => {
@@ -78,7 +73,7 @@ export const UsersService = (usersDao: IUsersDao): IUsersService => {
   };
 
   return {
-    findById: (id: Guid) => usersDao.findById(id),
+    findById,
     findByGoogleId,
     findByEmail,
     findByEmailAndPassword,
