@@ -35,8 +35,8 @@ interface IAuctionsService {
   addPurchaseOrder: (userId: Guid, order: TPurchaseOrderDTO) => Promise<void>;
   getById: (id: Guid) => Promise<TAuctionResult>;
   getAll: (userId: Guid) => Promise<TAuctionsResult>;
-  getComponents: () => TComponentsResult;
-  getComponentById: (id: Guid) => TComponentsWithOffersResult;
+  getComponents: () => Promise<TComponentsResult>;
+  getComponentById: (id: Guid) => Promise<TComponentsWithOffersResult>;
 }
 
 export const AuctionsService = (auctionsDao: IAuctionsDao,
@@ -103,13 +103,13 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     return { auctions: auctions.map(toAuctionResult) };
   };
 
-  const getComponents = (): TComponentsResult => {
-    const components = auctionsDao.getComponents().map(toComponentResult);
-    return { components };
+  const getComponents = async(): Promise<TComponentsResult> => {
+    const components = await auctionsDao.getComponents();
+    return { components: components.map(toComponentResult) };
   };
 
-  const getComponentById = (id: Guid): TComponentsWithOffersResult => {
-    const component = auctionsDao.getComponentById(id);
+  const getComponentById = async (id: Guid): Promise<TComponentsWithOffersResult> => {
+    const component = await auctionsDao.getComponentById(id);
 
     if (!component) {
       return { components: [] };
@@ -137,7 +137,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
     auctionsDao.addOffer(supplierId, offers.components.map(toOffer));
 
     const [offer] = offers.components;
-    const component = auctionsDao.getComponentById(offer.componentId);
+    const component = await auctionsDao.getComponentById(offer.componentId);
     const { userId } = await auctionsDao.getAuctionById(component.auctionId);
 
     const [user, supplier] = await Promise.all([

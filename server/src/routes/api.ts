@@ -14,14 +14,16 @@ import { UserProfileDao } from '../dao/user-profile-dao';
 import { verify } from 'jsonwebtoken';
 import { SuppliersDaoMysql } from '../dao/supplier-dao-mysql';
 import { Database } from '../dao/config/configure-mysql';
+import { ComponentsDao } from '../dao/components-dao';
 
 export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Database) => {
   const suppliersDao = SuppliersDaoMysql(db);
   const offersDao = OffersDao();
   const ordersDao = OrdersDao();
+  const componentsDao = ComponentsDao(offersDao, ordersDao);
 
   const suppliersService = SuppliersService(suppliersDao);
-  const auctionsDao = AuctionsDao(suppliersDao, offersDao, ordersDao);
+  const auctionsDao = AuctionsDao(suppliersDao, offersDao, ordersDao, componentsDao);
   const auctionService = AuctionsService(
     auctionsDao,
     suppliersDao,
@@ -66,9 +68,9 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Datab
   router.get('/components/:id?', requireLogin, (req: Request, res: Response) => {
     const { id } = req.params;
     if (id) {
-      res.json(auctionService.getComponentById(id));
+      auctionService.getComponentById(id).then(components => res.json(components));
     } else {
-      res.json(auctionService.getComponents());
+      auctionService.getComponents().then(components => res.json(components));
     }
   });
 
