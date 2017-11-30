@@ -24,6 +24,20 @@ const selectAuctionById = `
   WHERE id = ?;
 `;
 
+const insertSuppliersInAuction = (n: number) => {
+  const values = Array(n).fill('(?, ?)').join(',');
+  return `
+    INSERT INTO suppliers_in_auction (auction_id, supplier_id)
+    VALUES ${values};
+  `;
+};
+
+const selectSuppliersInAuction = `
+  SELECT supplier_id 
+  FROM suppliers_in_auction 
+  WHERE auction_id = ?;
+`;
+
 type TDBAuction = {
   id: Guid;
   message: string;
@@ -35,19 +49,19 @@ export const AuctionsDaoMysql = (db: Database,
                                  suppliersDao: ISuppliersDao,
                                  offersDao: IOffersDao,
                                  ordersDao: IOrdersDao): IAuctionsDao => {
-  const _suppliersByAuction: { [auctionId: string]: Guid[] } = {};
   const componentsDao = ComponentDaoMysql(db, offersDao, ordersDao);
 
   const addAuction = async (userId: Guid, auction: TAuction) => {
+    const values = auction.suppliers.map(supplier => [
+      auction.id,
+      supplier.id
+    ]);
+
     await db.query(insertAuction, [auction.id, userId]);
-
-    _suppliersByAuction[auction.id] = [];
-
-    await componentsDao.addComponentsOf(auction.id, auction.bom.components);
-
-    auction.suppliers.forEach(supplier => {
-      _suppliersByAuction[auction.id].push(supplier.id);
-    });
+    await Promise.all([
+      componentsDao.addComponentsOf(auction.id, auction.bom.components),
+      db.query(insertSuppliersInAuction(auction.suppliers.length), [].concat(...values))
+    ]);
   };
 
   const addOffer = (supplierId: Guid, offers: TOffer[]): void => {
@@ -58,7 +72,7 @@ export const AuctionsDaoMysql = (db: Database,
     ordersDao.addOrder(order);
   };
 
-  const getAuctionById = async(auctionId: Guid): Promise<TAuction> => {
+  const getAuctionById = async (auctionId: Guid): Promise<TAuction> => {
     const result = await db.query(selectAuctionById, [auctionId]);
     const dbAuction = result.map(toDBAuction).pop();
 
@@ -66,12 +80,16 @@ export const AuctionsDaoMysql = (db: Database,
     return toAuction(dbAuction);
   };
 
+  const mapToSuppliers = (userId: Guid) => (rows: any[]): Promise<TSupplier[]> => Promise.all(rows
+    .map(row => suppliersDao.getSupplierById(userId, row.supplier_id)));
+
   const toAuction = async (auction: TDBAuction): Promise<TAuction> => {
     const { id, message, subject, userId } = auction;
 
-    const components: TComponent[] = await componentsDao.getComponentsByAuctionId(id);
-    const suppliers: TSupplier[] = await Promise.all(_suppliersByAuction[id]
-      .map(supplierId => suppliersDao.getSupplierById(auction.userId, supplierId)));
+    const [components, suppliers]  = await Promise.all([
+      componentsDao.getComponentsByAuctionId(id),
+      db.query(selectSuppliersInAuction, [id]).then(mapToSuppliers(userId))
+    ]);
 
     const purchaseOrders = ordersDao.getOrdersByAuctionId(id);
 

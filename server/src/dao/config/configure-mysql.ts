@@ -57,6 +57,15 @@ const componentsTable = `
   );
 `;
 
+const suppliersInAuctionTable = `
+  CREATE TABLE IF NOT EXISTS suppliers_in_auction (
+    auction_id  VARCHAR(50) NOT NULL,
+    supplier_id VARCHAR(50) NOT NULL,
+    FOREIGN KEY (auction_id) REFERENCES auctions(id),
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(id)
+  );
+`;
+
 export const configureMysql = async(config: DBConfig): Promise<Database> => {
   const pool = mysql.createPool(config);
   const query = (query: string, values?: any[]): Promise<any> => {
@@ -85,7 +94,8 @@ export const configureMysql = async(config: DBConfig): Promise<Database> => {
     query(suppliersTable),
     query(auctionsTable).then(() => {
       return query(componentsTable);
-    })
+    }),
+    query(suppliersInAuctionTable)
   ]));
 
   return { query };
