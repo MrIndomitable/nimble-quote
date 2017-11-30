@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {push} from 'react-router-redux';
 import {SUBMIT_RFP, SUBMIT_RFP_SUCCESS, SUBMIT_RFP_FAILURE} from './types';
+import moment from 'moment';
 
 const submitRFPSuccess = (data) => ({
   type: SUBMIT_RFP_SUCCESS, newQuote: data
@@ -19,7 +20,10 @@ export const submitRFP = values => dispatch => {
 
   // TODO it should be the values of redux form
   const bom = {
-    components: values.details
+    components: values.details.map(component => ({
+      ...component,
+      supplyDate: moment(component.supplyDate, 'DD-MM-YYYY').valueOf() // it might be better doing it before with redux form (not sure if it's possible)
+    }))
   };
 
   const auction = {

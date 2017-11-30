@@ -65,9 +65,9 @@ export type TComponent = {
   targetPrice: number;
   quantity: number;
   supplyDate: number;
-  offers: TOffer[];
+  offers?: TOffer[];
   auctionId: Guid;
-  purchaseOrder: TPurchaseOrder; // TODO check if this is actually a list
+  purchaseOrder?: TPurchaseOrder; // TODO check if this is actually a list
 }
 
 export type TOffer = {

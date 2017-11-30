@@ -1,10 +1,8 @@
 import { Response, Request, NextFunction, Router } from 'express';
 import { AuctionsService } from '../services/auctions-service';
-import { AuctionsDao } from '../dao/auctions-dao';
 import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
 import { TConfig } from '../config/config';
 import { SuppliersService } from '../services/suppliers-service';
-// import { generateTestData } from "../test-data/test-data";
 import { OffersDao } from '../dao/offers-dao';
 import { OrdersDao } from '../dao/orders-dao';
 import { OrdersService } from '../services/orders-service';
@@ -14,16 +12,15 @@ import { UserProfileDao } from '../dao/user-profile-dao';
 import { verify } from 'jsonwebtoken';
 import { SuppliersDaoMysql } from '../dao/supplier-dao-mysql';
 import { Database } from '../dao/config/configure-mysql';
-import { ComponentsDao } from '../dao/components-dao';
+import { AuctionsDaoMysql } from '../dao/auctions-dao-mysql';
 
 export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Database) => {
   const suppliersDao = SuppliersDaoMysql(db);
   const offersDao = OffersDao();
   const ordersDao = OrdersDao();
-  const componentsDao = ComponentsDao(offersDao, ordersDao);
 
   const suppliersService = SuppliersService(suppliersDao);
-  const auctionsDao = AuctionsDao(suppliersDao, offersDao, ordersDao, componentsDao);
+  const auctionsDao = AuctionsDaoMysql(db, suppliersDao, offersDao, ordersDao);
   const auctionService = AuctionsService(
     auctionsDao,
     suppliersDao,
@@ -34,8 +31,6 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Datab
   const userProfileDao = UserProfileDao();
   const userProfileService = UserProfileService(userProfileDao);
   const ordersService = OrdersService(ordersDao, offersDao, userProfileDao, auctionsDao, suppliersDao);
-
-  // generateTestData(suppliersService, auctionService);
 
   const router = Router();
 

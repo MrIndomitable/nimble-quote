@@ -3,7 +3,7 @@ import { Guid } from '../types/common';
 import { IOrdersDao } from './orders-dao';
 import { ISuppliersDao } from './suppliers-dao';
 import { IOffersDao } from './offers-dao';
-import { ComponentsDao, IComponentsDao } from './components-dao';
+import { IComponentsDao } from './components-dao';
 
 type TDBAuction = {
   id: Guid;

@@ -1,10 +1,12 @@
 import {FETCH_AUCTIONS_SUCCESS, FETCH_COMPONENTS_SUCCESS} from '../actions/types';
+import moment from 'moment';
 
 const addComponent = (components, component) => ({
   ...components,
   [component.id]: {
     ...(components[component.id] || {}),
-    ...component
+    ...component,
+    date: moment(component.date).format('DD-MM-YYYY')
   }
 });
 
