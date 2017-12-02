@@ -86,12 +86,24 @@ export const AuctionsDaoMysql = (db: Database,
   const toAuction = async (auction: TDBAuction): Promise<TAuction> => {
     const { id, message, subject, userId } = auction;
 
-    const [components, suppliers]  = await Promise.all([
+    let [components, suppliers]  = await Promise.all([
       componentsDao.getComponentsByAuctionId(id),
       db.query(selectSuppliersInAuction, [id]).then(mapToSuppliers(userId))
     ]);
 
     const purchaseOrders = ordersDao.getOrdersByAuctionId(id);
+
+    components = await Promise.all(components.map(async(component) => {
+      const offers = await offersDao.getOffersByComponentId(component.id);
+      const purchaseOrder = purchaseOrders.find(order => {
+        return !!order.details.find(d => d.componentId === component.id);
+      });
+      return {
+        ...component,
+        offers,
+        purchaseOrder
+      };
+    }));
 
     return { id, userId, message, subject, bom: { components }, suppliers, purchaseOrders };
   };
