@@ -5,7 +5,7 @@ import { IUserProfileDao } from '../dao/user-profile-dao';
 import { IAuctionsDao } from '../dao/auctions-dao';
 import { TUserProfile } from './user-profile-service';
 import { ISuppliersDao } from '../dao/suppliers-dao';
-import { TPurchaseOrder } from '../types/auctions';
+import { TOffer, TPurchaseOrder } from '../types/auctions';
 
 export const OrdersService = (ordersDao: IOrdersDao,
                               offersDao: IOffersDao,
@@ -36,22 +36,22 @@ export const OrdersService = (ordersDao: IOrdersDao,
     };
   };
 
-  const getComponents = (order: TPurchaseOrder) => {
-    return order.details.map(orderDetail => {
-      const { id, quantity, price } = offersDao.getOfferById(orderDetail.offerId);
-      return {
-        id,
-        description: 'component description', // TODO get part number and manufacture from components dao
-        quantity,
-        price,
-        total: price * quantity
-      };
-    });
+  const getComponents = async(order: TPurchaseOrder) => {
+    const offers: TOffer[] = await Promise.all(
+      order.details.map(detail => offersDao.getOfferById(detail.offerId)) // TODO should be getOffersByIds
+    );
+    return offers.map(({ id, quantity, price }) => ({
+      id,
+      description: 'component description', // TODO get part number and manufacture from components dao
+      quantity,
+      price,
+      total: price * quantity
+    }));
   };
 
   const getSupplier = async (order: TPurchaseOrder) => {
     const offerIds = order.details.map(d => d.offerId);
-    const [supplierId] = offersDao.getSuppliersByOffers(offerIds);
+    const [supplierId] = await offersDao.getSuppliersByOffers(offerIds);
     return supplierDao.getSupplierDetails((supplierId));
   };
 

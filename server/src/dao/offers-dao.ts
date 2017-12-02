@@ -2,10 +2,10 @@ import { TOffer } from "../types/auctions";
 import { Guid } from "../types/common";
 
 export interface IOffersDao {
-  addOffer: (supplierId: Guid, offers: TOffer[]) => void;
-  getOffersByComponentId: (componentId: Guid) => TOffer[],
-  getSuppliersByOffers: (offerIds: Guid[]) => Guid[];
-  getOfferById: (offerId: Guid) => TOffer;
+  addOffer(supplierId: Guid, offers: TOffer[]): Promise<void>;
+  getOffersByComponentId(componentId: Guid): Promise<TOffer[]>,
+  getSuppliersByOffers(offerIds: Guid[]): Promise<Guid[]>;
+  getOfferById(offerId: Guid): Promise<TOffer>;
 }
 
 type TDBOffer = {
@@ -23,7 +23,7 @@ export const OffersDao = (): IOffersDao => {
   const _offersBySupplier: { [supplierId: string]: Guid[] } = {};
   const _offersByComponent: { [componentId: string]: Guid[] } = {};
 
-  const addOffer = (supplierId: Guid, offers: TOffer[]): void => {
+  const addOffer = async(supplierId: Guid, offers: TOffer[]): Promise<void> => {
     offers.forEach((offer: TOffer) => {
       _offers[offer.id] = Object.assign({}, offer, {supplierId});
 
@@ -35,16 +35,16 @@ export const OffersDao = (): IOffersDao => {
     });
   };
 
-  const getOfferById = (offerId: Guid): TOffer => _offers[offerId];
+  const getOfferById = (offerId: Guid): Promise<TOffer> => Promise.resolve(_offers[offerId]);
 
-  const getOffersByComponentId = (componentId: Guid): TOffer[] => {
+  const getOffersByComponentId = (componentId: Guid): Promise<TOffer[]> => {
     const offerIds = _offersByComponent[componentId] || [];
-    return offerIds.map(getOfferById);
+    return Promise.all(offerIds.map(getOfferById));
   };
 
-  const getSuppliersByOffers = (offerIds: Guid[]): Guid[] => {
+  const getSuppliersByOffers = (offerIds: Guid[]): Promise<Guid[]> => {
     const suppliers = offerIds.map(id => _offers[id].supplierId);
-    return [...new Set(suppliers)];
+    return Promise.resolve([...new Set(suppliers)]);
   };
 
   return {

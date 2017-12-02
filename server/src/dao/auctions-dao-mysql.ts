@@ -64,8 +64,8 @@ export const AuctionsDaoMysql = (db: Database,
     ]);
   };
 
-  const addOffer = (supplierId: Guid, offers: TOffer[]): void => {
-    offersDao.addOffer(supplierId, offers);
+  const addOffer = async(supplierId: Guid, offers: TOffer[]): Promise<void> => {
+    await offersDao.addOffer(supplierId, offers);
   };
 
   const addPurchaseOrder = (order: TPurchaseOrder): void => {

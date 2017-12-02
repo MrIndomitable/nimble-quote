@@ -30,7 +30,7 @@ export const ComponentsDao = (offersDao: IOffersDao, ordersDao: IOrdersDao): ICo
 
   const getComponentById = async(id: Guid): Promise<TComponent> => {
     const { partNumber, manufacture, targetPrice, quantity, supplyDate, auctionId } = _components[id];
-    const purchaseOrder = ordersDao.getOrderByComponentId(id);
+    const purchaseOrder = await ordersDao.getOrderByComponentId(id);
 
     return Promise.resolve({
       id,
@@ -40,7 +40,7 @@ export const ComponentsDao = (offersDao: IOffersDao, ordersDao: IOrdersDao): ICo
       quantity,
       supplyDate,
       auctionId,
-      offers: offersDao.getOffersByComponentId(id),
+      offers: await offersDao.getOffersByComponentId(id),
       purchaseOrder
     });
   };

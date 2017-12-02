@@ -134,7 +134,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
       };
     };
 
-    auctionsDao.addOffer(supplierId, offers.components.map(toOffer));
+    await auctionsDao.addOffer(supplierId, offers.components.map(toOffer));
 
     const [offer] = offers.components;
     const component = await auctionsDao.getComponentById(offer.componentId);
@@ -158,7 +158,7 @@ export const AuctionsService = (auctionsDao: IAuctionsDao,
 
   const getSuppliersForOrder = async (userId: Guid, order: TPurchaseOrderDTO): Promise<TSupplier[]> => {
     const offerIds = order.details.map(detail => detail.offerId);
-    const supplierIds = offersDao.getSuppliersByOffers(offerIds);
+    const supplierIds = await offersDao.getSuppliersByOffers(offerIds);
     return Promise.all(supplierIds.map(supplierId => suppliersDao.getSupplierById(userId, supplierId)));
   };
 

@@ -14,7 +14,7 @@ type TDBAuction = {
 
 export interface IAuctionsDao {
   addAuction: (userId: Guid, auction: TAuction) => Promise<void>;
-  addOffer: (supplierId: Guid, offers: TOffer[]) => void;
+  addOffer: (supplierId: Guid, offers: TOffer[]) => Promise<void>;
   getAuctionById: (auctionId: Guid) => Promise<TAuction>;
   getAuctions: (userId: Guid) => Promise<TAuction[]>;
   getComponents: () => Promise<TComponent[]>;
@@ -43,8 +43,8 @@ export const AuctionsDao = (suppliersDao: ISuppliersDao,
     });
   };
 
-  const addOffer = (supplierId: Guid, offers: TOffer[]): void => {
-    offersDao.addOffer(supplierId, offers);
+  const addOffer = async(supplierId: Guid, offers: TOffer[]): Promise<void> => {
+    await offersDao.addOffer(supplierId, offers);
   };
 
   const addPurchaseOrder = (order: TPurchaseOrder): void => {

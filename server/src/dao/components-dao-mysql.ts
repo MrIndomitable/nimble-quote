@@ -61,17 +61,18 @@ export const ComponentDaoMysql = (db: Database, offersDao: IOffersDao, ordersDao
     return db.query(selectAllComponents).then(mapToComponents);
   };
 
-  const getComponentById = (id: Guid): Promise<TComponent> => {
-    return db.query(selectComponentById, [id]).then(mapToComponents).then(components => {
-      const component = components.pop();
-      const purchaseOrder = ordersDao.getOrderByComponentId(id);
-      const offers = offersDao.getOffersByComponentId(id);
-      return {
-        ...component,
-        offers,
-        purchaseOrder
-      };
-    });
+  const getComponentById = async(id: Guid): Promise<TComponent> => {
+    const [components, offers] = await Promise.all([
+      db.query(selectComponentById, [id]).then(mapToComponents),
+      offersDao.getOffersByComponentId(id)
+    ]);
+    const component = components.pop();
+    const purchaseOrder = ordersDao.getOrderByComponentId(id);
+    return {
+      ...component,
+      offers,
+      purchaseOrder
+    };
   };
 
   const getComponentsByAuctionId = (auctionId: Guid): Promise<TComponent[]> => {

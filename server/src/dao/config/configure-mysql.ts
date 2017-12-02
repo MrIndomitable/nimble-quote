@@ -66,7 +66,20 @@ const suppliersInAuctionTable = `
   );
 `;
 
-export const configureMysql = async(config: DBConfig): Promise<Database> => {
+const offersTable = `
+  CREATE TABLE IF NOT EXISTS offers (
+    id            VARCHAR(50)   NOT NULL,
+    component_id  VARCHAR(50)   NOT NULL,
+    supplier_id   VARCHAR(50)   NOT NULL,
+    quantity      MEDIUMINT     NOT NULL,
+    price         DECIMAL(15,2) NOT NULL,
+    supply_date   BIGINT        NOT NULL,
+    part_date     BIGINT        NOT NULL,
+    PRIMARY KEY (id, component_id, supplier_id)
+  );
+`;
+
+export const configureMysql = async (config: DBConfig): Promise<Database> => {
   const pool = mysql.createPool(config);
   const query = (query: string, values?: any[]): Promise<any> => {
     return new Promise((resolve, reject) => {
@@ -89,14 +102,13 @@ export const configureMysql = async(config: DBConfig): Promise<Database> => {
     });
   };
 
-  await query(`USE ${config.database}`).then(() => Promise.all([
-    query(usersTable),
-    query(suppliersTable),
-    query(auctionsTable).then(() => {
-      return query(componentsTable);
-    }),
-    query(suppliersInAuctionTable)
-  ]));
+  await query(`USE ${config.database}`);
+  await query(usersTable);
+  await query(suppliersTable);
+  await query(auctionsTable);
+  await query(componentsTable);
+  await query(offersTable);
+  await query(suppliersInAuctionTable);
 
   return { query };
 };

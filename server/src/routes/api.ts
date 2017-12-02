@@ -3,7 +3,6 @@ import { AuctionsService } from '../services/auctions-service';
 import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
 import { TConfig } from '../config/config';
 import { SuppliersService } from '../services/suppliers-service';
-import { OffersDao } from '../dao/offers-dao';
 import { OrdersDao } from '../dao/orders-dao';
 import { OrdersService } from '../services/orders-service';
 import { IUsersService } from '../services/users-service';
@@ -13,10 +12,11 @@ import { verify } from 'jsonwebtoken';
 import { SuppliersDaoMysql } from '../dao/supplier-dao-mysql';
 import { Database } from '../dao/config/configure-mysql';
 import { AuctionsDaoMysql } from '../dao/auctions-dao-mysql';
+import { OffersDaoMysql } from '../dao/offers-dao-mysql';
 
 export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Database) => {
   const suppliersDao = SuppliersDaoMysql(db);
-  const offersDao = OffersDao();
+  const offersDao = OffersDaoMysql(db);
   const ordersDao = OrdersDao();
 
   const suppliersService = SuppliersService(suppliersDao);
@@ -104,7 +104,7 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Datab
       });
   });
 
-  router.post('/order', requireLogin, (req: Request, res: Response) => {
+  router.post('/order', requireLogin, async(req: Request, res: Response) => {
     const { auctionId, componentId, offerId, company, supplier } = req.body; // TODO save supplier info and company info if they exists
 
     const order = {
@@ -116,7 +116,7 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Datab
       }]
     };
 
-    const { supplierId } = offersDao.getOfferById(offerId);
+    const { supplierId } = await offersDao.getOfferById(offerId);
 
     Promise.all([
       suppliersDao.addSupplierDetails(req.user.id, { ...supplier, id: supplierId }), //TODO suppliersService should be called here instead of suppliersDao
