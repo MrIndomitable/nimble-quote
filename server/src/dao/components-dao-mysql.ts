@@ -67,7 +67,7 @@ export const ComponentDaoMysql = (db: Database, offersDao: IOffersDao, ordersDao
       offersDao.getOffersByComponentId(id)
     ]);
     const component = components.pop();
-    const purchaseOrder = ordersDao.getOrderByComponentId(id);
+    const purchaseOrder = await ordersDao.getOrderByComponentId(id);
     return {
       ...component,
       offers,

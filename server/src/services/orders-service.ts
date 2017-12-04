@@ -62,7 +62,7 @@ export const OrdersService = (ordersDao: IOrdersDao,
   };
 
   const getOrderById = async (orderId: Guid): Promise<any> => {
-    const order = ordersDao.getOrderById(orderId);
+    const order = await ordersDao.getOrderById(orderId);
 
     const [
       { components, totals },

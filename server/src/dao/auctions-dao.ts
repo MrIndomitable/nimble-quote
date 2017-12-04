@@ -63,7 +63,7 @@ export const AuctionsDao = (suppliersDao: ISuppliersDao,
     const suppliers: TSupplier[] = await Promise.all(_suppliersByAuction[id]
       .map(supplierId => suppliersDao.getSupplierById(auction.userId, supplierId)));
 
-    const purchaseOrders = ordersDao.getOrdersByAuctionId(id);
+    const purchaseOrders = await ordersDao.getOrdersByAuctionId(id);
 
     return { id, userId, message, subject, bom: { components }, suppliers, purchaseOrders };
   };

@@ -2,10 +2,10 @@ import { Guid } from '../types/common';
 import { TPurchaseOrder } from '../types/auctions';
 
 export interface IOrdersDao {
-  addOrder(order: TPurchaseOrder): void;
-  getOrderById(id: Guid): TPurchaseOrder;
-  getOrdersByAuctionId(auctionId: Guid): TPurchaseOrder[];
-  getOrderByComponentId(componentId: Guid): TPurchaseOrder;
+  addOrder(order: TPurchaseOrder): Promise<void>;
+  getOrderById(id: Guid): Promise<TPurchaseOrder>;
+  getOrdersByAuctionId(auctionId: Guid): Promise<TPurchaseOrder[]>;
+  getOrderByComponentId(componentId: Guid): Promise<TPurchaseOrder>;
   acknowledgeOrder(orderId: Guid): Promise<void>;
 }
 
@@ -32,7 +32,7 @@ export const OrdersDao = (): IOrdersDao => {
   const _ordersByOffers: { [offerId: string]: Guid[] } = {};
   const _ordersByAuctions: { [auctionId: string]: Guid[] } = {};
 
-  const addOrder = (order: TPurchaseOrder): void => {
+  const addOrder = async(order: TPurchaseOrder): Promise<void> => {
     const { auctionId, details, id } = order;
 
     _ordersByAuctions[auctionId] = _ordersByAuctions[auctionId] || [];
@@ -55,23 +55,31 @@ export const OrdersDao = (): IOrdersDao => {
     _orders[id] = { auctionId, details: dbDetails, status: OrderStatus.NEW };
   };
 
-  const getOrderById = (id: Guid): TPurchaseOrder => {
+  const getOrderById = async(id: Guid): Promise<TPurchaseOrder> => {
     if (!_orders[id]) return null;
 
     const { auctionId, details, status } = _orders[id];
     return { id, auctionId, details, status };
   };
 
-  const acknowledgeOrder = async (orderId: Guid) => {
+  const acknowledgeOrder = async (orderId: Guid): Promise<void> => {
     _orders[orderId].status = OrderStatus.ACKNOWLEDGE;
     return Promise.resolve();
+  };
+
+  const getOrdersByAuctionId = (auctionId: Guid): Promise<TPurchaseOrder[]> => {
+    return Promise.all((_ordersByAuctions[auctionId] || []).map(getOrderById));
+  };
+
+  const getOrderByComponentId = (componentId: Guid): Promise<TPurchaseOrder> => {
+    return (_ordersByComponents[componentId] || []).map(getOrderById)[0];
   };
 
   return {
     addOrder,
     getOrderById,
-    getOrdersByAuctionId: (auctionId: Guid) => (_ordersByAuctions[auctionId] || []).map(getOrderById),
-    getOrderByComponentId: (componentId: Guid) => (_ordersByComponents[componentId] || []).map(getOrderById)[0],
+    getOrdersByAuctionId,
+    getOrderByComponentId,
     acknowledgeOrder
   }
 };

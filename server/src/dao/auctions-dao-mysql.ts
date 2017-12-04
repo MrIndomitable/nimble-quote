@@ -91,7 +91,7 @@ export const AuctionsDaoMysql = (db: Database,
       db.query(selectSuppliersInAuction, [id]).then(mapToSuppliers(userId))
     ]);
 
-    const purchaseOrders = ordersDao.getOrdersByAuctionId(id);
+    const purchaseOrders = await ordersDao.getOrdersByAuctionId(id);
 
     components = await Promise.all(components.map(async(component) => {
       const offers = await offersDao.getOffersByComponentId(component.id);
