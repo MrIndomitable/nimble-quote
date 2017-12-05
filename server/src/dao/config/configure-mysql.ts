@@ -91,10 +91,27 @@ const ordersTable = `
 
 const orderDetailsTable = `
   CREATE TABLE IF NOT EXISTS order_details (
-    order_id  VARCHAR(50)   NOT NULL,
-    offer_id    VARCHAR(50) NOT NULL,
+    order_id    VARCHAR(50)   NOT NULL,
+    offer_id    VARCHAR(50)   NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(id),
     FOREIGN KEY (offer_id) REFERENCES offers(id)
+  );
+`;
+
+const userProfileTable =  `
+  CREATE TABLE IF NOT EXISTS user_profile (
+    id            VARCHAR(50)   NOT NULL,
+    user_id       VARCHAR(50)   NOT NULL,
+    company_name  VARCHAR(100), 
+    contact_name  VARCHAR(50),
+    address       TEXT,
+    city          VARCHAR(50),
+    state         VARCHAR(15),
+    country       VARCHAR(15),
+    zip           VARCHAR(15),
+    phone         VARCHAR(25),
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
   );
 `;
 
@@ -130,6 +147,7 @@ export const configureMysql = async (config: DBConfig): Promise<Database> => {
   await query(suppliersInAuctionTable);
   await query(ordersTable);
   await query(orderDetailsTable);
+  await query(userProfileTable);
 
   return { query };
 };

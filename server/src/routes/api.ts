@@ -6,13 +6,13 @@ import { SuppliersService } from '../services/suppliers-service';
 import { OrdersService } from '../services/orders-service';
 import { IUsersService } from '../services/users-service';
 import { UserProfileService } from '../services/user-profile-service';
-import { UserProfileDao } from '../dao/user-profile-dao';
 import { verify } from 'jsonwebtoken';
 import { SuppliersDaoMysql } from '../dao/supplier-dao-mysql';
 import { Database } from '../dao/config/configure-mysql';
 import { AuctionsDaoMysql } from '../dao/auctions-dao-mysql';
 import { OffersDaoMysql } from '../dao/offers-dao-mysql';
 import { OrdersDaoMysql } from '../dao/orders-dao-mysql';
+import { UserProfileDaoMysql } from '../dao/user-profile-dao-mysql';
 
 export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Database) => {
   const suppliersDao = SuppliersDaoMysql(db);
@@ -28,7 +28,7 @@ export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Datab
     usersService,
     SendGridMailingService(config.email.sendGridApiKey)
   );
-  const userProfileDao = UserProfileDao();
+  const userProfileDao = UserProfileDaoMysql(db);
   const userProfileService = UserProfileService(userProfileDao);
   const ordersService = OrdersService(ordersDao, offersDao, userProfileDao, auctionsDao, suppliersDao);
 
