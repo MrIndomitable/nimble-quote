@@ -3,7 +3,6 @@ import { AuctionsService } from '../services/auctions-service';
 import { SendGridMailingService } from '../mailing-service/send-grid-mailing-service';
 import { TConfig } from '../config/config';
 import { SuppliersService } from '../services/suppliers-service';
-import { OrdersDao } from '../dao/orders-dao';
 import { OrdersService } from '../services/orders-service';
 import { IUsersService } from '../services/users-service';
 import { UserProfileService } from '../services/user-profile-service';
@@ -13,11 +12,12 @@ import { SuppliersDaoMysql } from '../dao/supplier-dao-mysql';
 import { Database } from '../dao/config/configure-mysql';
 import { AuctionsDaoMysql } from '../dao/auctions-dao-mysql';
 import { OffersDaoMysql } from '../dao/offers-dao-mysql';
+import { OrdersDaoMysql } from '../dao/orders-dao-mysql';
 
 export const ApiRoute = (config: TConfig, usersService: IUsersService, db: Database) => {
   const suppliersDao = SuppliersDaoMysql(db);
   const offersDao = OffersDaoMysql(db);
-  const ordersDao = OrdersDao();
+  const ordersDao = OrdersDaoMysql(db);
 
   const suppliersService = SuppliersService(suppliersDao);
   const auctionsDao = AuctionsDaoMysql(db, suppliersDao, offersDao, ordersDao);

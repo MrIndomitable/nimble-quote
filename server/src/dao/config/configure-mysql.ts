@@ -79,6 +79,25 @@ const offersTable = `
   );
 `;
 
+const ordersTable = `
+  CREATE TABLE IF NOT EXISTS orders (
+    id          VARCHAR(50)   NOT NULL,
+    auction_id  VARCHAR(50)   NOT NULL,
+    status      TINYINT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (auction_id) REFERENCES auctions(id)
+  );
+`;
+
+const orderDetailsTable = `
+  CREATE TABLE IF NOT EXISTS order_details (
+    order_id  VARCHAR(50)   NOT NULL,
+    offer_id    VARCHAR(50) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (offer_id) REFERENCES offers(id)
+  );
+`;
+
 export const configureMysql = async (config: DBConfig): Promise<Database> => {
   const pool = mysql.createPool(config);
   const query = (query: string, values?: any[]): Promise<any> => {
@@ -109,6 +128,8 @@ export const configureMysql = async (config: DBConfig): Promise<Database> => {
   await query(componentsTable);
   await query(offersTable);
   await query(suppliersInAuctionTable);
+  await query(ordersTable);
+  await query(orderDetailsTable);
 
   return { query };
 };
