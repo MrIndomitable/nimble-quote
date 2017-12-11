@@ -4,6 +4,8 @@
 
 ```shell
 npm install
+cd server && npm install && cd ..
+cd react-ui && npm install && cd ..
 npm run dev
 ```
 
