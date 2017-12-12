@@ -6,7 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import classNames from 'classnames';
 
 
-const DatePickerFieldComp = ({className, input, placeholder, dateFormat = 'DD-MM-YYYY', meta: { touched, error, warning }, validate}) => {
+const DatePickerFieldComp = ({className, input, placeholder, showYearDropdown, dateFormat = 'DD-MM-YYYY', meta: { touched, error, warning }, validate}) => {
   const handleChange = (date) => {
     input.onChange(moment(date).format(dateFormat))
   };
@@ -15,6 +15,7 @@ const DatePickerFieldComp = ({className, input, placeholder, dateFormat = 'DD-MM
     <div className="form-group">
       <DatePicker
         {...input}
+        showYearDropdown={true}
         placeholderText={placeholder}
         className={classNames(className, touched && {error})}
         dateFormat={dateFormat}
