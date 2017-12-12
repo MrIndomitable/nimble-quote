@@ -536,3 +536,12 @@ ul.nav.arrow-progress-bar {
 .cart-details-content div p:nth-last-child(1) {
     font-size: 0.8em;
 }
+
+/*new quote remove button*/
+a.removeRowBtn {
+    font-size: 1.6em;
+    vertical-align: -webkit-baseline-middle;
+    top:5px !important;
+    position:relative;
+    color:#cfcfcf;
+}

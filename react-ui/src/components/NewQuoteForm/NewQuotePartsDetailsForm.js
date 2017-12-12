@@ -9,8 +9,11 @@ const calculateTotalPrice = ({quantity, price}) => {
   return quantity && price ? quantity * price : 0;
 };
 
-const QuoteDetails = ({name, total}) => {
+const QuoteDetails = ({name, total,remove}) => {
   return <div className="form-inline">
+
+    <a className="removeRowBtn" onClick={remove}><span className="glyphicon glyphicon-remove"></span></a> 
+
     <InputField autoFocus id={`${name}.manufacture`} placeholder="Manufacture" type="text" validate={[required(), length({ max: 50 })]} />
     <InputField id={`${name}.partNumber`} placeholder="Part #" type="text" validate={[required(), length({ max: 50 })]} />
     <InputField id={`${name}.quantity`} placeholder="Quantity" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} />
@@ -26,7 +29,8 @@ const renderQuotes = ({fields}) => {
     {fields.map((quote, i, allRows) => {
       const {quantity, targetPrice} = allRows.get(i);
       return <div key={i}>
-        <QuoteDetails name={quote} total={calculateTotalPrice({quantity, price: targetPrice})}/>
+
+        <QuoteDetails remove={() => fields.remove(i)} name={quote} total={calculateTotalPrice({quantity, price: targetPrice})}/>
       </div>
     })}
     <button className="btn btn-default add-new-line" type="button" onClick={() => fields.push({})}>
