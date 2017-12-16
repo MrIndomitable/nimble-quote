@@ -34,7 +34,11 @@ const renderQuotes = ({fields}) => {
       </div>
     })}
     <button className="btn btn-default add-new-line" type="button" onClick={() => fields.push({})}>
-      <span className="fa fa-plus"/> Add new
+      <span className="fa fa-plus"/> Add new quote
+    </button>
+    <button className="btn btn-default add-new-line" type="button" onClick={() => fields.push({})}>
+      <span className="fa fa-file-archive-o"/> Import BOM
+
     </button>
     <hr/>
   </div>
