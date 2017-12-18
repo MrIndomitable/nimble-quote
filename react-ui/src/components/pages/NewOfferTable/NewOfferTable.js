@@ -30,7 +30,7 @@ const renderComponents = ({fields}) => {
   </tbody>
 };
 
-export const NewOfferTableComp = ({handleSubmit}) => {
+export const NewOfferTableComp = ({handleSubmit, handleExport}) => {
   return <form className="new-offer-form" onSubmit={handleSubmit}>
     <table className="table">
       <thead>
@@ -48,6 +48,7 @@ export const NewOfferTableComp = ({handleSubmit}) => {
       <FieldArray name="components" component={renderComponents}/>
     </table>
     <button className="btn btn-success btn-lg submit-offer" type="submit">Submit your offer</button>
+    <button className="btn btn-lg export-button" type="button" onClick={handleExport} >Export</button>
   </form>
 };
 
@@ -55,7 +56,7 @@ const NewOfferForm = reduxForm({
   form: 'NewOffer'
 })(NewOfferTableComp);
 
-export const NewOfferTable = ({auction, submitOffer}) => {
+export const NewOfferTable = ({auction, submitOffer, handleExport}) => {
   const toInitialValues = (auction) => ({
     components: auction.bom.components
   });
@@ -81,5 +82,6 @@ export const NewOfferTable = ({auction, submitOffer}) => {
   return <NewOfferForm
     initialValues={toInitialValues(auction)}
     onSubmit={values => submitOffer(bla(values))}
+    handleExport={handleExport}
   />;
 };

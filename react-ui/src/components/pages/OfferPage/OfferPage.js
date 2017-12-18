@@ -30,6 +30,10 @@ export class OfferPage extends React.Component {
       .catch(e => this.setState({submitting: false, hasErrors: true}));
   };
 
+  handleExport(offerDetails) {
+    
+  };
+
   render() {
     return <div className="container">
       {this.getCurrentView()}
@@ -65,7 +69,7 @@ export class OfferPage extends React.Component {
     if (auction) {
       return <div>
         <h2>Please insert your offer</h2>
-        <NewOfferTable auction={auction} submitOffer={offer => this.submitOffer(offer)}/>
+        <NewOfferTable auction={auction} submitOffer={offer => this.submitOffer(offer)} handleExport={this.handleExport}/>
       </div>;
     }
 
