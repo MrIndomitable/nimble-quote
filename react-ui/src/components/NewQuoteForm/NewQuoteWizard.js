@@ -41,7 +41,7 @@ export class NewQuoteWizardComp extends Component {
     return (
       <div className="new-quote-wrapper">
         <h3>
-        <a href="/"><i className="fa fa-arrow-circle-left" aria-hidden="true"></i>New Quote</a>
+        <a href="/"><i className="fa fa-arrow-circle-left" aria-hidden="true"></i>New BOM</a>
         </h3>
         <div className="progress">
           <div className="circle done">
