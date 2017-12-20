@@ -1,8 +1,9 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 import {NewOfferTable} from '../NewOfferTable/NewOfferTable';
 import axios from 'axios';
 import {parse} from 'query-string';
-
+import { browserHistory } from 'react-router';
 export class OfferPage extends React.Component {
   state = {
     loading: true,
@@ -22,7 +23,8 @@ export class OfferPage extends React.Component {
       .catch(e => console.error(e));
   }
 
-  submitOffer(offerDetails) {
+  submitOffer(offerDetails,param) {
+    alert(param);
     this.setState({submitting: true});
     const token = parse(this.props.location.search).t;
     axios.post('/api/offer', {offerDetails, token})
@@ -31,7 +33,9 @@ export class OfferPage extends React.Component {
   };
 
   handleExport(offerDetails) {
-    
+    alert(JSON.stringify(offerDetails));
+    sessionStorage.setItem('exportData', JSON.stringify(offerDetails));
+    // location.href='/export';
   };
 
   render() {
@@ -69,7 +73,7 @@ export class OfferPage extends React.Component {
     if (auction) {
       return <div>
         <h2>Please insert your offer</h2>
-        <NewOfferTable auction={auction} submitOffer={offer => this.submitOffer(offer)} handleExport={this.handleExport}/>
+        <NewOfferTable auction={auction} submitOffer={offer => this.submitOffer(offer)} handleExport={offer => this.handleExport(offer)}/>
       </div>;
     }
 
