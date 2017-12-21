@@ -3,7 +3,7 @@ import {FieldArray, reduxForm} from 'redux-form';
 import {InputField} from '../form/InputField';
 import {DatePickerField} from '../form/DatePicker/DatePickerField';
 import { required, length, numericality } from 'redux-form-validators'
-
+import XLSX from 'xlsx';
 
 const calculateTotalPrice = ({quantity, price}) => {
   return quantity && price ? quantity * price : 0;
@@ -24,6 +24,31 @@ const QuoteDetails = ({name, total,remove}) => {
   </div>
 };
 
+function importExcel() {
+  var file = document.querySelector('input').files[0];
+  const reader = new FileReader();
+    reader.onload = (e) => {
+      /* Parse data */
+      const bstr = e.target.result;
+      const wb = XLSX.read(bstr, {type:'binary'});
+      /* Get first worksheet */
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      /* Convert array of arrays */
+      const data = XLSX.utils.sheet_to_json(ws, {header:1});
+      /* Update state */
+      this.setState({ data: data, cols: make_cols(ws['!ref']) });
+    };
+    reader.readAsBinaryString(file);
+}
+function make_cols(refstr/*:string*/) {
+  var o = [];
+  var range = XLSX.utils.decode_range(refstr);
+  for(var i = 0; i <= range.e.c; ++i) {
+    o.push({name: XLSX.utils.encode_col(i), key:i});
+  }
+  return o;
+}
 const renderQuotes = ({fields}) => {
   return <div className="new-quote-fields-container">
     {fields.map((quote, i, allRows) => {
@@ -36,11 +61,14 @@ const renderQuotes = ({fields}) => {
     <button className="btn btn-default add-new-line" type="button" onClick={() => fields.push({})}>
       <span className="fa fa-plus"/> Add new quote
     </button>
-    <button className="btn btn-default add-new-line" type="button" onClick={() => fields.push({})}>
+    <button className="btn btn-default add-new-line" type="button" onClick={() => importExcel() }>
       <span className="fa fa-file-archive-o"/> Import BOM
 
     </button>
+    <input type="file" />
     <hr/>
+    <div className="excel-import-container">
+    </div>
   </div>
 };
 
@@ -54,7 +82,7 @@ export const NewQuotePartsDetailsFormComp = ({handleSubmit}) => {
     <div className="">Supply date</div>
     <div className="">Total price</div>
   </div>
-    <FieldArray name="details" component={renderQuotes}/>
+  <FieldArray name="details" component={renderQuotes}/>
     <button type="submit" className="btn btn-success btn-lg choose-supplier">
       Choose supplier's <span className="fa fa-caret-right"/>
     </button>
