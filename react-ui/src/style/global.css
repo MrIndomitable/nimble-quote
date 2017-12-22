@@ -317,7 +317,9 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
     margin-top: 55px;
 }
 
-
+.excel-import-container {
+    
+}
 /*filters page - arrow progress bar*/
 
 .arrow-progress-bar-wrapper {
