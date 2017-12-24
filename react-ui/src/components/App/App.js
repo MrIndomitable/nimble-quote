@@ -11,7 +11,6 @@ import {OfferPage} from '../pages/OfferPage/OfferPage';
 import {ProtectedRoute} from '../routes/ProtectedRoute';
 import {ViewOrderPage} from '../pages/ViewOrderPage/ViewOrderPage';
 import {LoginPage} from "../pages/LoginPage/LoginPage";
-import {ExcelExport} from "../ExcelExport/ExcelExport";
 
 const App = () => (
   <div className="App">
@@ -26,7 +25,6 @@ const App = () => (
     <ProtectedRoute path="/purchase-order/create" component={PurchaseOrderWizard}/>
     <Route path="/offer" component={OfferPage}/>
     <Route path="/view" component={ViewOrderPage}/>
-    <ProtectedRoute path="/export" component={ExcelExport}/>
   </div>
 );
 

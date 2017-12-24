@@ -318,7 +318,18 @@ form.new-quote-form-supplier .btns-wrapper .send-quote-btn {
 }
 
 .excel-import-container {
-    
+    position: absolute;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+    top: 0;
+    height: 100%;
+}
+.import-inner {
+    position: absolute;
+    background-color: white;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%);
 }
 /*filters page - arrow progress bar*/
 
@@ -433,7 +444,11 @@ ul.nav.arrow-progress-bar {
     margin-right: 40px;
     margin-bottom: 20px;
 }
-
+table {
+    border: 1px solid black;
+    border-collapse: separate;
+    border-spacing: 10px;
+}
 
 /*New quote form progress bar */
 

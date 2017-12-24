@@ -4,6 +4,7 @@ import {NewOfferTable} from '../NewOfferTable/NewOfferTable';
 import axios from 'axios';
 import {parse} from 'query-string';
 import { browserHistory } from 'react-router';
+import XLSX from 'xlsx';
 export class OfferPage extends React.Component {
   state = {
     loading: true,
@@ -24,7 +25,6 @@ export class OfferPage extends React.Component {
   }
 
   submitOffer(offerDetails,param) {
-    alert(param);
     this.setState({submitting: true});
     const token = parse(this.props.location.search).t;
     axios.post('/api/offer', {offerDetails, token})
@@ -33,8 +33,15 @@ export class OfferPage extends React.Component {
   };
 
   handleExport(offerDetails) {
-    alert(JSON.stringify(offerDetails));
-    sessionStorage.setItem('exportData', JSON.stringify(offerDetails));
+    console.log('handleExport');
+    // const ws = XLSX.utils.aoa_to_sheet(this.state.data);
+    // const wb = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+    // /* generate XLSX file */
+    // const wbout = XLSX.write(wb, {type:"binary", bookType:"xlsx"});
+    // /* send to client */
+    // saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "sheetjs.xlsx");
+
     // location.href='/export';
   };
 

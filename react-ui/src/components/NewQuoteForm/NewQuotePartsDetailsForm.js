@@ -5,7 +5,7 @@ import {DatePickerField} from '../form/DatePicker/DatePickerField';
 import { required, length, numericality } from 'redux-form-validators'
 import XLSX from 'xlsx';
 import FileReaderInput from 'react-file-reader-input';
-
+import DropDownMenu from '../DropDownMenu';
 const calculateTotalPrice = ({quantity, price}) => {
   return quantity && price ? quantity * price : 0;
 };
@@ -26,20 +26,22 @@ const QuoteDetails = ({name, total,remove}) => {
 };
 
 class renderQuotes extends React.Component {
- 
-  
   constructor(props) {
     super(props);
-    this.state = {excelData: [], cols: {}};
+    this.state = {excelData: [], cols: [], showPopup: false, selectedColumns: [] };
     this.importExcel = this.importExcel.bind(this);
     this.make_cols = this.make_cols.bind(this);
     this.onSelectColumn = this.onSelectColumn.bind(this);
+    this.pushRow = this.pushRow.bind(this);
+    this.removeRow = this.removeRow.bind(this);
   }
-  onSelectColumn(col) {
-    console.log(col);
+  onSelectColumn(item, col) {
+    let columns = [];
+    columns[col] = item;
+    this.setState({ selectedColumns: columns });
+    console.log(columns);
   }
   importExcel(e, results) {
-    
     const reader = new FileReader();
     const [event, file] = results[0];
       reader.onload = (e) => {
@@ -52,12 +54,8 @@ class renderQuotes extends React.Component {
         /* Convert array of arrays */
         const data = XLSX.utils.sheet_to_json(ws, {header:1});
         /* Update state */
-        //this.setState({ data: data, cols: make_cols(ws['!ref']) });
-        this.setState({excelData: data});
-  
-        //cols = make_cols(ws['!ref']);
+        this.setState({ excelData: data, cols: this.make_cols(ws['!ref']), showPopup: true });
       };
-
       reader.readAsBinaryString(file);
   }
   make_cols(refstr/*:string*/) {
@@ -68,20 +66,28 @@ class renderQuotes extends React.Component {
     }
     return o;
   }
+  pushRow() {
+    let rowData = this.state.excelData;
+    rowData.push({});
+    this.setState({ excelData: rowData });
+  }
+  removeRow(i) {
+    let rowData = this.state.excelData;
+    rowData.remove(i);
+    this.setState({ excelData: rowData });
+  }
   render() {
-    var Dropdown = require('react-simple-dropdown');
-var DropdownTrigger = Dropdown.DropdownTrigger;
-var DropdownContent = Dropdown.DropdownContent;
+    let titleRow = (this.state.excelData)[0];
     return <div className="new-quote-fields-container">
       {this.state.excelData.map((quote, i, allRows) => {
+        console.log(quote);        
         const {manufacture, partNumber, quantity, targetPrice} = allRows[i];
-        console.log(allRows[i]);
         return <div key={i}>
 
-          <QuoteDetails remove={() => this.state.excelData.remove(i)} name={quote} total={calculateTotalPrice({quantity, price: targetPrice})}/>
+          <QuoteDetails remove={() => this.removeRow(i)} name={quote} total={calculateTotalPrice({quantity, price: targetPrice})}/>
         </div>
       })}
-      <button className="btn btn-default add-new-line" type="button" onClick={() => this.state.excelData.push({})}>
+      <button className="btn btn-default add-new-line" type="button" onClick={this.pushRow}>
         <span className="fa fa-plus"/> Add new quote
       </button>
       
@@ -93,31 +99,52 @@ var DropdownContent = Dropdown.DropdownContent;
         </button>
       </FileReaderInput>
       <hr/>
-      <div className="excel-import-container">
-        <table>
-          <tr>
-            <td>
-              <Dropdown>
-                <DropdownTrigger>Profile</DropdownTrigger>
-                <DropdownContent>
-                    <img src="avatar.jpg" /> Username
-                    <ul>
-                        <li>
-                            <a href="/profile">Profile</a>
-                        </li>
-                        <li>
-                            <a href="/favorites">Favorites</a>
-                        </li>
-                        <li>
-                            <a href="/logout">Log Out</a>
-                        </li>
-                    </ul>
-                </DropdownContent>
-            </Dropdown>
-            </td>
-          </tr>
-        </table>
-      </div>
+      {
+        this.state.showPopup ? (
+        <div className="excel-import-container">
+          <div className="import-inner">
+            <table border="1">
+              <tbody>
+                <tr>
+                  <td>
+                    <DropDownMenu list={titleRow} ref="dropdown" onClick={ item => this.onSelectColumn(item, 0) }>
+                      <div className="dropdown-button" onClick={ () => this.refs.dropdown.onOpen() }>
+                         <span>{ this.state.sManufacture }</span>
+                         <i className="material-icons">arrow_drop_down</i>
+                      </div>
+                    </DropDownMenu>
+                  </td>
+                  <td>
+                    <DropDownMenu list={titleRow} ref="dropdown2" onClick={ item => this.onSelectColumn(item, 1) }>
+                      <div className="dropdown-button" onClick={ () => this.refs.dropdown2.onOpen() }>
+                         <span>{ this.state.sPart }</span>
+                         <i className="material-icons">arrow_drop_down</i>
+                      </div>
+                    </DropDownMenu>
+                  </td>
+                  <td>
+                    <DropDownMenu list={titleRow} ref="dropdown3" onClick={ item => this.onSelectColumn(item, 2) }>
+                      <div className="dropdown-button" onClick={ () => this.refs.dropdown3.onOpen() }>
+                         <span>{ this.state.sPart }</span>
+                         <i className="material-icons">arrow_drop_down</i>
+                      </div>
+                    </DropDownMenu>
+                  </td>
+                  <td>
+                    <DropDownMenu list={titleRow} ref="dropdown4" onClick={ item => this.onSelectColumn(item, 3 ) }>
+                      <div className="dropdown-button" onClick={ () => this.refs.dropdown4.onOpen() }>
+                         <span>{ this.state.targetPrice }</span>
+                         <i className="material-icons">arrow_drop_down</i>
+                      </div>
+                    </DropDownMenu>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        ) : ('')
+      }
     </div>
   }
 };
