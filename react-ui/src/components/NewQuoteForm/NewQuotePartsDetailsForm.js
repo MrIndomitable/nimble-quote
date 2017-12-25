@@ -2,44 +2,69 @@ import React from 'react';
 import {FieldArray, reduxForm} from 'redux-form';
 import {InputField} from '../form/InputField';
 import {DatePickerField} from '../form/DatePicker/DatePickerField';
-import { required, length, numericality } from 'redux-form-validators'
+import { required, length, numericality } from 'redux-form-validators';
 import XLSX from 'xlsx';
 import FileReaderInput from 'react-file-reader-input';
 import DropDownMenu from '../DropDownMenu';
+
 const calculateTotalPrice = ({quantity, price}) => {
   return quantity && price ? quantity * price : 0;
 };
 
-const QuoteDetails = ({name, total,remove}) => {
-  return <div className="form-inline">
+class QuoteDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    const {name, order, remove, total} = this.props;
+    this.updateData = this.updateData.bind(this);
+    this.state = ({manufacture: name[order[0]], partNumber: this.props.name[order[1]], quantity: this.props.name[order[2]], targetPrice: this.props.name[order[3]], supplyDate: this.props.name[order[4]]});
+     console.log('first row', name[order[0]]);
+  }
+  updateData (evt, col) {
+    switch(col) {
+      case 0:
+        this.setState({
+          manufacture: evt.target.value
+        });
 
-    <a className="removeRowBtn" onClick={remove}><span className="glyphicon glyphicon-remove"></span></a> 
-
-    <InputField autoFocus id={`${name}.manufacture`} placeholder="Manufacture" type="text" validate={[required(), length({ max: 50 })]} />
-    <InputField id={`${name}.partNumber`} placeholder="Part #" type="text" validate={[required(), length({ max: 50 })]} />
-    <InputField id={`${name}.quantity`} placeholder="Quantity" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} />
-    <InputField id={`${name}.targetPrice`} placeholder="Target price" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} />
-    <DatePickerField id={`${name}.supplyDate`} placeholder="Supply date" type="date" validate={[required()]} />
-    <div className="form-group total-price">{total}</div>
-    <hr/>
-  </div>
+        break;
+      case 1:
+        break;
+    }
+  }
+  render() {
+    const {name, order, remove, total} = this.props;
+    const { manufacture, partNumber } = this.state;
+    return <div className="form-inline">
+      <a className="removeRowBtn" onClick={this.props.remove}><span className="glyphicon glyphicon-remove"></span></a> 
+      <InputField autoFocus id={`${name[order[0]]}.manufacture`} text={manufacture} placeholder={`${name[order[0]]}`} type="text" validate={[required(), length({ max: 50 })]} onChange={ evt => this.updateData(evt, 0) }/>
+      <InputField text={partNumber} id={`${name[order[1]]}`}  placeholder={`${name[order[1]]}`} type="text" validate={[required(), length({ max: 50 })]} />
+      <InputField id={`${name[order[2]]}`} text={`${name[order[2]]}`} placeholder={`${name[order[2]]}`} type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} />
+      <InputField id={`${name[order[3]]}`} text={`${name[order[3]]}`} placeholder={`${name[order[3]]}`} type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} />
+      <DatePickerField id={`${name[order[4]]}`} text={`${name[order[4]]}`} placeholder="Supply date" type="date" validate={[required()]} />
+      <div className="form-group total-price">{total}</div>
+      <hr/>
+    </div>
+  }
 };
 
 class renderQuotes extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {excelData: [], cols: [], showPopup: false, selectedColumns: [] };
+    this.state = {excelData: [{}], cols: [], showPopup: false, selectedColumns: [] };
     this.importExcel = this.importExcel.bind(this);
     this.make_cols = this.make_cols.bind(this);
     this.onSelectColumn = this.onSelectColumn.bind(this);
     this.pushRow = this.pushRow.bind(this);
     this.removeRow = this.removeRow.bind(this);
+    this.loadData = this.loadData.bind(this);
+  }
+  loadData() {
+    this.setState({ showPopup: false });
   }
   onSelectColumn(item, col) {
-    let columns = [];
+    let columns = this.state.selectedColumns;
     columns[col] = item;
     this.setState({ selectedColumns: columns });
-    console.log(columns);
   }
   importExcel(e, results) {
     const reader = new FileReader();
@@ -84,7 +109,7 @@ class renderQuotes extends React.Component {
         const {manufacture, partNumber, quantity, targetPrice} = allRows[i];
         return <div key={i}>
 
-          <QuoteDetails remove={() => this.removeRow(i)} name={quote} total={calculateTotalPrice({quantity, price: targetPrice})}/>
+          <QuoteDetails remove={() => this.removeRow(i)} name={quote} total="3" order={this.state.selectedColumns} />
         </div>
       })}
       <button className="btn btn-default add-new-line" type="button" onClick={this.pushRow}>
@@ -103,13 +128,14 @@ class renderQuotes extends React.Component {
         this.state.showPopup ? (
         <div className="excel-import-container">
           <div className="import-inner">
-            <table border="1">
+            <table>
               <tbody>
                 <tr>
                   <td>
                     <DropDownMenu list={titleRow} ref="dropdown" onClick={ item => this.onSelectColumn(item, 0) }>
                       <div className="dropdown-button" onClick={ () => this.refs.dropdown.onOpen() }>
-                         <span>{ this.state.sManufacture }</span>
+                         <div> Part No</div>
+                         <span>{ titleRow[this.state.selectedColumns[0]] }</span>
                          <i className="material-icons">arrow_drop_down</i>
                       </div>
                     </DropDownMenu>
@@ -117,7 +143,8 @@ class renderQuotes extends React.Component {
                   <td>
                     <DropDownMenu list={titleRow} ref="dropdown2" onClick={ item => this.onSelectColumn(item, 1) }>
                       <div className="dropdown-button" onClick={ () => this.refs.dropdown2.onOpen() }>
-                         <span>{ this.state.sPart }</span>
+                         <div>Manufacturer</div>
+                         <span>{ titleRow[this.state.selectedColumns[1]] }</span>
                          <i className="material-icons">arrow_drop_down</i>
                       </div>
                     </DropDownMenu>
@@ -125,22 +152,25 @@ class renderQuotes extends React.Component {
                   <td>
                     <DropDownMenu list={titleRow} ref="dropdown3" onClick={ item => this.onSelectColumn(item, 2) }>
                       <div className="dropdown-button" onClick={ () => this.refs.dropdown3.onOpen() }>
-                         <span>{ this.state.sPart }</span>
-                         <i className="material-icons">arrow_drop_down</i>
+                        <div>Target Price</div>
+                        <span>{ titleRow[this.state.selectedColumns[2]] }</span>
+                        <i className="material-icons">arrow_drop_down</i>
                       </div>
                     </DropDownMenu>
                   </td>
                   <td>
                     <DropDownMenu list={titleRow} ref="dropdown4" onClick={ item => this.onSelectColumn(item, 3 ) }>
                       <div className="dropdown-button" onClick={ () => this.refs.dropdown4.onOpen() }>
-                         <span>{ this.state.targetPrice }</span>
-                         <i className="material-icons">arrow_drop_down</i>
+                        <div>Part Date</div>
+                        <span>{ titleRow[this.state.selectedColumns[3]] }</span>
+                        <i className="material-icons">arrow_drop_down</i>
                       </div>
                     </DropDownMenu>
                   </td>
                 </tr>
               </tbody>
             </table>
+            <button type="button" className="load-data" onClick={this.loadData}>Load Data</button>
           </div>
         </div>
         ) : ('')

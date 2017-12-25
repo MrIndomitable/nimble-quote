@@ -10,19 +10,20 @@ const Help = ({touched, error, warning}) => {
 
 const inputClassName = (className, {touched, error}) => classnames(className, touched && {error});
 
-const renderField = ({id, input, label, className, meta, ...props}) => (
+const renderField = ({id, input, label, text, className, meta, ...props}) => (
   <div className="form-group">
     {label && <label htmlFor={id}>{label}</label>}
     <input
       {...input}
       {...props}
       className={inputClassName(className, meta)}
+      value = {text}
     />
     <Help {...meta}/>
   </div>
 );
 
-export const InputField = ({id, label, ...props}) => (
+export const InputField = ({id, label, value, ...props}) => (
   <Field
     id={id}
     className="form-control"
@@ -30,5 +31,6 @@ export const InputField = ({id, label, ...props}) => (
     component={renderField}
     label={label}
     {...props}
+    value={value}
   />
 );

@@ -444,12 +444,16 @@ ul.nav.arrow-progress-bar {
     margin-right: 40px;
     margin-bottom: 20px;
 }
-table {
+
+.import-inner table {
     border: 1px solid black;
     border-collapse: separate;
     border-spacing: 10px;
+    margin: 0 auto;
 }
-
+.import-inner {
+    width: 500px;
+}
 /*New quote form progress bar */
 
 .progress {
