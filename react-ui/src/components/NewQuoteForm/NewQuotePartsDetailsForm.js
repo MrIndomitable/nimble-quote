@@ -16,8 +16,8 @@ class QuoteDetails extends React.Component {
     super(props);
     const {name, order, remove, total} = this.props;
     this.updateData = this.updateData.bind(this);
-    this.state = ({manufacture: name[order[0]], partNumber: this.props.name[order[1]], quantity: this.props.name[order[2]], targetPrice: this.props.name[order[3]], supplyDate: this.props.name[order[4]]});
-     console.log('first row', name[order[0]]);
+    console.log('order', order);
+    this.state = ({manufacture: name[order[0]], partNumber: name[order[1]], quantity: name[order[2]], targetPrice: name[order[3]], supplyDate: name[order[4]]});
   }
   updateData (evt, col) {
     switch(col) {
@@ -25,22 +25,40 @@ class QuoteDetails extends React.Component {
         this.setState({
           manufacture: evt.target.value
         });
-
         break;
       case 1:
+        this.setState({
+          partNumber: evt.target.value
+        });
+        break;
+      case 2:
+        this.setState({
+          quantity: evt.target.value
+        });
+        break;
+      case 3:
+        this.setState({
+          targetPrice: evt.target.value
+        });
+        break;
+      case 4:
+        console.log(evt.target);
+        this.setState({
+          supplyDate: evt.target.value
+        });
         break;
     }
   }
   render() {
     const {name, order, remove, total} = this.props;
-    const { manufacture, partNumber } = this.state;
+    const { manufacture, partNumber,quantity, targetPrice, supplyDate } = this.state;
     return <div className="form-inline">
       <a className="removeRowBtn" onClick={this.props.remove}><span className="glyphicon glyphicon-remove"></span></a> 
-      <InputField autoFocus id={`${name[order[0]]}.manufacture`} text={manufacture} placeholder={`${name[order[0]]}`} type="text" validate={[required(), length({ max: 50 })]} onChange={ evt => this.updateData(evt, 0) }/>
-      <InputField text={partNumber} id={`${name[order[1]]}`}  placeholder={`${name[order[1]]}`} type="text" validate={[required(), length({ max: 50 })]} />
-      <InputField id={`${name[order[2]]}`} text={`${name[order[2]]}`} placeholder={`${name[order[2]]}`} type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} />
-      <InputField id={`${name[order[3]]}`} text={`${name[order[3]]}`} placeholder={`${name[order[3]]}`} type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} />
-      <DatePickerField id={`${name[order[4]]}`} text={`${name[order[4]]}`} placeholder="Supply date" type="date" validate={[required()]} />
+      <InputField autoFocus id={`${name}.manufacture`} text={manufacture} placeholder="Manufacture" type="text" validate={[required(), length({ max: 50 })]} onChange={ evt => this.updateData(evt, 0) }/>
+      <InputField id={`${name}.partNumber`} text={partNumber} placeholder="Part #" type="text" validate={[required(), length({ max: 50 })]}  onChange={ evt => this.updateData(evt, 1) }/>
+      <InputField id={`${name}.quantity`} text={quantity} placeholder="Quantity" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} onChange={ evt => this.updateData(evt, 2) }/>
+      <InputField id={`${name}.targetPrice`} text={targetPrice} placeholder="Target Price" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} onChange={ evt => this.updateData(evt, 3) }/>
+      <DatePickerField id={`${name.supplyDate}`} text={supplyDate} placeholder="Supply date" type="date" validate={[required()]} onChange={ evt => this.updateData(evt, 4) }/>
       <div className="form-group total-price">{total}</div>
       <hr/>
     </div>
@@ -98,20 +116,24 @@ class renderQuotes extends React.Component {
   }
   removeRow(i) {
     let rowData = this.state.excelData;
-    rowData.remove(i);
+    delete rowData[i];
     this.setState({ excelData: rowData });
   }
   render() {
     let titleRow = (this.state.excelData)[0];
     return <div className="new-quote-fields-container">
-      {this.state.excelData.map((quote, i, allRows) => {
+      {
+        
+        !this.state.showPopup ? (
+        this.state.excelData.map((quote, i, allRows) => {
         console.log(quote);        
         const {manufacture, partNumber, quantity, targetPrice} = allRows[i];
         return <div key={i}>
 
           <QuoteDetails remove={() => this.removeRow(i)} name={quote} total="3" order={this.state.selectedColumns} />
         </div>
-      })}
+      })) : ('')
+    }
       <button className="btn btn-default add-new-line" type="button" onClick={this.pushRow}>
         <span className="fa fa-plus"/> Add new quote
       </button>
@@ -134,7 +156,7 @@ class renderQuotes extends React.Component {
                   <td>
                     <DropDownMenu list={titleRow} ref="dropdown" onClick={ item => this.onSelectColumn(item, 0) }>
                       <div className="dropdown-button" onClick={ () => this.refs.dropdown.onOpen() }>
-                         <div> Part No</div>
+                         <div> Manufacture</div>
                          <span>{ titleRow[this.state.selectedColumns[0]] }</span>
                          <i className="material-icons">arrow_drop_down</i>
                       </div>
@@ -143,7 +165,7 @@ class renderQuotes extends React.Component {
                   <td>
                     <DropDownMenu list={titleRow} ref="dropdown2" onClick={ item => this.onSelectColumn(item, 1) }>
                       <div className="dropdown-button" onClick={ () => this.refs.dropdown2.onOpen() }>
-                         <div>Manufacturer</div>
+                         <div>Part#</div>
                          <span>{ titleRow[this.state.selectedColumns[1]] }</span>
                          <i className="material-icons">arrow_drop_down</i>
                       </div>
@@ -152,7 +174,7 @@ class renderQuotes extends React.Component {
                   <td>
                     <DropDownMenu list={titleRow} ref="dropdown3" onClick={ item => this.onSelectColumn(item, 2) }>
                       <div className="dropdown-button" onClick={ () => this.refs.dropdown3.onOpen() }>
-                        <div>Target Price</div>
+                        <div>Quantity</div>
                         <span>{ titleRow[this.state.selectedColumns[2]] }</span>
                         <i className="material-icons">arrow_drop_down</i>
                       </div>
@@ -161,8 +183,17 @@ class renderQuotes extends React.Component {
                   <td>
                     <DropDownMenu list={titleRow} ref="dropdown4" onClick={ item => this.onSelectColumn(item, 3 ) }>
                       <div className="dropdown-button" onClick={ () => this.refs.dropdown4.onOpen() }>
-                        <div>Part Date</div>
+                        <div>Target Price</div>
                         <span>{ titleRow[this.state.selectedColumns[3]] }</span>
+                        <i className="material-icons">arrow_drop_down</i>
+                      </div>
+                    </DropDownMenu>
+                  </td>
+                  <td>
+                    <DropDownMenu list={titleRow} ref="dropdown5" onClick={ item => this.onSelectColumn(item, 4 ) }>
+                      <div className="dropdown-button" onClick={ () => this.refs.dropdown5.onOpen() }>
+                        <div>Supply Date</div>
+                        <span>{ titleRow[this.state.selectedColumns[4]] }</span>
                         <i className="material-icons">arrow_drop_down</i>
                       </div>
                     </DropDownMenu>
@@ -170,7 +201,7 @@ class renderQuotes extends React.Component {
                 </tr>
               </tbody>
             </table>
-            <button type="button" className="load-data" onClick={this.loadData}>Load Data</button>
+            <button type="button" className="load-data btn btn-green" onClick={this.loadData}>Load Data</button>
           </div>
         </div>
         ) : ('')
