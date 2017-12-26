@@ -5,6 +5,7 @@ import axios from 'axios';
 import {parse} from 'query-string';
 import { browserHistory } from 'react-router';
 import XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 export class OfferPage extends React.Component {
   state = {
     loading: true,
@@ -24,7 +25,16 @@ export class OfferPage extends React.Component {
       .catch(e => console.error(e));
   }
 
-  submitOffer(offerDetails,param) {
+  /* see Browser download file example in docs */
+  s2ab(s/*:string*/)/*:ArrayBuffer*/ {
+    const buf = new ArrayBuffer(s.length);
+    const view = new Uint8Array(buf);
+    for (let i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+  }
+  submitOffer(offerDetails, param) {
+    
+
     this.setState({submitting: true});
     const token = parse(this.props.location.search).t;
     axios.post('/api/offer', {offerDetails, token})
@@ -33,16 +43,25 @@ export class OfferPage extends React.Component {
   };
 
   handleExport(offerDetails) {
-    console.log('handleExport');
-    // const ws = XLSX.utils.aoa_to_sheet(this.state.data);
-    // const wb = XLSX.utils.book_new();
-    // XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
-    // /* generate XLSX file */
-    // const wbout = XLSX.write(wb, {type:"binary", bookType:"xlsx"});
-    // /* send to client */
-    // saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "sheetjs.xlsx");
+    
+    let keys = [], values=[];
+    console.log(offerDetails);
+    for(var key in offerDetails) {
+      keys.push(key);
+      values.push(offerDetails[key]);
+    }
+    let data = [];
+    data.push(keys);
+    data.push(values);
+    console.log(data);
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
 
-    // location.href='/export';
+    const wbout = XLSX.write(wb, {type:"binary", bookType:"xlsx"});
+    /* send to client */
+    
+    saveAs(new Blob([this.s2ab(wbout)],{type:"application/octet-stream"}), "export.xlsx");
   };
 
   render() {
@@ -72,7 +91,7 @@ export class OfferPage extends React.Component {
 
     if (hasErrors) {
       return <div className="alert alert-danger" role="alert">
-        <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"/>
+        <span className="glyphicon glyphicon-exclamatio n-sign" aria-hidden="true"/>
         <span className="sr-only">Error:</span> An error occurred, please try again later
       </div>;
     }

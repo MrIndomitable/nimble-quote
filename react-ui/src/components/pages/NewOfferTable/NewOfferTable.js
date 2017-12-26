@@ -48,9 +48,7 @@ export const NewOfferTableComp = ({handleSubmit, handleExport}) => {
       <FieldArray name="components" component={renderComponents}/>
     </table>
     <button className="btn btn-success btn-lg submit-offer" type="submit" onClick={handleSubmit}>Submit your offer</button>
-    <button className="btn btn-lg export-button" type="submit" onClick={values => 
-          handleExport({ 
-          })} >Export</button>
+    <button className="btn btn-lg export-button" type="button" onClick={handleExport}>Export</button>
   </form>
 };
 
@@ -84,6 +82,6 @@ export const NewOfferTable = ({auction, submitOffer, handleExport}) => {
   return <NewOfferForm
     initialValues={toInitialValues(auction)}
     onSubmit={values => submitOffer(bla(values))}
-    handleExport={values => handleExport(bla(values))}
+    handleExport={() => handleExport(auction)}
   />;
 };
