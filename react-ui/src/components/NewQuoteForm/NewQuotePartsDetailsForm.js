@@ -16,6 +16,10 @@ class QuoteDetails extends React.Component {
     super(props);
     const {name, order, remove} = this.props;
     this.updateData = this.updateData.bind(this);
+    this.state = ({manufacture: name[0], partNumber: name[1], quantity: name[3], targetPrice: name[4], supplyDate: name[5], total: 0});
+  }
+  componentDidMount() {
+    const {name, order, remove} = this.props;
     this.state = ({manufacture: name[order[0]], partNumber: name[order[1]], quantity: name[order[2]], targetPrice: name[order[3]], supplyDate: name[order[4]], total: 0});
   }
   updateData (evt, col) {

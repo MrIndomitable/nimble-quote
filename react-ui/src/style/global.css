@@ -520,8 +520,35 @@ ul.nav.arrow-progress-bar {
     color: #FFF;
     background: #000;
 }
+ 
+ .progress-item-wrapper {
+    width: 100%;
+ }
+.progress-item {
+    float: left;
+}
 
-
+.progress-item-wrapper::after, .progress-item::after{
+    clear: both;
+    content: '';
+    display: block;
+}
+.progress-item-bar {
+    height: 20px;
+    width: 100%;
+}
+.bar-Pending {
+    background-color: #dddddd;
+}
+.bar-Offers {
+    background-color: rgb(250, 192, 42);
+}
+.bar-Emminent {
+    background-color: rgb(65, 160, 70);
+}
+.bar-Archive {
+    background-color: rgb(96, 180, 254);
+}
 /*.progress .circle.done .title{color:#444}*/
 
 

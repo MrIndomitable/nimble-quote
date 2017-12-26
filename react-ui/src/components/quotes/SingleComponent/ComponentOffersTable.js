@@ -67,7 +67,6 @@ const mapStateToProps = (state, {match}) => {
   const {id} = match.params;
   const component = findComponentById(state, id);
   const offers = component && component.offers;
-
   const offersWithTotal = offers.map(offer => {
     const total = offer.price * offer.quantity;
     const supplier = getSupplierEmail(state, offer.supplierId);

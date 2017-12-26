@@ -6,6 +6,7 @@ import {ComponentDetails} from './ComponentDetails';
 import {fetchComponent} from '../../../actions/components-actions';
 import {findComponentById} from '../../../selectors/components-selector';
 import {PurchaseOrderWizard} from "../../PurchaseOrderForm/PurchaseOrderWizard";
+import {ProgressDetails} from "./ProgressDetails";
 
 class SingleComponentWrapper extends React.Component {
   componentWillMount() {
@@ -25,6 +26,7 @@ class SingleComponentWrapper extends React.Component {
 
     return <div className="container">
       <div className="row bg-warning inline single-component-details">
+        <ProgressDetails />
         <ComponentDetails />
       </div>
       { isPurchaseInProgress ? <PurchaseOrderWizard/> : <PendingView/> }
