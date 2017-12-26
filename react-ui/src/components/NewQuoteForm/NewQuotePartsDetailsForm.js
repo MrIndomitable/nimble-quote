@@ -14,12 +14,13 @@ const calculateTotalPrice = ({quantity, price}) => {
 class QuoteDetails extends React.Component {
   constructor(props) {
     super(props);
-    const {name, order, remove, total} = this.props;
+    const {name, order, remove} = this.props;
     this.updateData = this.updateData.bind(this);
     console.log('order', order);
-    this.state = ({manufacture: name[order[0]], partNumber: name[order[1]], quantity: name[order[2]], targetPrice: name[order[3]], supplyDate: name[order[4]]});
+    this.state = ({manufacture: name[order[0]], partNumber: name[order[1]], quantity: name[order[2]], targetPrice: name[order[3]], supplyDate: name[order[4]], total: 0});
   }
   updateData (evt, col) {
+    const { manufacture, partNumber,quantity, targetPrice, supplyDate, total } = this.state;
     switch(col) {
       case 0:
         this.setState({
@@ -33,12 +34,14 @@ class QuoteDetails extends React.Component {
         break;
       case 2:
         this.setState({
-          quantity: evt.target.value
+          quantity: evt.target.value,
+          total: calculateTotalPrice({quantity, price: targetPrice})
         });
         break;
       case 3:
         this.setState({
-          targetPrice: evt.target.value
+          targetPrice: evt.target.value,
+          total: calculateTotalPrice({quantity, price: targetPrice})
         });
         break;
       case 4:
@@ -50,8 +53,8 @@ class QuoteDetails extends React.Component {
     }
   }
   render() {
-    const {name, order, remove, total} = this.props;
-    const { manufacture, partNumber,quantity, targetPrice, supplyDate } = this.state;
+    const {name, order, remove} = this.props;
+    const { manufacture, partNumber,quantity, targetPrice, supplyDate, total } = this.state;
     return <div className="form-inline">
       <a className="removeRowBtn" onClick={this.props.remove}><span className="glyphicon glyphicon-remove"></span></a> 
       <InputField autoFocus id={`${name}.manufacture`} text={manufacture} placeholder="Manufacture" type="text" validate={[required(), length({ max: 50 })]} onChange={ evt => this.updateData(evt, 0) }/>
@@ -126,11 +129,12 @@ class renderQuotes extends React.Component {
         
         !this.state.showPopup ? (
         this.state.excelData.map((quote, i, allRows) => {
-        console.log(quote);        
+            
         const {manufacture, partNumber, quantity, targetPrice} = allRows[i];
+        console.log('=====================',partNumber);    
         return <div key={i}>
 
-          <QuoteDetails remove={() => this.removeRow(i)} name={quote} total="3" order={this.state.selectedColumns} />
+          <QuoteDetails remove={() => this.removeRow(i)} name={quote} total={calculateTotalPrice({quantity, price: targetPrice})} order={this.state.selectedColumns} />
         </div>
       })) : ('')
     }
