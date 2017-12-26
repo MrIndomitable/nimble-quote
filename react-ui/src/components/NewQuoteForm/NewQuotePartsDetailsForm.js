@@ -16,7 +16,6 @@ class QuoteDetails extends React.Component {
     super(props);
     const {name, order, remove} = this.props;
     this.updateData = this.updateData.bind(this);
-    console.log('order', order);
     this.state = ({manufacture: name[order[0]], partNumber: name[order[1]], quantity: name[order[2]], targetPrice: name[order[3]], supplyDate: name[order[4]], total: 0});
   }
   updateData (evt, col) {
@@ -31,6 +30,7 @@ class QuoteDetails extends React.Component {
         this.setState({
           partNumber: evt.target.value
         });
+        console.log('partNumber', partNumber);
         break;
       case 2:
         this.setState({
@@ -45,9 +45,14 @@ class QuoteDetails extends React.Component {
         });
         break;
       case 4:
-        console.log(evt.target);
+        let date='';
+        for(let item in evt) {
+          date += evt[item];
+          if(date.length == 10)
+            break;
+        }
         this.setState({
-          supplyDate: evt.target.value
+          supplyDate: date,
         });
         break;
     }
@@ -57,11 +62,11 @@ class QuoteDetails extends React.Component {
     const { manufacture, partNumber,quantity, targetPrice, supplyDate, total } = this.state;
     return <div className="form-inline">
       <a className="removeRowBtn" onClick={this.props.remove}><span className="glyphicon glyphicon-remove"></span></a> 
-      <InputField autoFocus id={`${name}.manufacture`} text={manufacture} placeholder="Manufacture" type="text" validate={[required(), length({ max: 50 })]} onChange={ evt => this.updateData(evt, 0) }/>
-      <InputField id={`${name}.partNumber`} text={partNumber} placeholder="Part #" type="text" validate={[required(), length({ max: 50 })]}  onChange={ evt => this.updateData(evt, 1) }/>
-      <InputField id={`${name}.quantity`} text={quantity} placeholder="Quantity" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} onChange={ evt => this.updateData(evt, 2) }/>
-      <InputField id={`${name}.targetPrice`} text={targetPrice} placeholder="Target Price" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} onChange={ evt => this.updateData(evt, 3) }/>
-      <DatePickerField id={`${name.supplyDate}`} text={supplyDate} placeholder="Supply date" type="date" validate={[required()]} onChange={ evt => this.updateData(evt, 4) }/>
+      <InputField autoFocus id={`${name}.manufacture`} text={manufacture} value={manufacture} placeholder="Manufacture" type="text" validate={[required(), length({ max: 50 })]} onChange={ evt => this.updateData(evt, 0) }/>
+      <InputField id={`${name}.partNumber`} text={partNumber} value={partNumber} placeholder="Part #" type="text" validate={[required(), length({ max: 50 })]}  onChange={ evt => this.updateData(evt, 1) }/>
+      <InputField id={`${name}.quantity`} text={quantity} value={quantity} placeholder="Quantity" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} onChange={ evt => this.updateData(evt, 2) }/>
+      <InputField id={`${name}.targetPrice`} text={targetPrice} value={targetPrice} placeholder="Target Price" type="number" validate={[required(), length({ max: 50 }), numericality({ '>': 0 })]} onChange={ evt => this.updateData(evt, 3) }/>
+      <DatePickerField id={`${name}.supplyDate`} text={supplyDate} value={supplyDate} placeholder="Supply date" type="date" validate={[required()]} onChange={ evt => this.updateData(evt, 4) }/>
       <div className="form-group total-price">{total}</div>
       <hr/>
     </div>
@@ -131,7 +136,7 @@ class renderQuotes extends React.Component {
         this.state.excelData.map((quote, i, allRows) => {
             
         const {manufacture, partNumber, quantity, targetPrice} = allRows[i];
-        console.log('=====================',partNumber);    
+        console.log('=====================',allRows[1]);    
         return <div key={i}>
 
           <QuoteDetails remove={() => this.removeRow(i)} name={quote} total={calculateTotalPrice({quantity, price: targetPrice})} order={this.state.selectedColumns} />
