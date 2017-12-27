@@ -21,6 +21,7 @@ const App = () => (
     <Route exact path="/" render={() => <Redirect to="/components?q=pending"/>}/>
     <ProtectedRoute exact path="/components" component={ComponentsPage}/>
     <ProtectedRoute path="/components/:id" component={SingleComponent}/>
+    <ProtectedRoute path="/components?search=:name" component={ComponentsPage}/>
     <ProtectedRoute path="/bom/create" component={NewQuoteWizard}/>
     <ProtectedRoute path="/purchase-order/create" component={PurchaseOrderWizard}/>
     <Route path="/offer" component={OfferPage}/>

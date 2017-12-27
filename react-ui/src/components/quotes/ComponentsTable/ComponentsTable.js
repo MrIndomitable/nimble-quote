@@ -5,58 +5,85 @@ import {withRouter} from 'react-router';
 import {parse} from 'query-string';
 import {goToComponent} from '../../../actions/rfp-actions';
 
-const ComponentActions = (component) => {
-  if (isPending(component)) {
+const ComponentActions = ({component, openWithName}) => {
+  const {name, offersCount } = component;
+  if(name) {
     return (
-      <button className="btn btn-default btn-xs">
-        cancel
-      </button>
+      <a onClick={ name => openWithName(name) }>
+        Summary
+      </a>
     );
   }
+  else {
+    if (isPending(component)) {
+      return (
+        <button className="btn btn-default btn-xs">
+          cancel
+        </button>
+      );
+    }
 
-  if (hasOffers(component)) {
-    return (
-      <button
-        className="btn btn-warning btn-xs"
-      >
-        Offers <span className="badge">{component.offersCount}</span>
-      </button>
-    );
+    if (hasOffers(component)) {
+      return (
+        <button
+          className="btn btn-warning btn-xs"
+        >
+          Offers <span className="badge">{offersCount}</span>
+        </button>
+      );
+    }
+
+    if (isImminent(component)) {
+      return (
+        <button
+          className="btn btn-primary btn-xs"
+        >
+          View purchase order <span className="fa fa-eye"/>
+        </button>
+      );
+    }
   }
-
-  if (isImminent(component)) {
-    return (
-      <button
-        className="btn btn-primary btn-xs"
-      >
-        View purchase order <span className="fa fa-eye"/>
-      </button>
-    );
-  }
-
   return null;
 };
 
 const ComponentRow = ({component, onClick}) => {
-  const {partNumber, manufacture, quantity, targetPrice, date} = component;
-
-  return (
-    <tr className="component-row" onClick={onClick}>
-      <td>{manufacture}</td>
-      <td>{partNumber}</td>
-      <td>{quantity}</td>
-      <td>{targetPrice}</td>
-      <td>{date}</td>
-      <td><ComponentActions {...component}/></td>
-    </tr>
-  );
+  const {name, partNumber, manufacture, quantity, targetPrice, date} = component;
+  if(!name) {
+    return (
+      <tr className="component-row" onClick={onClick}>
+        <td>{manufacture}</td>
+        <td>{partNumber}</td>
+        <td>{quantity}</td>
+        <td>{targetPrice}</td>
+        <td>{date}</td>
+        <td><ComponentActions component = {component}/></td>
+      </tr>
+    );
+  }
+  else {
+    return (
+      <tr className="component-row">
+        <td><button className="bom-category"> <span className="fa fa-plus"/> BOM</button> {name}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{date}</td>
+        <td><ComponentActions openWithName = { onClick } component = {component}  /></td>
+      </tr>
+    );
+  }
 };
 
 const ComponentsTableComp = ({components, goToComponent}) => {
   const componentRows = components.map(component => {
-    return <ComponentRow key={component.id} component={component} onClick={() => goToComponent(component.id) }/>;
+   
+    if(component.name) {
+      return <ComponentRow key={component.id} component={component} onClick={(name) => goToComponent(component.id, component.name) }/>;
+    }
+    else {
+      return <ComponentRow key={component.id} component={component} onClick={ () => goToComponent(component.id) }/>;
+    }
   });
-
   return (
     <div className="table-container">
       <table className="table table-striped table-hover">
@@ -79,9 +106,20 @@ const ComponentsTableComp = ({components, goToComponent}) => {
 };
 
 const mapStateToProps = (state, {location}) => {
-  const {q} = parse(location.search);
+  console.log('---------------------',location);
+  const {q, search} = parse(location.search);
+  let components = [];
+  if(search) {
+    components = componentsSelector(state, search);
+
+  }
+  else {
+    components = componentsSelector(state, q);
+    components.push({ name: 'Looking for these parts', date: '03-01-2018',id: 'testid1', id:'kkk' });
+    components.push({ name: 'Looking for these parts', date: '03-01-2018',id: 'testid2', id: 'ddd' });
+  }
   return ({
-    components: componentsSelector(state, q)
+    components: components
   });
 };
 

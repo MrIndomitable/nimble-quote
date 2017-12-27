@@ -60,7 +60,6 @@ const ComponentOffersTableComp = ({offers, component}) => {
   if (offers.length === 0) {
     return <h2>No offers yet</h2>;
   }
-  console.log(JSON.stringify(offers));
   const offerRows = offers.map(offer => (
     <OfferRow
       key={offer.id}

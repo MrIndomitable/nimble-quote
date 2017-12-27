@@ -38,6 +38,12 @@ export const submitRFP = values => dispatch => {
     .catch(e => dispatch(submitRFPFailure(e)));
 };
 
-export const goToComponent = id => dispatch => {
-  dispatch(push(`/components/${id}`));
+export const goToComponent = (id, name) => dispatch => {
+  if(name) {
+    dispatch(push(`/components?search=${name}`));
+  }
+  else {
+    dispatch(push(`/components/${id}`));
+  }
 };
+
