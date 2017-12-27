@@ -25,8 +25,8 @@ class SingleComponentWrapper extends React.Component {
     }
 
     return <div className="container">
+      <ProgressDetails />
       <div className="row bg-warning inline single-component-details">
-        <ProgressDetails />
         <ComponentDetails />
       </div>
       { isPurchaseInProgress ? <PurchaseOrderWizard/> : <PendingView/> }

@@ -32,9 +32,7 @@ export class OfferPage extends React.Component {
     for (let i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
     return buf;
   }
-  submitOffer(offerDetails, param) {
-    
-
+  submitOffer(offerDetails) {
     this.setState({submitting: true});
     const token = parse(this.props.location.search).t;
     axios.post('/api/offer', {offerDetails, token})

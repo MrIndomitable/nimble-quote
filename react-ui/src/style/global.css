@@ -116,7 +116,9 @@ table {
     color: #fff;
     font-weight: bold;
 }
-
+.fa-envelope-o {
+    color: rgb(119, 159, 179);
+}
 
 /*Purchase order form*/
 
