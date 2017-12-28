@@ -106,7 +106,6 @@ const ComponentsTableComp = ({components, goToComponent}) => {
 };
 
 const mapStateToProps = (state, {location}) => {
-  console.log('---------------------',location);
   const {q, search} = parse(location.search);
   let components = [];
   if(search) {
