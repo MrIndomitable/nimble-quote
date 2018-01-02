@@ -12,6 +12,7 @@ const submitRFPFailure = (error) => ({
 });
 
 export const submitRFP = values => dispatch => {
+  console.log('submitRFP-----', values);
   dispatch({
     type: SUBMIT_RFP, values
   });
